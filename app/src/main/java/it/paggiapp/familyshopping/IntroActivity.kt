@@ -46,16 +46,5 @@ class IntroActivity : IntroActivity() {
                 .fragment(LoginFragment.newInstance())
                 .build())
 
-        /**
-         * Third slide: all done and ready!
-         */
-        addSlide(SimpleSlide.Builder()
-                .title(R.string.intro_title1)
-                .description(R.string.intro_descr1)
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .scrollable(false)
-                .build())
-
     }
 }
