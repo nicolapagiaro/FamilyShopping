@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FamilyShopping</string>
+
+    <!-- Stringhe per la IntroActivity -->
+    <string name="intro_title1">@string/app_name</string>
+    <string name="intro_descr1">Con FamilyShopping puoi organizzare la tua lista della spesa e condividerla
+        con gli altri membri della famiglia così che tutti possano essere sempre aggiornati.
+        Puoi aggiungere elemeti alla lista, dare loro una priorità cosi da metterli in evidenza
+        e poi una volta comprati puoi eliminarli dalla lista.</string>
+
+    <!-- Stringhe delle SharedPreferences -->
+    <string name="user_logged">user_logged</string>
+</resources>
