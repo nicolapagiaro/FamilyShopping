@@ -29,12 +29,5 @@ class LoginFragment : SlideFragment() {
         return inflater?.inflate(R.layout.fragment_intro_login, container, false)
     }
 
-    /**
-     * onActivityCreated function
-     */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
 
 }

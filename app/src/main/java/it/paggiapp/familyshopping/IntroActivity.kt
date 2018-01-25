@@ -32,7 +32,7 @@ class IntroActivity : IntroActivity() {
                 .description(R.string.intro_descr1)
                 .background(R.color.colorPrimary)
                 .backgroundDark(R.color.colorPrimaryDark)
-                .image(R.drawable.intro)
+                .image(R.drawable.intro_image)
                 .scrollable(false)
                 .build())
 
