@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">FamilyShopping</string>
 
+    <!-- Stringhe delle SharedPreferences -->
+    <string name="user_logged">user_logged</string>
+
     <!-- Stringhe per la IntroActivity -->
     <string name="intro_title1">@string/app_name</string>
     <string name="intro_descr1">Con FamilyShopping puoi organizzare la tua lista della spesa e condividerla
@@ -8,6 +11,14 @@
         Puoi aggiungere elemeti alla lista, dare loro una priorità cosi da metterli in evidenza
         e poi una volta comprati puoi eliminarli dalla lista.</string>
 
-    <!-- Stringhe delle SharedPreferences -->
-    <string name="user_logged">user_logged</string>
+    <!-- Stringhe per il login/register -->
+    <string name="login_title">Iniziamo &#8230;</string>
+    <string name="login_subtitle">Inserire la propria mail ed una password iniziare la registrazione.
+        Già registrati? Nessun problema, inserite le vostre credenziali</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="prompt_password">Password</string>
+    <string name="error_invalid_email">La email non è valida</string>
+    <string name="error_invalid_password">La password deve avere almeno 6 caratteri</string>
+    <string name="action_login">Login</string>
+
 </resources>

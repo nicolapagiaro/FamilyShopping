@@ -3,4 +3,9 @@
     <color name="colorPrimary">#FF9800</color>
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#607D8B</color>
+    <color name="white">#FFF</color>
+
+    <!-- Dark/colored theme -->
+    <color name="primaryTextColorWhite">@color/white</color>
+    <color name="secondaryTextColorWhite">#B3FFFFFF</color>
 </resources>

@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import com.heinrichreimersoftware.materialintro.app.SlideFragment
 
 /**
+ * Fragment per il login dell'utente
  * Created by nicola on 23/01/18.
  */
 class LoginFragment : SlideFragment() {
 
     companion object {
-
         /**
          * Gives a new instance of the fragment
          */
@@ -28,6 +28,4 @@ class LoginFragment : SlideFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_intro_login, container, false)
     }
-
-
 }

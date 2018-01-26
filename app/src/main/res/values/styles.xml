@@ -15,4 +15,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ButtonIntro" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>
