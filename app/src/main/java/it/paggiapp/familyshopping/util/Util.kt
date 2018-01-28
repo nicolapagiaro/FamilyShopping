@@ -11,6 +11,9 @@ import it.paggiapp.familyshopping.R
  */
 class Util {
     companion object {
+        val LOGIN_FIRST_STEP = 0
+        val PSSW_MIN_CHAR = 5
+        val LOGIN_URL = "http://quizapp.000webhostapp.com/familyshopping/login.php"
 
         /**
          * Function used to know if the user is logged or no
