@@ -5,11 +5,12 @@ import com.heinrichreimersoftware.materialintro.app.IntroActivity
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
+import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.util.Util
 
 class IntroActivity : IntroActivity() {
     private var savedFamilyCode : Boolean = false
-    private var isNewUser : Boolean = false
+    private var isNewUser : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

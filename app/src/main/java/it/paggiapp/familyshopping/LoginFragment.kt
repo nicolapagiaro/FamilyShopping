@@ -15,6 +15,8 @@ import it.paggiapp.familyshopping.util.Util
 import org.json.JSONObject
 import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
+import it.paggiapp.familyshopping.backend.ComunicationInfo.*
+import it.paggiapp.familyshopping.data.Utente
 
 /**
  * Fragment per il login dell'utente
@@ -60,49 +62,54 @@ class LoginFragment : SlideFragment() {
                 btn_login.isClickable = false
 
                 val requestParams = RequestParams()
-                requestParams.put("login_step", Util.LOGIN_FIRST_STEP)
-                requestParams.put("email", email)
-                requestParams.put("pssw", password)
+                requestParams.put(Login.LOGIN_STEP, Login.LOGIN_FIRST_STEP)
+                requestParams.put(Login.MAIL_FIELD, email)
+                requestParams.put(Login.PSSW_FIELD, password)
 
                 val client = AsyncHttpClient()
 
-                client.post(context, Util.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
+                client.post(context, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
 
                     override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
                         Log.d("Login ok", responseString?.toString())
-                        if(responseString?.getInt("mode") == 0) {
-                            // new user
-                            if(responseString.getInt("result") == 0) {
+
+                        if(responseString?.getInt(Login.SUCCESS_FIELD) == 0) {
+                            // LOGIN OK
+                            if(responseString.getInt(Login.MODE_FIELD) == 0) {
+                                // new user
                                 btn_login.text = getString(R.string.action_login_done)
                                 (introActivity as IntroActivity).setIsNewUser(true)
                                 Util.loginUser(context)
+                                Util.setNewUser(context, true)
                             }
                             else {
-                                btn_login.text = getString(R.string.action_login)
-                            }
-                        }
-                        else {
-                            // old user
-                            if(responseString?.getInt("result") == 0) {
-                                // memorizzo tutti i dati
+                                // old user
                                 btn_login.text = getString(R.string.action_login_done)
                                 (introActivity as IntroActivity).setIsNewUser(false)
                                 Util.loginUser(context)
-                            }
-                            else {
-                                btn_login.text = getString(R.string.action_login)
+
+                                // memorizzo tutti i dati dell'utente nelle sharedPref
+                                val userArray = responseString.getJSONObject(Login.USERINFO_FIELD)
+                                val user = Utente(userArray.getInt("id"),
+                                        userArray.getString("nome"),
+                                        userArray.getString("email"),
+                                        userArray.getInt("codiceFamiglia"))
+                                Util.saveUser(context, user)
+                                Util.setNewUser(context, false)
                             }
                         }
-
+                        else {
+                            // LOGIN ERROR
+                            showLoginGeneralError()
+                        }
                     }
 
                     override fun onFailure(statusCode: Int, headers: Array<out Header>?, errorResponse: String?, throwable: Throwable?) {
-                        Log.d("Login no", errorResponse)
-                        btn_login.text = getString(R.string.action_login)
+                        Log.d("Login error", errorResponse)
+                        showLoginGeneralError()
                     }
                 })
             }
-
         }
     }
 
@@ -143,5 +150,14 @@ class LoginFragment : SlideFragment() {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    /**
+     * Function that show to user the general error
+     */
+    private fun showLoginGeneralError() {
+        btn_login.isClickable = true
+        btn_login.text = getString(R.string.action_login)
+        Snackbar.make(introActivity.contentView, R.string.error_login , Snackbar.LENGTH_LONG).show()
     }
 }

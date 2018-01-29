@@ -23,6 +23,7 @@
     <string name="action_login">Login</string>
     <string name="action_login_fetching">Verificando i dati&#8230;</string>
     <string name="action_login_done">Fatto</string>
+    <string name="error_login">Ops, qualcosa non ha funzionato</string>
 
     <!-- Stringhe per il fragment finale dell'IntroActivity -->
     <string name="intro_title2_old">Bentornato</string>
