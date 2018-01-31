@@ -109,8 +109,12 @@ class FinalFragment : SlideFragment() {
                         }
                     })
                 }
-                else
+                else {
+                    // TODO(1): salvo il codice nel server
                     Util.loginUser(context)
+                    btn_save.text = getText(R.string.action_save_done)
+                    savedFamilyCode = true
+                }
             }
         }
     }
