@@ -5,9 +5,9 @@ package it.paggiapp.familyshopping.data
  */
 data class Utente(
         val id : Int,
-        val nome : String,
+        var nome : String?,
         val email : String,
-        val codiceFamiglia : Int
+        var codiceFamiglia : Int
 ) {
     companion object {
         val NEW_USER = "new_user"

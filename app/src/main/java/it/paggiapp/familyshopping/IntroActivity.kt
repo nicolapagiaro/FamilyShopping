@@ -9,8 +9,6 @@ import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.util.Util
 
 class IntroActivity : IntroActivity() {
-    private var savedFamilyCode : Boolean = false
-    private var isNewUser : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,36 +50,5 @@ class IntroActivity : IntroActivity() {
                 .fragment(FinalFragment.newInstance())
                 .build())
 
-        /**
-         * Set the navigation policy for the slide
-         */
-        setNavigationPolicy(object: NavigationPolicy {
-            override fun canGoForward(p0: Int): Boolean {
-                if(p0 == 1) {
-                    return Util.isUserLogged(applicationContext)
-                }
-                else if(p0 == 2) {
-                    return savedFamilyCode
-                }
-
-                return true
-            }
-
-            override fun canGoBackward(p0: Int): Boolean {
-                return p0 != 0
-            }
-
-        })
-
     }
-
-    fun setSavedFamilyCode(state : Boolean) {
-        savedFamilyCode = state
-    }
-
-    fun setIsNewUser(state : Boolean) {
-        isNewUser = state
-    }
-
-    fun getIsNewuser() : Boolean {return isNewUser}
 }

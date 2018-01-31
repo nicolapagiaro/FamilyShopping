@@ -25,6 +25,7 @@ import it.paggiapp.familyshopping.data.Utente
 class LoginFragment : SlideFragment() {
     var email : String = ""
     var password : String = ""
+    var isLogged : Boolean = false
 
     companion object {
         /**
@@ -49,6 +50,7 @@ class LoginFragment : SlideFragment() {
         // listener for the login button
         btn_login.setOnClickListener {
 
+
             // check for internet connection
             if(!isOnline()) {
                 Snackbar.make(introActivity.contentView, R.string.no_internet , Snackbar.LENGTH_SHORT).show()
@@ -57,7 +59,6 @@ class LoginFragment : SlideFragment() {
 
             // check if the login is valid
             if(isLoginValid()) {
-                Log.d("Login", "started")
                 btn_login.text = getString(R.string.action_login_fetching)
                 btn_login.isClickable = false
 
@@ -78,15 +79,17 @@ class LoginFragment : SlideFragment() {
                             if(responseString.getInt(Login.MODE_FIELD) == 0) {
                                 // new user
                                 btn_login.text = getString(R.string.action_login_done)
-                                (introActivity as IntroActivity).setIsNewUser(true)
-                                Util.loginUser(context)
                                 Util.setNewUser(context, true)
+
+
+                                // memorizzo tutti i dati dell'utente nelle sharedPref
+                                val id = responseString.getInt(Login.NEWUSER_ID_FIELD)
+                                val user = Utente(id, null, email, 0)
+                                Util.saveUser(context, user)
                             }
                             else {
                                 // old user
                                 btn_login.text = getString(R.string.action_login_done)
-                                (introActivity as IntroActivity).setIsNewUser(false)
-                                Util.loginUser(context)
 
                                 // memorizzo tutti i dati dell'utente nelle sharedPref
                                 val userArray = responseString.getJSONObject(Login.USERINFO_FIELD)
@@ -94,9 +97,12 @@ class LoginFragment : SlideFragment() {
                                         userArray.getString("nome"),
                                         userArray.getString("email"),
                                         userArray.getInt("codiceFamiglia"))
-                                Util.saveUser(context, user)
                                 Util.setNewUser(context, false)
+                                Util.saveUser(context, user)
                             }
+
+                            // l'utente si è loggato
+                            isLogged = true
                         }
                         else {
                             // LOGIN ERROR
@@ -106,6 +112,11 @@ class LoginFragment : SlideFragment() {
 
                     override fun onFailure(statusCode: Int, headers: Array<out Header>?, errorResponse: String?, throwable: Throwable?) {
                         Log.d("Login error", errorResponse)
+                        showLoginGeneralError()
+                    }
+
+                    override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
+                        Log.d("Login error", throwable.toString())
                         showLoginGeneralError()
                     }
                 })
@@ -159,5 +170,12 @@ class LoginFragment : SlideFragment() {
         btn_login.isClickable = true
         btn_login.text = getString(R.string.action_login)
         Snackbar.make(introActivity.contentView, R.string.error_login , Snackbar.LENGTH_LONG).show()
+    }
+
+    /**
+     * If the user is logged than he can go Forward
+     */
+    override fun canGoForward(): Boolean {
+        return isLogged
     }
 }
