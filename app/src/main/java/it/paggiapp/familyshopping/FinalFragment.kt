@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_intro_login.*
 import org.json.JSONObject
 
 /**
+ * Third slide of IntroActivity
  * Created by nicola on 28/01/18.
  */
 class FinalFragment : SlideFragment() {
@@ -93,18 +94,15 @@ class FinalFragment : SlideFragment() {
                                 Util.loginUser(context)
                             } else {
                                 // CODE ERROR
-                                Log.d("FinalFrag", responseString.toString())
                                 showLastGeneralError()
                             }
                         }
 
                         override fun onFailure(statusCode: Int, headers: Array<out Header>?, errorResponse: String?, throwable: Throwable?) {
-                            Log.d("Login error", errorResponse)
                             showLastGeneralError()
                         }
 
                         override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-                            Log.d("Login error", throwable.toString())
                             showLastGeneralError()
                         }
                     })
@@ -136,7 +134,6 @@ class FinalFragment : SlideFragment() {
      */
     fun isCodeValid(): Boolean {
         val code = et_familycode.text.toString()
-
 
         if (code.length < 5 && code.length != 0) {
             wrapper_familycode.isErrorEnabled = true

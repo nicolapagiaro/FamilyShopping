@@ -72,7 +72,6 @@ class LoginFragment : SlideFragment() {
                 client.post(context, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
 
                     override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
-                        Log.d("Login ok", responseString?.toString())
 
                         if(responseString?.getInt(Login.SUCCESS_FIELD) == 0) {
                             // LOGIN OK
@@ -111,12 +110,10 @@ class LoginFragment : SlideFragment() {
                     }
 
                     override fun onFailure(statusCode: Int, headers: Array<out Header>?, errorResponse: String?, throwable: Throwable?) {
-                        Log.d("Login error", errorResponse)
                         showLoginGeneralError()
                     }
 
                     override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-                        Log.d("Login error", throwable.toString())
                         showLoginGeneralError()
                     }
                 })

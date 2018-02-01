@@ -5,5 +5,16 @@ package it.paggiapp.familyshopping.data
  */
 data class CarrelloItem(
         val item : Item,
-        val quantita : Int
-)
+        val quantita : Int,
+        val priorita : Int,
+        val dataImmissione : String,
+        val oraImmissione : String,
+        val timestamp : String,
+        val utente: Utente
+) {
+    companion object {
+        var PRIORITA_BASSA = 1
+        var PRIORITA_MEDIA = 2
+        var PRIORITA_ALTA = 3
+    }
+}

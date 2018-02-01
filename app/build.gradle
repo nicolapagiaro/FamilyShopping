@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true // This line here
     }
     buildTypes {
         release {
@@ -31,6 +32,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
     testImplementation 'junit:junit:4.12'

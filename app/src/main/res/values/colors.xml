@@ -8,4 +8,7 @@
     <!-- Dark/colored theme -->
     <color name="primaryTextColorWhite">@color/white</color>
     <color name="secondaryTextColorWhite">#B3FFFFFF</color>
+
+    <!-- Bottom navigation bar color -->
+    <color name="bn_default_color">#aa333333</color>
 </resources>

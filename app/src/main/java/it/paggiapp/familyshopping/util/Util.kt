@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
-import java.time.temporal.UnsupportedTemporalTypeException
 
 /**
  * Class for some important functions
