@@ -5,6 +5,7 @@ package it.paggiapp.familyshopping.data
  */
 data class CarrelloItem(
         val item : Item,
+        val commento : String,
         val quantita : Int,
         val priorita : Int,
         val dataImmissione : String,

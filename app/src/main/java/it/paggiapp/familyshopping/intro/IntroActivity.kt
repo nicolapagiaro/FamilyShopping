@@ -1,11 +1,10 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.intro
 
 import android.os.Bundle
 import com.heinrichreimersoftware.materialintro.app.IntroActivity
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
-
-
+import it.paggiapp.familyshopping.R
 
 
 class IntroActivity : IntroActivity() {

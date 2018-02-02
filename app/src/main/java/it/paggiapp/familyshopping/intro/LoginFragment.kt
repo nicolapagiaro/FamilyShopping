@@ -1,8 +1,7 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.intro
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,8 @@ import it.paggiapp.familyshopping.util.Util
 import org.json.JSONObject
 import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
-import it.paggiapp.familyshopping.backend.ComunicationInfo.*
+import it.paggiapp.familyshopping.R
+import it.paggiapp.familyshopping.backend.Comunication.*
 import it.paggiapp.familyshopping.data.Utente
 
 /**
@@ -52,8 +52,8 @@ class LoginFragment : SlideFragment() {
 
 
             // check for internet connection
-            if(!isOnline()) {
-                Snackbar.make(introActivity.contentView, R.string.no_internet , Snackbar.LENGTH_SHORT).show()
+            if(!Util.isOnline(context)) {
+                Snackbar.make(introActivity.contentView, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -152,21 +152,12 @@ class LoginFragment : SlideFragment() {
     }
 
     /**
-     * Function to check if there is connection
-     */
-    private fun isOnline(): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
-
-    /**
      * Function that show to user the general error
      */
     private fun showLoginGeneralError() {
         btn_login.isClickable = true
         btn_login.text = getString(R.string.action_login)
-        Snackbar.make(introActivity.contentView, R.string.error_login , Snackbar.LENGTH_LONG).show()
+        Snackbar.make(introActivity.contentView, R.string.error_login, Snackbar.LENGTH_LONG).show()
     }
 
     /**

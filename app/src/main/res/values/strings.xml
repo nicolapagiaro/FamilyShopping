@@ -42,4 +42,7 @@
     <string name="bn_item2">Ricette</string>
     <string name="bn_item3">Profilo</string>
 
+    <!-- Stringhe per i menu -->
+    <string name="menu_home">Ordina per</string>
+
 </resources>

@@ -1,6 +1,7 @@
 package it.paggiapp.familyshopping.database
 
 /**
+ * All the specs for the SQLite database
  * Created by nicola on 01/02/18.
  */
 object FamilyContract {
@@ -46,6 +47,7 @@ object FamilyContract {
     object CarrelloItem {
         val _ID = "_id"
         val _TABLE_NAME = "carrello_item"
+        val COMMENTO = "commento"
         val QUANTITA = "quantita"
         val PRIORITA = "priorita"
         val DATA_IMMISSIONE = "dataImmissione"
@@ -55,8 +57,9 @@ object FamilyContract {
 
     val SQL_CREATE_CARRELLOITEM = "CREATE TABLE ${CarrelloItem._TABLE_NAME} (" +
             "${CarrelloItem._ID} INTEGER PRIMARY KEY, " +
+            "${CarrelloItem.COMMENTO} TEXT, " +
             "${CarrelloItem.QUANTITA} INTEGER, " +
-            "${CarrelloItem.PRIORITA} INTEGER, )" +
+            "${CarrelloItem.PRIORITA} INTEGER, " +
             "${CarrelloItem.DATA_IMMISSIONE} date," +
             "${CarrelloItem.ORA_IMMISSIONE} time," +
             "${CarrelloItem.TIMESTAMP} timestamp)".trimMargin()

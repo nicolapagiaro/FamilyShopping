@@ -17,7 +17,7 @@ public final class DataStore {
         db = new FamilyDatabase(context);
     }
 
-    public static FamilyDatabase getNotes() {
+    public static FamilyDatabase getDB() {
         return db;
     }
 

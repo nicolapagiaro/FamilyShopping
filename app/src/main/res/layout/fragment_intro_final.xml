@@ -6,7 +6,7 @@
     android:id="@+id/intro_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IntroActivity"
+    tools:context=".intro.IntroActivity"
     android:gravity="center"
     android:orientation="vertical">
 

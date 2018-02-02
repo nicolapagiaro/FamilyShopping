@@ -2,6 +2,7 @@ package it.paggiapp.familyshopping.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.preference.PreferenceManager
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
@@ -14,6 +15,14 @@ class Util {
     companion object {
         val PSSW_MIN_CHAR = 5
 
+        /**
+         * Function to check if there is connection
+         */
+        fun isOnline(context: Context): Boolean {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val netInfo = cm.activeNetworkInfo
+            return netInfo != null && netInfo.isConnectedOrConnecting
+        }
 
         /**
          * Function used to know if the user is logged or no
