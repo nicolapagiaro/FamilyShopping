@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         val REQUEST_CODE_INTRO : Int = 300
+        val DELAY_SNACKBAR : Long = 1500
     }
 
     /**
@@ -47,23 +48,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(Intent(applicationContext, IntroActivity::class.java), REQUEST_CODE_INTRO)
         }
         else {
-            setUpBottomNavigation()
-
-            if(Util.isOnline(applicationContext)) {
-                // Start the process that updates the UTENTI
-                updateUtente()
-            }
-            else {
-                // display the first fragment
-                supportFragmentManager
-                        .beginTransaction()
-                        .add(R.id.main_container, ListaFragment.newInstance())
-                        .commit()
-
-                Handler().postDelayed(Runnable {
-                    Snackbar.make(bottom_navigation, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
-                }, 2000)
-            }
+            setUpMain()
         }
     }
 
@@ -77,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
             else {
-                setUpBottomNavigation()
+                setUpMain()
             }
         }
     }
@@ -101,7 +86,6 @@ class MainActivity : AppCompatActivity() {
             // filtra
             Log.d("Menu selected", "filtra")
         }
-
 
         return super.onOptionsItemSelected(item)
     }
@@ -138,19 +122,16 @@ class MainActivity : AppCompatActivity() {
                 // eseguo le operazioni sul database locale
                 DataStore.execute{
                     DataStore.getDB().salvaUtenti(list)
-
-                    // display the first fragment
-                    supportFragmentManager
-                            .beginTransaction()
-                            .add(R.id.main_container, ListaFragment.newInstance())
-                            .commit()
                 }
 
             }
         })
     }
 
-    fun setUpBottomNavigation() {
+    /**
+     * Function thats set up all thing in the main activity
+     */
+    fun setUpMain() {
         // set up the bottom navigation bar
         val item1 = AHBottomNavigationItem(R.string.bn_item1, R.drawable.ic_shopping_cart_black_24dp, R.color.bn_default_color)
         val item2 = AHBottomNavigationItem(R.string.bn_item2, R.drawable.ic_folder_black_24dp, R.color.bn_default_color)
@@ -169,6 +150,22 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             Log.d("Tab selected", "$position")
             true
+        }
+
+        // display the first fragment
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_container, ListaFragment.newInstance())
+                .commit()
+
+        if(Util.isOnline(applicationContext)) {
+            // Start the process that updates the UTENTI
+            updateUtente()
+        }
+        else {
+            Handler().postDelayed(Runnable {
+                Snackbar.make(bottom_navigation, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
+            }, DELAY_SNACKBAR)
         }
     }
 }

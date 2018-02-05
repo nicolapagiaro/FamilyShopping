@@ -1,9 +1,9 @@
 package it.paggiapp.familyshopping
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -12,11 +12,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import it.paggiapp.familyshopping.data.CarrelloItem
+import com.google.gson.Gson
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.JsonHttpResponseHandler
+import com.loopj.android.http.RequestParams
+import cz.msebera.android.httpclient.Header
+import it.paggiapp.familyshopping.backend.Comunication
+import it.paggiapp.familyshopping.data.Carrello
+import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.database.DataStore
+import it.paggiapp.familyshopping.database.FamilyContract
+import it.paggiapp.familyshopping.database.FamilyDatabase
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.lista_item.view.*
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.*
 
 /**
  * Fragment for the shopping chart
@@ -65,22 +77,50 @@ class ListaFragment : Fragment() {
      */
     fun loadFromServer(swipe: SwipeRefreshLayout, recyclerView: RecyclerView) {
         if(!isOnline) return
-
-
         swipe.isRefreshing = true
+
         // contatto il server
         // salvo le cose nel SQLite database
-        // aggiorno la recyclerview
-        (recyclerView.adapter as ListaAdapter).refresh()
+        val utente = Util.getUser(context)
+
+        val requestParams = RequestParams()
+        requestParams.put(Comunication.UpdateCarrello.CODE_LABEL, utente.codiceFamiglia)
+        requestParams.put(Comunication.UpdateCarrello.IDS_LABEL, Gson().toJson(
+                DataStore.getDB().getCarelloId()
+        ))
+
+        val client = AsyncHttpClient()
+        client.post(context, Comunication.UpdateCarrello.URL, requestParams, object : JsonHttpResponseHandler() {
+
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
+                // insert new Carrello records in the local database
+                val addList = ArrayList<ContentValues>()
+                val addItem : JSONArray = responseString!!.getJSONArray(Comunication.UpdateCarrello.ROWS_TO_ADD)
+                for (i in 0..(addItem.length() - 1)) {
+                    val temp = addItem.getJSONObject(i)
+                    val values = FamilyDatabase.carrelloToContendValues(temp)
+                    addList.add(values)
+                }
+
+                DataStore.execute{
+                    // salvo le modifiche nel db locale
+                    DataStore.getDB().addItem(addList)
+                    // aggiorno la recyclerview
+                    (recyclerView.adapter as ListaAdapter).refresh()
+                }
+
+                swipe.isRefreshing = false
+            }
+        })
     }
 
 
     /**
      * Adapter for the recyclerview of shopping list
      */
-    class ListaAdapter() : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
+    class ListaAdapter : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
         private var isRefreshing: Boolean = false
-        var list : ArrayList<CarrelloItem> = ArrayList()
+        var list : ArrayList<Carrello> = ArrayList()
 
         init {
             setHasStableIds(true)
@@ -119,10 +159,11 @@ class ListaFragment : Fragment() {
          */
         class ItemViewHolder(v : View) : RecyclerView.ViewHolder(v) {
             private var view: View = v
-            private var item: CarrelloItem? = null
+            private var item: Carrello? = null
 
-            fun bind(item: CarrelloItem) {
+            fun bind(item: Carrello) {
                 this.item = item
+                this.view.tv_item_name.text = item.nome
             }
         }
     }

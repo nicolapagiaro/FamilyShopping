@@ -16,7 +16,7 @@ class FamilyOpenHelper(context: Context) : SQLiteOpenHelper(
     // static object
     companion object {
         val DATABASE_NAME = "family.db"
-        val DATABASE_VERSION  =1
+        val DATABASE_VERSION  = 1
     }
 
     /**
@@ -24,8 +24,7 @@ class FamilyOpenHelper(context: Context) : SQLiteOpenHelper(
      */
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(FamilyContract.SQL_CREATE_UTENTI)
-        db.execSQL(FamilyContract.SQL_CREATE_ITEM)
-        db.execSQL(FamilyContract.SQL_CREATE_CARRELLOITEM)
+        db.execSQL(FamilyContract.SQL_CREATE_CARRELLO)
         db.execSQL(FamilyContract.SQL_CREATE_CATEGORIE)
     }
 
@@ -34,8 +33,7 @@ class FamilyOpenHelper(context: Context) : SQLiteOpenHelper(
      */
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(FamilyContract.SQL_DELETE_UTENTI)
-        db.execSQL(FamilyContract.SQL_DELETE_ITEM)
-        db.execSQL(FamilyContract.SQL_DELETE_CARRELLOITEM)
+        db.execSQL(FamilyContract.SQL_DELETE_CARRELLO)
         db.execSQL(FamilyContract.SQL_DELETE_CATEGORIE)
         onCreate(db)
     }

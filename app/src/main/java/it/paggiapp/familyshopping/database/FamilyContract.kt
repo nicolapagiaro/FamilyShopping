@@ -24,47 +24,37 @@ object FamilyContract {
     val SQL_DELETE_UTENTI = "DROP TABLE IF EXISTS ${Utenti._TABLE_NAME}"
 
     /**
-     * Table ITEM, stores the item that the family insert
+     * Table CARRLLO, stores the item and quantity
      */
-    object Item {
+    object Carrello {
         val _ID = "_id"
-        val _TABLE_NAME = "articoli_spesa"
+        val _TABLE_NAME = "carrello"
         val NOME = "nome"
-        val CATEGORIA = "categoria"
-    }
-
-    val SQL_CREATE_ITEM = "CREATE TABLE ${Item._TABLE_NAME} (" +
-            "${Item._ID} INTEGER PRIMARY KEY, " +
-            "${Item.NOME} TEXT, " +
-            "${Item.CATEGORIA} INTEGER)".trimMargin()
-
-    val SQL_DELETE_ITEM = "DROP TABLE IF EXISTS ${Item._TABLE_NAME}"
-
-
-    /**
-     * Table CARRLLO_ITEM, stores the item and quantity
-     */
-    object CarrelloItem {
-        val _ID = "_id"
-        val _TABLE_NAME = "carrello_item"
         val COMMENTO = "commento"
+        val CATEGORIA = "categoria"
         val QUANTITA = "quantita"
         val PRIORITA = "priorita"
+        val IN_LISTA = "inLista"
         val DATA_IMMISSIONE = "dataImmissione"
         val ORA_IMMISSIONE = "oraImmissione"
+        val UTENTE = "utente"
         val TIMESTAMP = "timestamp"
     }
 
-    val SQL_CREATE_CARRELLOITEM = "CREATE TABLE ${CarrelloItem._TABLE_NAME} (" +
-            "${CarrelloItem._ID} INTEGER PRIMARY KEY, " +
-            "${CarrelloItem.COMMENTO} TEXT, " +
-            "${CarrelloItem.QUANTITA} INTEGER, " +
-            "${CarrelloItem.PRIORITA} INTEGER, " +
-            "${CarrelloItem.DATA_IMMISSIONE} date," +
-            "${CarrelloItem.ORA_IMMISSIONE} time," +
-            "${CarrelloItem.TIMESTAMP} timestamp)".trimMargin()
+    val SQL_CREATE_CARRELLO = "CREATE TABLE ${Carrello._TABLE_NAME} (" +
+            "${Carrello._ID} INTEGER PRIMARY KEY, " +
+            "${Carrello.NOME} TEXT, " +
+            "${Carrello.COMMENTO} TEXT, " +
+            "${Carrello.CATEGORIA} INTEGER, " +
+            "${Carrello.QUANTITA} INTEGER, " +
+            "${Carrello.PRIORITA} INTEGER, " +
+            "${Carrello.IN_LISTA} INTEGER, " +
+            "${Carrello.DATA_IMMISSIONE} STRING," +
+            "${Carrello.ORA_IMMISSIONE} STRING," +
+            "${Carrello.UTENTE} INTEGER," +
+            "${Carrello.TIMESTAMP} TEXT)".trimMargin()
 
-    val SQL_DELETE_CARRELLOITEM = "DROP TABLE IF EXISTS ${CarrelloItem._TABLE_NAME}"
+    val SQL_DELETE_CARRELLO = "DROP TABLE IF EXISTS ${Carrello._TABLE_NAME}"
 
 
     /**
