@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
+import it.paggiapp.familyshopping.ModalOrderBy
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
 
@@ -76,6 +77,18 @@ class Util {
         fun isNewUser(context: Context): Boolean {
             val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
             return pref!!.getBoolean(Utente.NEW_USER, false)
+        }
+
+        fun getCurrentOrder(context: Context) : Int {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            return pref!!.getInt(ModalOrderBy.CHOICE_LABEL, ModalOrderBy.CHOICE_PRIORITY)
+        }
+
+        fun setOrder(context: Context, order : Int) {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor : SharedPreferences.Editor? = pref?.edit()
+            editor?.putInt(ModalOrderBy.CHOICE_LABEL, order)
+            editor?.apply()
         }
     }
 }

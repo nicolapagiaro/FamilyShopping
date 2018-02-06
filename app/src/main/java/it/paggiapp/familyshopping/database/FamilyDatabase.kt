@@ -3,9 +3,11 @@ package it.paggiapp.familyshopping.database
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import it.paggiapp.familyshopping.ModalOrderBy
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.data.Utente
+import it.paggiapp.familyshopping.util.Util
 import org.jetbrains.anko.db.transaction
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -15,12 +17,22 @@ import kotlin.collections.ArrayList
  * Created by nicola on 01/02/18.
  */
 class FamilyDatabase(val context: Context) {
+    var currentOrder = Util.getCurrentOrder(context)
     private val helper: FamilyOpenHelper = FamilyOpenHelper(context)
 
     /**
      * Function that returns the shopping cart
      */
     fun getCarello(): ArrayList<Carrello> {
+        var order : String = ""
+        if(currentOrder == ModalOrderBy.CHOICE_PRIORITY) {
+            order = "${FamilyContract.Carrello.PRIORITA} DESC"
+        }
+        else {
+            order = "${FamilyContract.Carrello.TIMESTAMP} DESC"
+        }
+
+
         val args = arrayOf(Carrello.IN_LISTA.toString())
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
@@ -29,7 +41,7 @@ class FamilyDatabase(val context: Context) {
                 args,
                 null,
                 null,
-                "${FamilyContract.Carrello.PRIORITA} DESC")
+                order)
 
         val retval = ArrayList<Carrello>()
         while (cursor.moveToNext()) {
@@ -47,7 +59,6 @@ class FamilyDatabase(val context: Context) {
             while(catQuery.moveToNext()) {
                 categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
                         catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
-                Log.d("Elemento", categoria.toString())
             }
 
             // Get the user from the db
@@ -67,24 +78,10 @@ class FamilyDatabase(val context: Context) {
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
                         userQuery.getInt(0))
-                Log.d("Elemento", utente.toString())
             }
 
             catQuery.close()
             userQuery.close()
-
-
-            /*Log.d("Cursor ID", cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)).toString())
-            Log.d("Cursor NOME", cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)))
-            Log.d("Cursor COMMENTO", cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)))
-            Log.d("Cursor PRIORITA", cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)).toString())
-            Log.d("Cursor QUANTITA", cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.QUANTITA)).toString())
-            Log.d("Cursor CATEGORIA", cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
-            Log.d("Cursor DATA", cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)))
-            Log.d("Cursor ORA", cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.ORA_IMMISSIONE)))
-            Log.d("Cursor TIMESTAMP", cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)))
-            Log.d("Cursor UTENTE", cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())*/
-
 
             val c = Carrello(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
@@ -97,8 +94,6 @@ class FamilyDatabase(val context: Context) {
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.ORA_IMMISSIONE)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
                     utente)
-
-            Log.d("Elemento", c.toString())
             retval.add(c)
         }
 
@@ -147,12 +142,16 @@ class FamilyDatabase(val context: Context) {
     /**
      * Function that remove a list of Carrello items
      */
-    fun updateItem(lista: ArrayList<Carrello>) {
+    fun updateItem(lista: ArrayList<ContentValues>) {
         if(lista.size == 0) return
         val db = helper.writableDatabase
         db.transaction {
             lista.forEach {
-                // aggiorna
+                val args = arrayOf<String>(it.getAsString(FamilyContract.Carrello._ID))
+                db.update(FamilyContract.Carrello._TABLE_NAME,
+                        it,
+                        "${FamilyContract.Carrello._ID} = ?",
+                        args)
             }
         }
     }
@@ -236,11 +235,35 @@ class FamilyDatabase(val context: Context) {
         return retval
     }
 
+    /**
+     * Function that returns the last timestamp of th etable
+     * to sync with the online database
+     */
+    fun getCarrelloLastTimestamp() : String {
+        val columns = arrayOf<String>(FamilyContract.Carrello.TIMESTAMP)
+        val cursor = helper.readableDatabase.query(
+                FamilyContract.Carrello._TABLE_NAME,
+                columns,
+                null,
+                null,
+                null,
+                null,
+                "${FamilyContract.Carrello.TIMESTAMP} DESC")
+
+        var retval = ""
+        if (cursor.moveToNext()) {
+            retval = cursor.getString(0)
+        }
+
+        cursor.close()
+        return retval
+    }
+
     companion object {
         /**
-         *
+         * Gives an instance of a complete Carrello rows as ContentValues
          */
-        fun carrelloToContendValues(temp : JSONObject) : ContentValues {
+        fun carrelloToContentValues(temp : JSONObject) : ContentValues {
             val values = ContentValues().apply {
                 put(FamilyContract.Carrello._ID, temp.getInt("id"))
                 put(FamilyContract.Carrello.NOME, temp.getString("nome"))
@@ -253,6 +276,19 @@ class FamilyDatabase(val context: Context) {
                 put(FamilyContract.Carrello.ORA_IMMISSIONE, temp.getString("oraImmissione"))
                 put(FamilyContract.Carrello.TIMESTAMP, temp.getString("timestamp"))
                 put(FamilyContract.Carrello.UTENTE, temp.getInt("utente"))
+            }
+            return values
+        }
+
+        /**
+         * Gives an instance of a updating Carrello rows as ContentValues
+         */
+        fun carrelloToContentValuesUpdate(temp : JSONObject) : ContentValues {
+            val values = ContentValues().apply {
+                put(FamilyContract.Carrello._ID, temp.getInt("id"))
+                put(FamilyContract.Carrello.QUANTITA, temp.getInt("quantita"))
+                put(FamilyContract.Carrello.IN_LISTA, temp.getInt("inLista"))
+                put(FamilyContract.Carrello.TIMESTAMP, temp.getString("timestamp"))
             }
             return values
         }

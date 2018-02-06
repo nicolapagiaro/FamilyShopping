@@ -68,29 +68,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Creo il menu
-     */
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    /**
-     * Listener per il menu
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item == null) return false
-
-        val id = item.itemId
-        if(id == R.id.orderby_lista) {
-            // filtra
-            Log.d("Menu selected", "filtra")
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    /**
      * Function that download all the database data for the first time
      */
     fun updateUtente() {

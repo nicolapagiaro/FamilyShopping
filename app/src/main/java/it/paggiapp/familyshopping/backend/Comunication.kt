@@ -1,6 +1,7 @@
 package it.paggiapp.familyshopping.backend
 
 /**
+ * Class that stores static string for the communication with server
  * Created by nicola on 29/01/18.
  */
 class Comunication {
@@ -38,6 +39,7 @@ class Comunication {
             val CODE_LABEL = "code"
             val ROWS_TO_UPDATE = "update"
             val ROWS_TO_ADD = "add"
+            val LAST_TIMESTAMP_LABEL = "timestamp"
         }
     }
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FamilyShopping</string>
     <string name="no_internet">Nessuna connesione ad internet</string>
+    <string name="image_content_descriptor">image</string>
 
     <!-- Stringhe delle SharedPreferences -->
     <string name="user_logged">user_logged</string>
@@ -49,6 +50,5 @@
     <string name="bottom_title">Ordina per</string>
     <string name="bottom_choice_last">Ultimi modificati</string>
     <string name="bottom_choice_priority">Priorità</string>
-
 
 </resources>
