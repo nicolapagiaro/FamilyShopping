@@ -25,6 +25,7 @@ import it.paggiapp.familyshopping.data.Utente
 class LoginFragment : SlideFragment() {
     var email : String = ""
     var password : String = ""
+    var nome : String = ""
     var isLogged : Boolean = false
 
     companion object {
@@ -65,6 +66,7 @@ class LoginFragment : SlideFragment() {
                 val requestParams = RequestParams()
                 requestParams.put(Login.LOGIN_STEP, Login.LOGIN_FIRST_STEP)
                 requestParams.put(Login.MAIL_FIELD, email)
+                requestParams.put(Login.NOME_FIELD, nome)
                 requestParams.put(Login.PSSW_FIELD, password)
 
                 val client = AsyncHttpClient()
@@ -83,7 +85,7 @@ class LoginFragment : SlideFragment() {
 
                                 // memorizzo tutti i dati dell'utente nelle sharedPref
                                 val id = responseString.getInt(Login.NEWUSER_ID_FIELD)
-                                val user = Utente(id, null, email, 0)
+                                val user = Utente(id, nome, email, 0)
                                 Util.saveUser(context, user)
                             }
                             else {
@@ -98,6 +100,7 @@ class LoginFragment : SlideFragment() {
                                         userArray.getInt("codiceFamiglia"))
                                 Util.setNewUser(context, false)
                                 Util.saveUser(context, user)
+                                et_nome.append(user.nome)
                             }
 
                             // l'utente si è loggato
@@ -126,6 +129,7 @@ class LoginFragment : SlideFragment() {
      */
     private fun isLoginValid(): Boolean {
         email = et_email.text.toString().trim()
+        nome = et_nome.text.toString().trim()
         password = et_password.text.toString().trim()
 
         if(!EmailValidator.validateEmail(email)) {
@@ -136,6 +140,16 @@ class LoginFragment : SlideFragment() {
         else {
             wrapper_email.error = null
             wrapper_email.isErrorEnabled = false
+        }
+
+        if(nome.length > 0 && nome.length <= Util.NOME_MIN_CHAR) {
+            wrapper_nome.isErrorEnabled  = true
+            wrapper_nome.error = getString(R.string.error_invalid_name)
+            return false
+        }
+        else {
+            wrapper_nome.error = null
+            wrapper_nome.isErrorEnabled = false
         }
 
         if(password.length <= Util.PSSW_MIN_CHAR) {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.paggiapp.familyshopping">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".intro.IntroActivity"
-            android:theme="@style/AppTheme.Intro">
-        </activity>
+        <activity
+            android:name=".intro.IntroActivity"
+            android:theme="@style/AppTheme.Intro" />
     </application>
 
 </manifest>

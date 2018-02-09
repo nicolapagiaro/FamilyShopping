@@ -19,6 +19,15 @@ class Comunication {
             val USERINFO_FIELD = "user_info"
             val NEWUSER_ID_FIELD = "id"
             val CODE_LABEL = "code"
+            val NOME_FIELD: String = "nome"
+        }
+    }
+
+    class UpdateCategorie {
+        companion object {
+            val URL = "http://quizapp.000webhostapp.com/familyshopping/updateCategorie.php"
+            val IDS_LABEL = "ids"
+            val ARRAY_CATEGORIE = "categorie"
         }
     }
 

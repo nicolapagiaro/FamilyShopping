@@ -18,8 +18,10 @@
         Già registrato? Nessun problema, inserisci le tue credenziali</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_nome">Nome</string>
     <string name="error_invalid_email">La email non è valida</string>
     <string name="error_invalid_password">La password deve avere almeno 6 caratteri</string>
+    <string name="error_invalid_name">Il nome deve almeno avere 3 caratteri</string>
     <string name="action_login">Login</string>
     <string name="action_login_fetching">Verificando i dati&#8230;</string>
     <string name="action_login_done">Fatto</string>

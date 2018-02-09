@@ -6,15 +6,14 @@ package it.paggiapp.familyshopping.data
  */
 data class Carrello(
         val id : Int,
-        val nome : String?,
-        val commento : String?,
+        val nome : String,
+        val commento : String,
         val categoria : Categoria?,
-        val quantita : Int,
         val priorita : Int,
         val inLista : Int,
-        val dataImmissione : String?,
-        val oraImmissione : String?,
-        val timestamp : String?,
+        val dataImmissione : String,
+        val oraImmissione : String,
+        val timestamp : String,
         val utente: Utente?
 ) {
     companion object {

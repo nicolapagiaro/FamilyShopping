@@ -32,7 +32,6 @@ object FamilyContract {
         val NOME = "nome"
         val COMMENTO = "commento"
         val CATEGORIA = "categoria"
-        val QUANTITA = "quantita"
         val PRIORITA = "priorita"
         val IN_LISTA = "inLista"
         val DATA_IMMISSIONE = "dataImmissione"
@@ -46,7 +45,6 @@ object FamilyContract {
             "${Carrello.NOME} TEXT, " +
             "${Carrello.COMMENTO} TEXT, " +
             "${Carrello.CATEGORIA} INTEGER, " +
-            "${Carrello.QUANTITA} INTEGER, " +
             "${Carrello.PRIORITA} INTEGER, " +
             "${Carrello.IN_LISTA} INTEGER, " +
             "${Carrello.DATA_IMMISSIONE} STRING," +

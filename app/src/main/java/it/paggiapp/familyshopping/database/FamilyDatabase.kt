@@ -24,11 +24,10 @@ class FamilyDatabase(val context: Context) {
      * Function that returns the shopping cart
      */
     fun getCarello(): ArrayList<Carrello> {
-        var order : String = ""
-        if(currentOrder == ModalOrderBy.CHOICE_PRIORITY) {
+        var order = ""
+        if (currentOrder == ModalOrderBy.CHOICE_PRIORITY) {
             order = "${FamilyContract.Carrello.PRIORITA} DESC"
-        }
-        else {
+        } else {
             order = "${FamilyContract.Carrello.TIMESTAMP} DESC"
         }
 
@@ -46,34 +45,34 @@ class FamilyDatabase(val context: Context) {
         val retval = ArrayList<Carrello>()
         while (cursor.moveToNext()) {
             // get the Category from the db
-            var categoria : Categoria? = null
-            val args = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
+            var categoria: Categoria? = null
+            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
             val catQuery = helper.readableDatabase.query(
                     FamilyContract.Categorie._TABLE_NAME,
                     null,
                     "${FamilyContract.Carrello._ID}=?",
-                    args,
+                    args1,
                     null,
                     null,
                     null)
-            while(catQuery.moveToNext()) {
+            while (catQuery.moveToNext()) {
                 categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
                         catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
             }
 
             // Get the user from the db
-            var utente : Utente? = null
-            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
+            var utente: Utente? = null
+            val args2 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
             val userQuery = helper.readableDatabase.query(
                     FamilyContract.Utenti._TABLE_NAME,
                     null,
                     "${FamilyContract.Utenti._ID}=?",
-                    args1,
+                    args2,
                     null,
                     null,
                     null)
 
-            while(userQuery.moveToNext()) {
+            while (userQuery.moveToNext()) {
                 utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
@@ -87,7 +86,6 @@ class FamilyDatabase(val context: Context) {
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)),
                     categoria,
-                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.QUANTITA)),
                     cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
                     cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
@@ -129,21 +127,22 @@ class FamilyDatabase(val context: Context) {
     /**
      * Function that insert a list of Carrello items
      */
-    fun addItem(lista: ArrayList<ContentValues>) {
-        if(lista.size == 0) return
+    fun addItem(lista: ArrayList<ContentValues>): Boolean {
+        if (lista.size == 0) return false
         val db = helper.writableDatabase
         db.transaction {
             lista.forEach {
                 db.insert(FamilyContract.Carrello._TABLE_NAME, null, it)
             }
         }
+        return true
     }
 
     /**
      * Function that remove a list of Carrello items
      */
-    fun updateItem(lista: ArrayList<ContentValues>) {
-        if(lista.size == 0) return
+    fun updateItem(lista: ArrayList<ContentValues>): Boolean {
+        if (lista.size == 0) return false
         val db = helper.writableDatabase
         db.transaction {
             lista.forEach {
@@ -154,6 +153,7 @@ class FamilyDatabase(val context: Context) {
                         args)
             }
         }
+        return true
     }
 
 
@@ -161,7 +161,7 @@ class FamilyDatabase(val context: Context) {
      * Function that saves a list of user in the database
      */
     fun salvaUtenti(lista: ArrayList<Utente>) {
-        if(lista.size == 0) return
+        if (lista.size == 0) return
         val db = helper.writableDatabase
         db.transaction {
             lista.forEach {
@@ -172,9 +172,23 @@ class FamilyDatabase(val context: Context) {
     }
 
     /**
+     * Function that saves a list of categorie in the database
+     */
+    fun salvaCategorie(lista: ArrayList<Categoria>) {
+        if (lista.size == 0) return
+        val db = helper.writableDatabase
+        db.transaction {
+            lista.forEach {
+                val values = fromValues(it)
+                db.insert(FamilyContract.Categorie._TABLE_NAME, null, values)
+            }
+        }
+    }
+
+    /**
      * Function that gives the content values from a User
      */
-    fun fromValues(utente: Utente) : ContentValues {
+    fun fromValues(utente: Utente): ContentValues {
         val values = ContentValues().apply {
             put(FamilyContract.Utenti._ID, utente.id)
             put(FamilyContract.Utenti.NOME, utente.nome)
@@ -184,9 +198,20 @@ class FamilyDatabase(val context: Context) {
     }
 
     /**
+     * Function that gives the content values from a Categoria
+     */
+    fun fromValues(categoria: Categoria): ContentValues {
+        val values = ContentValues().apply {
+            put(FamilyContract.Categorie._ID, categoria.id)
+            put(FamilyContract.Categorie.NOME, categoria.nome)
+        }
+        return values
+    }
+
+    /**
      * Function that returns the list of Utenti
      */
-    fun getUtenti() : ArrayList<Utente> {
+    fun getUtenti(): ArrayList<Utente> {
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Utenti._TABLE_NAME,
                 null,
@@ -202,7 +227,7 @@ class FamilyDatabase(val context: Context) {
             val u = Utente(cursor.getInt(col++),
                     cursor.getString(col++),
                     cursor.getString(col),
-            0)
+                    0)
             retval.add(u)
         }
 
@@ -214,7 +239,7 @@ class FamilyDatabase(val context: Context) {
     /**
      * Function that returns all the id of Utenti
      */
-    fun getUtentiId() : ArrayList<Int> {
+    fun getUtentiId(): ArrayList<Int> {
         val columns = arrayOf<String>(FamilyContract.Utenti._ID)
 
         val cursor = helper.readableDatabase.query(
@@ -239,7 +264,7 @@ class FamilyDatabase(val context: Context) {
      * Function that returns the last timestamp of th etable
      * to sync with the online database
      */
-    fun getCarrelloLastTimestamp() : String {
+    fun getCarrelloLastTimestamp(): String {
         val columns = arrayOf<String>(FamilyContract.Carrello.TIMESTAMP)
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
@@ -259,23 +284,44 @@ class FamilyDatabase(val context: Context) {
         return retval
     }
 
+    /**
+     * Function that return a list of IDs of categorie table
+     */
+    fun getCategorieId(): ArrayList<Int> {
+        val columns = arrayOf<String>(FamilyContract.Categorie._ID)
+        val cursor = helper.readableDatabase.query(
+                FamilyContract.Categorie._TABLE_NAME,
+                columns,
+                null,
+                null,
+                null,
+                null,
+                null)
+
+        val retval = ArrayList<Int>()
+        while (cursor.moveToNext()) {
+            retval.add(cursor.getInt(0))
+        }
+        cursor.close()
+        return retval
+    }
+
     companion object {
         /**
          * Gives an instance of a complete Carrello rows as ContentValues
          */
-        fun carrelloToContentValues(temp : JSONObject) : ContentValues {
+        fun carrelloToContentValues(temp: JSONObject): ContentValues {
             val values = ContentValues().apply {
                 put(FamilyContract.Carrello._ID, temp.getInt("id"))
-                put(FamilyContract.Carrello.NOME, temp.getString("nome"))
-                put(FamilyContract.Carrello.COMMENTO, temp.getString("commento"))
-                put(FamilyContract.Carrello.CATEGORIA, temp.getInt("categoria"))
-                put(FamilyContract.Carrello.PRIORITA, temp.getInt("priorita"))
-                put(FamilyContract.Carrello.QUANTITA, temp.getInt("quantita"))
-                put(FamilyContract.Carrello.IN_LISTA, temp.getInt("inLista"))
-                put(FamilyContract.Carrello.DATA_IMMISSIONE, temp.getString("dataImmissione"))
-                put(FamilyContract.Carrello.ORA_IMMISSIONE, temp.getString("oraImmissione"))
-                put(FamilyContract.Carrello.TIMESTAMP, temp.getString("timestamp"))
-                put(FamilyContract.Carrello.UTENTE, temp.getInt("utente"))
+                put(FamilyContract.Carrello.NOME, temp.getString(FamilyContract.Carrello.NOME))
+                put(FamilyContract.Carrello.COMMENTO, temp.getString(FamilyContract.Carrello.COMMENTO))
+                put(FamilyContract.Carrello.CATEGORIA, temp.getInt(FamilyContract.Carrello.CATEGORIA))
+                put(FamilyContract.Carrello.PRIORITA, temp.getInt(FamilyContract.Carrello.PRIORITA))
+                put(FamilyContract.Carrello.IN_LISTA, temp.getInt(FamilyContract.Carrello.IN_LISTA))
+                put(FamilyContract.Carrello.DATA_IMMISSIONE, temp.getString(FamilyContract.Carrello.DATA_IMMISSIONE))
+                put(FamilyContract.Carrello.ORA_IMMISSIONE, temp.getString(FamilyContract.Carrello.ORA_IMMISSIONE))
+                put(FamilyContract.Carrello.TIMESTAMP, temp.getString(FamilyContract.Carrello.TIMESTAMP))
+                put(FamilyContract.Carrello.UTENTE, temp.getInt(FamilyContract.Carrello.UTENTE))
             }
             return values
         }
@@ -283,12 +329,12 @@ class FamilyDatabase(val context: Context) {
         /**
          * Gives an instance of a updating Carrello rows as ContentValues
          */
-        fun carrelloToContentValuesUpdate(temp : JSONObject) : ContentValues {
+        fun carrelloToContentValuesUpdate(temp: JSONObject): ContentValues {
             val values = ContentValues().apply {
                 put(FamilyContract.Carrello._ID, temp.getInt("id"))
-                put(FamilyContract.Carrello.QUANTITA, temp.getInt("quantita"))
-                put(FamilyContract.Carrello.IN_LISTA, temp.getInt("inLista"))
-                put(FamilyContract.Carrello.TIMESTAMP, temp.getString("timestamp"))
+                put(FamilyContract.Carrello.PRIORITA, temp.getInt(FamilyContract.Carrello.PRIORITA))
+                put(FamilyContract.Carrello.IN_LISTA, temp.getInt(FamilyContract.Carrello.IN_LISTA))
+                put(FamilyContract.Carrello.TIMESTAMP, temp.getString(FamilyContract.Carrello.TIMESTAMP))
             }
             return values
         }

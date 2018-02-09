@@ -44,7 +44,7 @@
             android:layout_marginEnd="@dimen/horizontal_margin"
             android:contentDescription="@string/image_content_descriptor"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_done_orange_24px" />
+            app:srcCompat="@drawable/ic_done_green_24px" />
 
     </RelativeLayout>
 
@@ -76,7 +76,7 @@
             android:layout_marginEnd="@dimen/horizontal_margin"
             android:contentDescription="@string/image_content_descriptor"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_done_orange_24px" />
+            app:srcCompat="@drawable/ic_done_green_24px" />
 
     </RelativeLayout>
 </LinearLayout>

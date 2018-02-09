@@ -14,6 +14,7 @@ import it.paggiapp.familyshopping.data.Utente
  */
 class Util {
     companion object {
+        val NOME_MIN_CHAR: Int = 3
         val PSSW_MIN_CHAR = 5
 
         /**
@@ -90,5 +91,6 @@ class Util {
             editor?.putInt(ModalOrderBy.CHOICE_LABEL, order)
             editor?.apply()
         }
+
     }
 }

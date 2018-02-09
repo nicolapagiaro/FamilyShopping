@@ -12,7 +12,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <TextView
             android:id="@+id/tv_categoria"
@@ -23,7 +26,6 @@
             android:layout_marginEnd="@dimen/card_end_padding"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:layout_marginTop="@dimen/card_padding_top"
-            android:text="Alimentari"
             android:textColor="@color/secondaryTextColor"
             android:textSize="@dimen/card_subtitle_content" />
 
@@ -35,7 +37,6 @@
             android:layout_marginBottom="@dimen/vertical_margin"
             android:layout_marginEnd="@dimen/card_end_padding"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:text="Latte"
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/card_title" />
 
@@ -48,7 +49,6 @@
             android:layout_marginBottom="@dimen/vertical_margin"
             android:layout_marginEnd="@dimen/card_end_padding"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque semper."
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/card_subtitle_content"
             android:visibility="visible" />
@@ -62,47 +62,8 @@
             android:layout_marginBottom="@dimen/vertical_margin"
             android:layout_marginEnd="@dimen/card_end_padding"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:text="Nicola · oggi"
             android:textColor="@color/secondaryTextColor"
             android:textSize="@dimen/card_subtitle_content" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/horizontal_margin"
-            android:layout_marginTop="@dimen/card_counter_padding_top"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_item_plus"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="+"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/tv_item_count"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_item_minus"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="-"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="24sp" />
-
-        </LinearLayout>
 
     </RelativeLayout>
 

@@ -2,6 +2,8 @@ package it.paggiapp.familyshopping.database;
 
 import android.content.Context;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
