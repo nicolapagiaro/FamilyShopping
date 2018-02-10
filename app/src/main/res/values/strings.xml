@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FamilyShopping</string>
     <string name="no_internet">Nessuna connesione ad internet</string>
+    <string name="image_content_descriptor">image</string>
 
     <!-- Stringhe delle SharedPreferences -->
     <string name="user_logged">user_logged</string>
@@ -52,5 +53,26 @@
     <string name="bottom_choice_last">Ultimi modificati</string>
     <string name="bottom_choice_priority">Priorità</string>
 
+    <!-- Stringhe per il Fragment della lista della spesa -->
+    <string name="tv_item_list_details">&lt;b>%1$s&lt;/b> · %2$s</string>
+    <string name="tv_item_list_author_me">Io</string>
+    <string name="tv_item_time_few_ago">poco fa</string>
+    <string name="tv_item_time_today">oggi</string>
+    <string name="tv_item_time_yesterday">ieri</string>
+    <string name="tv_item_time_days">%d giorni fa</string>
+    <plurals name="tv_item_time_weeks">
+        <item quantity="one">%d settimana fa</item>
+        <item quantity="other">%d settimane fa</item>
+    </plurals>
+    <string name="prompt_item_deleted">Articolo eliminato</string>
+    <string name="title_activity_show_lista_item_details">ShowListaItemDetails</string>
+
+    <!-- Stringhe per ShowListaItemDetails activity -->
+    <string name="username_null">Utente</string>
+    <string name="comment_null">Nessun commento</string>
+    <string name="item_priorita">Priorità</string>
+    <string name="item_priorita_value_alta">Alta</string>
+    <string name="item_priorita_value_media">Media</string>
+    <string name="item_priorita_value_bassa">Bassa</string>
 
 </resources>

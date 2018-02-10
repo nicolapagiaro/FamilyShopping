@@ -7,6 +7,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
+import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.database.DataStore
@@ -175,6 +176,22 @@ class DataDowload(val context: Context) {
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
                 callback.run()
+            }
+        })
+    }
+
+    /**
+     * Call the server and remove from the list an item
+     */
+    fun removeItem(carrello: Carrello) {
+        val requestParams = RequestParams()
+        requestParams.put(Comunication.UpdateCarrello.ID, carrello.id)
+
+        val client = AsyncHttpClient()
+        client.post(context, Comunication.UpdateCarrello.REMOVEITEM_URL, requestParams, object : JsonHttpResponseHandler() {
+
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
+                // insert new Carrello records in the local database
             }
         })
     }

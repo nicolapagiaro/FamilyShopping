@@ -2,6 +2,7 @@ package it.paggiapp.familyshopping
 
 import android.app.Activity
 import android.app.Fragment
+import android.app.ListFragment
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.widget.ListAdapter
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import com.google.gson.Gson
@@ -17,6 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
 import it.paggiapp.familyshopping.backend.Comunication
+import it.paggiapp.familyshopping.backend.DataDowload
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.database.DataStore
@@ -119,9 +122,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         // display the first fragment
+        val frag : ListaFragment = ListaFragment.newInstance()
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, ListaFragment.newInstance())
+                .replace(R.id.main_container, frag)
                 .commit()
+
+        // ask the server for changes
+        DataDowload(applicationContext, Runnable{
+            (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+        }).updateAll()
+    }
+
+    /**
+     * To show a message
+     */
+    fun showMessageItemDeleted() {
+        Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT).show()
     }
 }

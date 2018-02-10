@@ -89,7 +89,6 @@ class FamilyDatabase(val context: Context) {
                     cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
                     cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.ORA_IMMISSIONE)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
                     utente)
             retval.add(c)
@@ -99,6 +98,21 @@ class FamilyDatabase(val context: Context) {
         return retval
     }
 
+    /**
+     * Function that remove the item from the CARRELLO
+     * Set the flag 'inLista' at 0
+     */
+    fun removeItem(removedItem : Carrello) {
+        val db = helper.writableDatabase
+        db.transaction {
+            removedItem.inLista = Carrello.NO_IN_LISTA
+            val args = arrayOf<String>(removedItem.id.toString())
+            db.update(FamilyContract.Carrello._TABLE_NAME,
+                    fromValues(removedItem),
+                    "${FamilyContract.Carrello._ID} = ?",
+                    args)
+        }
+    }
 
     /**
      * Function that returns the item's id of shopping cart
@@ -204,6 +218,21 @@ class FamilyDatabase(val context: Context) {
         val values = ContentValues().apply {
             put(FamilyContract.Categorie._ID, categoria.id)
             put(FamilyContract.Categorie.NOME, categoria.nome)
+        }
+        return values
+    }
+
+    fun fromValues(carrello: Carrello) : ContentValues {
+        val values = ContentValues().apply {
+            put(FamilyContract.Carrello._ID, carrello.id)
+            put(FamilyContract.Carrello.NOME, carrello.nome)
+            put(FamilyContract.Carrello.COMMENTO, carrello.commento)
+            put(FamilyContract.Carrello.CATEGORIA,carrello.categoria!!.id)
+            put(FamilyContract.Carrello.PRIORITA, carrello.priorita)
+            put(FamilyContract.Carrello.IN_LISTA, carrello.inLista)
+            put(FamilyContract.Carrello.DATA_IMMISSIONE, carrello.dataImmissione)
+            put(FamilyContract.Carrello.TIMESTAMP, carrello.timestamp)
+            put(FamilyContract.Carrello.UTENTE, carrello.utente!!.id)
         }
         return values
     }
@@ -319,7 +348,6 @@ class FamilyDatabase(val context: Context) {
                 put(FamilyContract.Carrello.PRIORITA, temp.getInt(FamilyContract.Carrello.PRIORITA))
                 put(FamilyContract.Carrello.IN_LISTA, temp.getInt(FamilyContract.Carrello.IN_LISTA))
                 put(FamilyContract.Carrello.DATA_IMMISSIONE, temp.getString(FamilyContract.Carrello.DATA_IMMISSIONE))
-                put(FamilyContract.Carrello.ORA_IMMISSIONE, temp.getString(FamilyContract.Carrello.ORA_IMMISSIONE))
                 put(FamilyContract.Carrello.TIMESTAMP, temp.getString(FamilyContract.Carrello.TIMESTAMP))
                 put(FamilyContract.Carrello.UTENTE, temp.getInt(FamilyContract.Carrello.UTENTE))
             }

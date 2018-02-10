@@ -35,7 +35,6 @@ object FamilyContract {
         val PRIORITA = "priorita"
         val IN_LISTA = "inLista"
         val DATA_IMMISSIONE = "dataImmissione"
-        val ORA_IMMISSIONE = "oraImmissione"
         val UTENTE = "utente"
         val TIMESTAMP = "timestamp"
     }
@@ -48,7 +47,6 @@ object FamilyContract {
             "${Carrello.PRIORITA} INTEGER, " +
             "${Carrello.IN_LISTA} INTEGER, " +
             "${Carrello.DATA_IMMISSIONE} STRING," +
-            "${Carrello.ORA_IMMISSIONE} STRING," +
             "${Carrello.UTENTE} INTEGER," +
             "${Carrello.TIMESTAMP} TEXT)".trimMargin()
 

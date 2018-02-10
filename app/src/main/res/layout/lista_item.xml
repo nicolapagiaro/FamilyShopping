@@ -11,6 +11,7 @@
     card_view:cardElevation="4dp">
 
     <RelativeLayout
+        android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -49,7 +50,7 @@
             android:layout_marginBottom="@dimen/vertical_margin"
             android:layout_marginEnd="@dimen/card_end_padding"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="@dimen/card_subtitle_content"
             android:visibility="visible" />
 

@@ -44,11 +44,13 @@ class Comunication {
     class UpdateCarrello {
         companion object {
             val URL = "http://quizapp.000webhostapp.com/familyshopping/updateCarrello.php"
+            val REMOVEITEM_URL = "http://quizapp.000webhostapp.com/familyshopping/removeCarrelloItem.php"
             val IDS_LABEL = "ids"
             val CODE_LABEL = "code"
             val ROWS_TO_UPDATE = "update"
             val ROWS_TO_ADD = "add"
             val LAST_TIMESTAMP_LABEL = "timestamp"
+            val ID: String = "id"
         }
     }
 }

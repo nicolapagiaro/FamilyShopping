@@ -17,4 +17,11 @@
     <dimen name="list_height">48dp</dimen>
     <dimen name="bottom_textsize">14sp</dimen>
     <dimen name="bottom_icon_size">24dp</dimen>
+
+    <!-- show item lista details dimen -->
+    <dimen name="action_bar_height">180dp</dimen>
+    <dimen name="twolines_firstText">16sp</dimen>
+    <dimen name="twolines_secondText">14sp</dimen>
+    <dimen name="twolist_height">72dp</dimen>
+    <dimen name="twolist_marginStart">32dp</dimen>
 </resources>
