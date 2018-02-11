@@ -1,11 +1,11 @@
 package it.paggiapp.familyshopping
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.MenuItem
 import it.paggiapp.familyshopping.data.Carrello
+import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_show_lista_item_details.*
 
 class ShowListaItemDetails : AppCompatActivity() {
@@ -21,8 +21,9 @@ class ShowListaItemDetails : AppCompatActivity() {
 
         // take the Carrello item
         item = intent.getSerializableExtra("item") as Carrello
-        collapse_toolbar.title = item.nome
 
+        // show in the layout the things
+        collapse_toolbar.title = item.nome
         var nomeUtente = item.utente?.nome
         if(nomeUtente.equals("null") || nomeUtente?.length == 0) {
             nomeUtente = getString(R.string.username_null)
@@ -42,6 +43,15 @@ class ShowListaItemDetails : AppCompatActivity() {
             3 -> priorita = getString(R.string.item_priorita_value_alta)
         }
         tv_itemdetails_priority_value.text = priorita
+        tv_itemdetails_added_value.text = Util.timeToText(item.dataImmissione, applicationContext)
+
+        // listener for the FAB edit
+        item_details_fab_edit.setOnClickListener {
+            // open the view to edit the item (the same used for create a new one)
+            val editItem = Intent(applicationContext, AddListaitem::class.java)
+            editItem.putExtra("item", item)
+            startActivity(editItem)
+        }
     }
 
     /**
@@ -51,6 +61,7 @@ class ShowListaItemDetails : AppCompatActivity() {
         when (item.getItemId()) {
             android.R.id.home -> {
                 onBackPressed()
+                finish()
                 return true
             }
         }

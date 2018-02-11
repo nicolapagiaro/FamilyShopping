@@ -25,6 +25,9 @@
         <activity
             android:name=".ShowListaItemDetails"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddListaitem"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

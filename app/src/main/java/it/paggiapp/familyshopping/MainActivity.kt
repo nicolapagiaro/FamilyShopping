@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.currentItem = 0
         bottom_navigation.accentColor = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
         bottom_navigation.manageFloatingActionButtonBehavior(fab_main)
-        bottom_navigation.isBehaviorTranslationEnabled = true
+        bottom_navigation.isBehaviorTranslationEnabled = false // da cambiare ed ottimizzare
 
         // listener for tab click
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
@@ -135,9 +135,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * To show a message
+     * To show a message of deleting
      */
     fun showMessageItemDeleted() {
-        Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT).show()
+        val snack = Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT)
+        snack.show()
     }
 }

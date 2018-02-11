@@ -66,6 +66,7 @@
     </plurals>
     <string name="prompt_item_deleted">Articolo eliminato</string>
     <string name="title_activity_show_lista_item_details">ShowListaItemDetails</string>
+    <string name="cancel_deleting">Annulla</string>
 
     <!-- Stringhe per ShowListaItemDetails activity -->
     <string name="username_null">Utente</string>
@@ -74,5 +75,6 @@
     <string name="item_priorita_value_alta">Alta</string>
     <string name="item_priorita_value_media">Media</string>
     <string name="item_priorita_value_bassa">Bassa</string>
+    <string name="item_added">Aggiunto</string>
 
 </resources>

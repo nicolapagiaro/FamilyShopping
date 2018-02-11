@@ -19,9 +19,6 @@ import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
 import kotlinx.android.synthetic.main.lista_item.view.*
-import org.joda.time.Interval
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -63,16 +60,16 @@ class ListaFragment : Fragment() {
         // the swipe to delete implementation
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+                // show message
+                (activity as MainActivity).showMessageItemDeleted()
+
                 // notify the adapter of changes
                 val adapter = recyclerView.adapter as ListaAdapter
                 adapter.removeAt(viewHolder!!.adapterPosition)
 
-                // remove the item from the databases
                 val removedItem= (viewHolder as ListaAdapter.ItemViewHolder).item!!
+                // remove the item from the databases
                 removeItem(removedItem)
-
-                // show message
-                (activity as MainActivity).showMessageItemDeleted()
             }
 
             override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
@@ -211,7 +208,7 @@ class ListaFragment : Fragment() {
                     // scritta "TU"
                     nomeUtente = context.getString(R.string.tv_item_list_author_me)
                 }
-                val details = context.getString(R.string.tv_item_list_details, nomeUtente, timeToText(item.dataImmissione))
+                val details = context.getString(R.string.tv_item_list_details, nomeUtente, Util.timeToText(item.dataImmissione, context))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.tv_info.text = Html.fromHtml(details, Html.FROM_HTML_MODE_LEGACY)
                 }
@@ -221,45 +218,8 @@ class ListaFragment : Fragment() {
             }
 
             /**
-             * Function that convert the time in a string to display
+             * Function to link at the view the ClickListener
              */
-            private fun timeToText(dateString : String) : String {
-                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
-                try {
-                    // insert date of the item
-                    val dateItem = Calendar.getInstance()
-                    dateItem.time = simpleDateFormat.parse(dateString)
-
-                    // current date
-                    val current = Calendar.getInstance(Locale.ITALY)
-
-                    val period = Interval(dateItem.timeInMillis, current.timeInMillis).toPeriod()
-                    if(period.days == 0) {
-                        // oggi
-                        if(period.hours <= 2)
-                            return context.getString(R.string.tv_item_time_few_ago)
-                        else
-                            return context.getString(R.string.tv_item_time_today)
-                    }
-                    else if(period.days == 1) {
-                        // ieri
-                        return context.getString(R.string.tv_item_time_yesterday)
-                    }
-                    else if(period.days < 8) {
-                        // n giorni fa
-                        return context.getString(R.string.tv_item_time_days, period.days)
-                    }
-                    else {
-                        // n settimane fa
-                        val weeks : Int = period.days / 7
-                        return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, weeks)
-                    }
-
-                } catch (ex: ParseException) {}
-
-                return ""
-            }
-
             fun attachOnClickListener() {
                 view.card_layout.setOnClickListener{
                     val detailItem = Intent(context, ShowListaItemDetails::class.java)

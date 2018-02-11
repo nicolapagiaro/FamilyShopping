@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
+import android.util.Log
 import it.paggiapp.familyshopping.ModalOrderBy
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
+import org.joda.time.Period
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Class for some important functions
@@ -90,6 +95,46 @@ class Util {
             val editor : SharedPreferences.Editor? = pref?.edit()
             editor?.putInt(ModalOrderBy.CHOICE_LABEL, order)
             editor?.apply()
+        }
+
+        /**
+         * Function that convert the time in a string to display
+         */
+        fun timeToText(dateString : String, context: Context) : String {
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
+            try {
+                // insert date of the item
+                val dateItem = Calendar.getInstance()
+                dateItem.time = simpleDateFormat.parse(dateString)
+
+                // current date
+                val current = Calendar.getInstance(Locale.ITALY)
+
+                val period = Period(dateItem.timeInMillis, current.timeInMillis)
+                if(period.days == 0 && period.hours < 12) {
+                    // oggi
+                    if(period.hours <= 2)
+                        return context.getString(R.string.tv_item_time_few_ago)
+                    else
+                        return context.getString(R.string.tv_item_time_today)
+                }
+                else if(period.days == 1 || period.hours > 12) {
+                    // ieri
+                    return context.getString(R.string.tv_item_time_yesterday)
+                }
+                else if(period.days < 8) {
+                    // n giorni fa
+                    return context.getString(R.string.tv_item_time_days, period.days)
+                }
+                else {
+                    // n settimane fa
+                    val weeks : Int = period.days / 7
+                    return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, weeks)
+                }
+
+            } catch (ex: ParseException) {}
+
+            return ""
         }
 
     }

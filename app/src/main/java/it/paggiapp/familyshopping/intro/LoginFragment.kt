@@ -14,6 +14,7 @@ import it.paggiapp.familyshopping.util.Util
 import org.json.JSONObject
 import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
+import android.text.Editable
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.Comunication.*
 import it.paggiapp.familyshopping.data.Utente
@@ -100,6 +101,8 @@ class LoginFragment : SlideFragment() {
                                         userArray.getInt("codiceFamiglia"))
                                 Util.setNewUser(context, false)
                                 Util.saveUser(context, user)
+                                if(et_nome.text.length != 0)
+                                    et_nome.setText("")
                                 et_nome.append(user.nome)
                             }
 
