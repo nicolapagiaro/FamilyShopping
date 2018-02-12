@@ -23,10 +23,10 @@
             android:name=".intro.IntroActivity"
             android:theme="@style/AppTheme.Intro" />
         <activity
-            android:name=".ShowListaItemDetails"
+            android:name=".listaspesa.ShowListaItemDetails"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddListaitem"
+            android:name=".listaspesa.AddListaitem"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

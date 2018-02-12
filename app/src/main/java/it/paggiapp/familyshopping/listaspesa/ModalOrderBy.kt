@@ -1,13 +1,13 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.listaspesa
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
+import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.database.DataStore
-import kotlinx.android.synthetic.main.bottom_stylesheet.view.*
+import kotlinx.android.synthetic.main.orderby_stylesheet.view.*
 import it.paggiapp.familyshopping.util.Util
 
 /**
@@ -27,7 +27,7 @@ class ModalOrderBy : BottomSheetDialogFragment() {
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
-        val contentView = View.inflate(context, R.layout.bottom_stylesheet, null)
+        val contentView = View.inflate(context, R.layout.orderby_stylesheet, null)
         dialog.setContentView(contentView)
 
         currentChoice = Util.getCurrentOrder(context)

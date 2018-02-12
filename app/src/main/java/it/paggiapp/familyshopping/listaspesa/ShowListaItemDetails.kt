@@ -1,9 +1,10 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_show_lista_item_details.*

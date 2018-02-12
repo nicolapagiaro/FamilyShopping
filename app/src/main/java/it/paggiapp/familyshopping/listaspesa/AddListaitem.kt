@@ -1,4 +1,4 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
@@ -8,8 +8,15 @@ import kotlinx.android.synthetic.main.activity_add_listaitem.*
 import android.util.Log
 import android.view.Menu
 import android.view.inputmethod.InputMethodManager
+import com.cocosw.bottomsheet.BottomSheet
+import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
+import it.paggiapp.familyshopping.util.Util
+import it.paggiapp.familyshopping.database.DataStore
 
+/**
+ * Class for inser a lista item
+ */
 class AddListaitem : AppCompatActivity() {
     var isNew = true
     var itemToEdit : Carrello? = null
@@ -25,7 +32,7 @@ class AddListaitem : AppCompatActivity() {
 
         // when the user touches the layout of the comment, the
         // editText request the focus and show th keyboard
-        item_details_comment.setOnClickListener{
+        item_add_comment.setOnClickListener{
             et_add_comment.requestFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
@@ -39,6 +46,19 @@ class AddListaitem : AppCompatActivity() {
         }
         else {
             // init the view
+            initView()
+        }
+
+        // categoria click listener
+        item_add_category.setOnClickListener {
+            // show the bottom stylesheet of the category
+            // if the item is being added now
+            if(!isNew) return@setOnClickListener
+        }
+
+        // priorità click listener
+        item_add_priority.setOnClickListener {
+            // show the bottom stylesheet of the priority
         }
     }
 
@@ -98,6 +118,8 @@ class AddListaitem : AppCompatActivity() {
      * Method to initialize the view
      */
     private fun initView() {
-
+        val utente = Util.getUser(applicationContext)
+        tv_add_username.text = utente.nome
+        tv_add_email.text = utente.email
     }
 }

@@ -4,8 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
-import android.util.Log
-import it.paggiapp.familyshopping.ModalOrderBy
+import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
 import org.joda.time.Period

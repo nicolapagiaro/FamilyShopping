@@ -1,35 +1,21 @@
 package it.paggiapp.familyshopping
 
 import android.app.Activity
-import android.app.Fragment
-import android.app.ListFragment
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.util.Log
-import android.widget.ListAdapter
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import com.google.gson.Gson
-import com.loopj.android.http.AsyncHttpClient
-import com.loopj.android.http.JsonHttpResponseHandler
-import com.loopj.android.http.RequestParams
-import cz.msebera.android.httpclient.Header
-import it.paggiapp.familyshopping.backend.Comunication
 import it.paggiapp.familyshopping.backend.DataDowload
-import it.paggiapp.familyshopping.data.Categoria
-import it.paggiapp.familyshopping.data.Utente
 import it.paggiapp.familyshopping.database.DataStore
-import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.intro.IntroActivity
+import it.paggiapp.familyshopping.listaspesa.ListaFragment
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.*
+import it.paggiapp.familyshopping.listaspesa.AddListaitem
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA

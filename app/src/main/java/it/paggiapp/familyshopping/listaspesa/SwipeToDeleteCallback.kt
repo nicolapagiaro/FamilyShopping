@@ -1,4 +1,4 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import it.paggiapp.familyshopping.R
 
 /**
  * Created by nicola on 10/02/18.

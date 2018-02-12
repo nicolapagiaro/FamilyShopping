@@ -1,4 +1,4 @@
-package it.paggiapp.familyshopping
+package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
+import it.paggiapp.familyshopping.MainActivity
+import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.DataDowload
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.database.DataStore

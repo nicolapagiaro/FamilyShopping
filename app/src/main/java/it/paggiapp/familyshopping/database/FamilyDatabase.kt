@@ -2,8 +2,7 @@ package it.paggiapp.familyshopping.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.util.Log
-import it.paggiapp.familyshopping.ModalOrderBy
+import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.data.Utente
@@ -330,6 +329,29 @@ class FamilyDatabase(val context: Context) {
         val retval = ArrayList<Int>()
         while (cursor.moveToNext()) {
             retval.add(cursor.getInt(0))
+        }
+        cursor.close()
+        return retval
+    }
+
+    /**
+     * Function that return a list of Categorie objcets
+     */
+    fun getCategorie() : ArrayList<Categoria> {
+        val cursor = helper.readableDatabase.query(
+                FamilyContract.Categorie._TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null)
+
+        val retval = ArrayList<Categoria>()
+        while (cursor.moveToNext()) {
+            val c = Categoria(cursor.getInt(cursor.getColumnIndex(FamilyContract.Categorie._ID)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Categorie.NOME)))
+            retval.add(c)
         }
         cursor.close()
         return retval

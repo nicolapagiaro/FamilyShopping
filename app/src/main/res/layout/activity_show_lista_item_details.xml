@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.paggiapp.familyshopping.ShowListaItemDetails">
+    tools:context="it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
