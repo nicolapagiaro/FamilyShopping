@@ -76,5 +76,11 @@
     <string name="item_priorita_value_media">Media</string>
     <string name="item_priorita_value_bassa">Bassa</string>
     <string name="item_added">Aggiunto</string>
+    <string name="item_category">Categoria</string>
+
+    <!-- AddItemList strings -->
+    <string name="save_item">SALVA</string>
+    <string name="item_label">Articolo</string>
+    <string name="item_add_comment">Aggiungi un commento</string>
 
 </resources>

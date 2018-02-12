@@ -24,4 +24,6 @@
     <dimen name="twolines_secondText">14sp</dimen>
     <dimen name="twolist_height">72dp</dimen>
     <dimen name="twolist_marginStart">32dp</dimen>
+
+    <!-- addList Item dimen -->
 </resources>

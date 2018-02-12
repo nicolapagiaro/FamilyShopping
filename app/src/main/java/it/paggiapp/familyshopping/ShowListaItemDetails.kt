@@ -30,6 +30,7 @@ class ShowListaItemDetails : AppCompatActivity() {
         }
         tv_itemdetails_username.text = nomeUtente
         tv_itemdetails_email.text = item.utente?.email
+        tv_itemdetails_category_value.text = item.categoria?.nome
 
         var comment = item.commento
         if(comment.equals("null") || comment.length == 0) {
@@ -51,6 +52,7 @@ class ShowListaItemDetails : AppCompatActivity() {
             val editItem = Intent(applicationContext, AddListaitem::class.java)
             editItem.putExtra("item", item)
             startActivity(editItem)
+            finish()
         }
     }
 

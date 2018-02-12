@@ -32,6 +32,8 @@ import org.json.JSONObject
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
+
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
         val DELAY_SNACKBAR: Long = 1500
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.currentItem = 0
         bottom_navigation.accentColor = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
         bottom_navigation.manageFloatingActionButtonBehavior(fab_main)
-        bottom_navigation.isBehaviorTranslationEnabled = false // da cambiare ed ottimizzare
+        bottom_navigation.isBehaviorTranslationEnabled = true // da ottimizzare
 
         // listener for tab click
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
@@ -99,9 +101,11 @@ class MainActivity : AppCompatActivity() {
                             .beginTransaction()
                             .replace(R.id.main_container, ListaFragment.newInstance())
                             .commit()
+                    currentFragment = ActiveFragment.LISTA_SPESA
                 }
                 1 -> {
                     // load the fragment
+                    currentFragment = ActiveFragment.LISTA_RICETTE
                 }
                 2 -> {
                     // load the fragment
@@ -109,12 +113,36 @@ class MainActivity : AppCompatActivity() {
                             .beginTransaction()
                             .replace(R.id.main_container, UtenteFragment.newInstance())
                             .commit()
+                    currentFragment = ActiveFragment.PROFILO_UTENTE
+                }
+                else -> {
+                    return@setOnTabSelectedListener false
                 }
             }
 
             true
         }
 
+        // click listern for the main FAB
+        fab_main.setOnClickListener{
+            when(currentFragment) {
+                ActiveFragment.LISTA_SPESA -> {
+                    // start AddListaItem activity
+                    val newItem = Intent(applicationContext, AddListaitem::class.java)
+                    startActivity(newItem)
+                }
+
+                ActiveFragment.LISTA_RICETTE -> {
+                    // start AddRicetteItem activity
+                }
+
+                ActiveFragment.PROFILO_UTENTE -> {
+                    // nothing because the FAB is hided
+                }
+            }
+        }
+
+        // check for connection
         if (!Util.isOnline(applicationContext)) {
             Handler().postDelayed(Runnable{
                 Snackbar.make(bottom_navigation, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
