@@ -7,15 +7,15 @@ import java.io.Serializable
  * Created by nicola on 21/01/18.
  */
 data class Carrello(
-        val id : Int,
-        val nome : String,
-        val commento : String,
-        val categoria : Categoria?,
-        val priorita : Int,
+        var id : Int,
+        var nome : String,
+        var commento : String,
+        var categoria : Categoria?,
+        var priorita : Int,
         var inLista : Int,
-        val dataImmissione : String,
-        val timestamp : String,
-        val utente: Utente?
+        var dataImmissione : String,
+        var timestamp : String,
+        var utente: Utente?
 ) : Serializable {
     companion object {
         val PRIORITA_BASSA = 1

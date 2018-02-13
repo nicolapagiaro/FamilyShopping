@@ -1,6 +1,7 @@
 package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Context
+import it.paggiapp.familyshopping.listaspesa.CategoryModal.OnMyDialogResult
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -10,6 +11,8 @@ import android.view.Menu
 import android.view.inputmethod.InputMethodManager
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
+import it.paggiapp.familyshopping.data.Carrello.Companion.IN_LISTA
+import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.util.Util
 
 /**
@@ -18,6 +21,7 @@ import it.paggiapp.familyshopping.util.Util
 class AddListaitem : AppCompatActivity() {
     var isNew = true
     var itemToEdit : Carrello? = null
+    var itemToCreate : Carrello? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,15 @@ class AddListaitem : AppCompatActivity() {
         }
         else {
             // init the view
+            itemToCreate = Carrello(0,
+                    "",
+                    "",
+                    null,
+                    0,
+                    IN_LISTA,
+                    "",
+                    "",
+                    Util.getUser(applicationContext))
             initView()
         }
 
@@ -52,6 +65,17 @@ class AddListaitem : AppCompatActivity() {
             // show the bottom stylesheet of the category
             // if the item is being added now
             if(!isNew) return@setOnClickListener
+
+            // show the modal and write the callback function
+            val categoryModal = CategoryModal()
+            categoryModal.mDialogResult = object : OnMyDialogResult {
+                override fun finish(result: Categoria) {
+                    // when the user click the Category
+                    tv_add_category_value.text = result.nome
+                    itemToCreate!!.categoria = result
+                }
+            }
+            categoryModal.show(supportFragmentManager, DIALOG_TAG)
         }
 
         // priorità click listener
@@ -67,7 +91,6 @@ class AddListaitem : AppCompatActivity() {
         when (item.getItemId()) {
             android.R.id.home -> {
                 onBackPressed()
-                finish()
                 return true
             }
             R.id.new_listaitem_save -> {
@@ -119,5 +142,9 @@ class AddListaitem : AppCompatActivity() {
         val utente = Util.getUser(applicationContext)
         tv_add_username.text = utente.nome
         tv_add_email.text = utente.email
+    }
+
+    companion object {
+        val DIALOG_TAG = "Modal sheet category"
     }
 }
