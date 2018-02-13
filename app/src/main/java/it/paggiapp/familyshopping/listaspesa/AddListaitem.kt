@@ -8,11 +8,9 @@ import kotlinx.android.synthetic.main.activity_add_listaitem.*
 import android.util.Log
 import android.view.Menu
 import android.view.inputmethod.InputMethodManager
-import com.cocosw.bottomsheet.BottomSheet
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.util.Util
-import it.paggiapp.familyshopping.database.DataStore
 
 /**
  * Class for inser a lista item
