@@ -1,7 +1,6 @@
 package it.paggiapp.familyshopping.listaspesa
 
 import android.content.Context
-import it.paggiapp.familyshopping.listaspesa.CategoryModal.OnMyDialogResult
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -68,19 +67,27 @@ class AddListaitem : AppCompatActivity() {
 
             // show the modal and write the callback function
             val categoryModal = CategoryModal()
-            categoryModal.mDialogResult = object : OnMyDialogResult {
+            categoryModal.mDialogResult = object : CategoryModal.DialogCategoryResult {
                 override fun finish(result: Categoria) {
                     // when the user click the Category
                     tv_add_category_value.text = result.nome
                     itemToCreate!!.categoria = result
                 }
             }
-            categoryModal.show(supportFragmentManager, DIALOG_TAG)
+            categoryModal.show(supportFragmentManager, CATEGORY_DIALOG_TAG)
         }
 
         // priorità click listener
         item_add_priority.setOnClickListener {
             // show the bottom stylesheet of the priority
+            val priorityModal = PriorityModal()
+            priorityModal.mDialogResult = object : PriorityModal.DialogPriorityResult {
+                override fun finish(result: Int) {
+                    tv_add_priority_value.text = getPrioritaText(result)
+                    itemToCreate!!.priorita = result
+                }
+            }
+            priorityModal.show(supportFragmentManager, PRIORITY_DIALOG_TAG)
         }
     }
 
@@ -126,13 +133,7 @@ class AddListaitem : AppCompatActivity() {
             comment = getString(R.string.comment_null)
         }
         et_add_comment.append(comment)
-        var priorita = ""
-        when(itemToEdit!!.priorita) {
-            1 -> priorita = getString(R.string.item_priorita_value_bassa)
-            2 -> priorita = getString(R.string.item_priorita_value_media)
-            3 -> priorita = getString(R.string.item_priorita_value_alta)
-        }
-        tv_add_priority_value.text = priorita
+        tv_add_priority_value.text = getPrioritaText(itemToEdit!!.priorita)
     }
 
     /**
@@ -144,7 +145,21 @@ class AddListaitem : AppCompatActivity() {
         tv_add_email.text = utente.email
     }
 
+    /**
+     * Function that returns the string corrisponding at the value
+     */
+    private fun getPrioritaText(pr : Int) : String{
+        var priorita = ""
+        when(pr) {
+            1 -> priorita = getString(R.string.item_priorita_value_bassa)
+            2 -> priorita = getString(R.string.item_priorita_value_media)
+            3 -> priorita = getString(R.string.item_priorita_value_alta)
+        }
+        return priorita
+    }
+
     companion object {
-        val DIALOG_TAG = "Modal sheet category"
+        val CATEGORY_DIALOG_TAG = "Modal sheet category"
+        val PRIORITY_DIALOG_TAG = "Modal sheet priorita"
     }
 }

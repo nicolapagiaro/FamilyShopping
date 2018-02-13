@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.categor_sheet_item.view.*
  * Created by Aula on 13/02/2018.
  */
 class CategoryModal : BottomSheetDialogFragment() {
-    var mDialogResult: OnMyDialogResult? = null // the callback
+    var mDialogResult: DialogCategoryResult? = null // the callback
 
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -41,7 +41,7 @@ class CategoryModal : BottomSheetDialogFragment() {
     /**
      * Interface for the callback at the activity under
      */
-    interface OnMyDialogResult {
+    interface DialogCategoryResult {
         fun finish(result: Categoria)
     }
 }
