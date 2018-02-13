@@ -27,7 +27,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".listaspesa.AddListaitem"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.AddItem" />
     </application>
 
 </manifest>
