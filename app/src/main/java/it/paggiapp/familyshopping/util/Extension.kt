@@ -4,6 +4,7 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 
 /**
  * Kotlin extension file

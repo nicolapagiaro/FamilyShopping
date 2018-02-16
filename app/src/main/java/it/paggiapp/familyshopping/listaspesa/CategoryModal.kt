@@ -24,17 +24,19 @@ class CategoryModal : BottomSheetDialogFragment() {
         val contentView = View.inflate(context, R.layout.category_sheet, null)
         dialog.setContentView(contentView)
 
-        val categorie = DataStore.getDB().getCategorie()
-        for (i in (0 until categorie.size)) {
-            val v : View = LayoutInflater.from(context).inflate(R.layout.categor_sheet_item, null, false)
-            v.tv_category_name.text = categorie[i].nome
-            v.setOnClickListener{
-                if (mDialogResult != null) {
-                    mDialogResult!!.finish(categorie[i])
+        DataStore.execute {
+            val categorie = DataStore.getDB().getCategorie()
+            for (i in (0 until categorie.size)) {
+                val v : View = LayoutInflater.from(context).inflate(R.layout.categor_sheet_item, null, false)
+                v.tv_category_name.text = categorie[i].nome
+                v.setOnClickListener{
+                    if (mDialogResult != null) {
+                        mDialogResult!!.finish(categorie[i])
+                    }
+                    this@CategoryModal.dismiss()
                 }
-                this@CategoryModal.dismiss()
+                (contentView as LinearLayout).addView(v)
             }
-            (contentView as LinearLayout).addView(v)
         }
     }
 

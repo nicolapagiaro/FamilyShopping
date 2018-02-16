@@ -53,4 +53,15 @@ class Comunication {
             val ID: String = "id"
         }
     }
+
+    class UploadCarrelloItem {
+        companion object {
+            val URL = "http://quizapp.000webhostapp.com/familyshopping/saveCarrello.php"
+            val MODE_LABEL = "mode"
+            val ITEM_LABEL = "item"
+            val MODE_ADD_LIST = 0
+            val MODE_SAVE = 1
+            val MODE_EDIT = 2
+        }
+    }
 }

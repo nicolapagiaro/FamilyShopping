@@ -82,5 +82,6 @@
     <string name="save_item">SALVA</string>
     <string name="item_label">Articolo</string>
     <string name="item_add_comment">Aggiungi un commento</string>
+    <string name="recents_label">Recenti</string>
 
 </resources>

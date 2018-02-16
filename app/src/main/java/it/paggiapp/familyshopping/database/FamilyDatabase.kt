@@ -30,7 +30,6 @@ class FamilyDatabase(val context: Context) {
             order = "${FamilyContract.Carrello.TIMESTAMP} DESC"
         }
 
-
         val args = arrayOf(Carrello.IN_LISTA.toString())
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
@@ -40,6 +39,76 @@ class FamilyDatabase(val context: Context) {
                 null,
                 null,
                 order)
+
+        val retval = ArrayList<Carrello>()
+        while (cursor.moveToNext()) {
+            // get the Category from the db
+            var categoria: Categoria? = null
+            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
+            val catQuery = helper.readableDatabase.query(
+                    FamilyContract.Categorie._TABLE_NAME,
+                    null,
+                    "${FamilyContract.Carrello._ID}=?",
+                    args1,
+                    null,
+                    null,
+                    null)
+            while (catQuery.moveToNext()) {
+                categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
+                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
+            }
+
+            // Get the user from the db
+            var utente: Utente? = null
+            val args2 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
+            val userQuery = helper.readableDatabase.query(
+                    FamilyContract.Utenti._TABLE_NAME,
+                    null,
+                    "${FamilyContract.Utenti._ID}=?",
+                    args2,
+                    null,
+                    null,
+                    null)
+
+            while (userQuery.moveToNext()) {
+                utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
+                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
+                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
+                        userQuery.getInt(0))
+            }
+
+            catQuery.close()
+            userQuery.close()
+
+            val c = Carrello(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)),
+                    categoria,
+                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
+                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
+                    utente)
+            retval.add(c)
+        }
+
+        cursor.close()
+        return retval
+    }
+
+    /**
+     * Function to take the elemments no in th list, but already inserted
+     */
+    fun getItemsNotInCarrello() : ArrayList<Carrello> {
+        val args = arrayOf(Carrello.NO_IN_LISTA.toString())
+        val cursor = helper.readableDatabase.query(
+                FamilyContract.Carrello._TABLE_NAME,
+                null,
+                "${FamilyContract.Carrello.IN_LISTA} = ?",
+                args,
+                null,
+                null,
+                null)
 
         val retval = ArrayList<Carrello>()
         while (cursor.moveToNext()) {
@@ -382,6 +451,7 @@ class FamilyDatabase(val context: Context) {
         fun carrelloToContentValuesUpdate(temp: JSONObject): ContentValues {
             val values = ContentValues().apply {
                 put(FamilyContract.Carrello._ID, temp.getInt("id"))
+                put(FamilyContract.Carrello.COMMENTO, temp.getString(FamilyContract.Carrello.COMMENTO))
                 put(FamilyContract.Carrello.PRIORITA, temp.getInt(FamilyContract.Carrello.PRIORITA))
                 put(FamilyContract.Carrello.IN_LISTA, temp.getInt(FamilyContract.Carrello.IN_LISTA))
                 put(FamilyContract.Carrello.TIMESTAMP, temp.getString(FamilyContract.Carrello.TIMESTAMP))
