@@ -1,7 +1,9 @@
 package it.paggiapp.familyshopping.backend
 
+import android.app.Notification
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -190,8 +192,23 @@ class DataDowload(val context: Context) {
         val client = AsyncHttpClient()
         client.post(context, Comunication.UpdateCarrello.REMOVEITEM_URL, requestParams, object : JsonHttpResponseHandler() {
 
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {}
+        })
+    }
+
+    /**
+     * Call the server and insert/update/edit a carrello item
+     */
+    fun uploadItem(carrello: Carrello, mode : Int) {
+        val requestParams = RequestParams()
+        requestParams.put(Comunication.UploadCarrelloItem.MODE_LABEL, mode)
+        requestParams.put(Comunication.UploadCarrelloItem.ITEM_LABEL, Gson().toJson(carrello))
+
+        val client = AsyncHttpClient()
+        client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
+
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
-                // insert new Carrello records in the local database
+                Log.d("UploadItem", responseString.toString())
             }
         })
     }

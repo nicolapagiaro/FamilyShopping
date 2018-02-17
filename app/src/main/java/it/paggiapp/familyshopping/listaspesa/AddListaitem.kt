@@ -1,22 +1,31 @@
 package it.paggiapp.familyshopping.listaspesa
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.os.Handler
+import android.os.Looper
+import android.support.design.widget.Snackbar
 import kotlinx.android.synthetic.main.activity_add_listaitem.*
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.Comunication
+import it.paggiapp.familyshopping.backend.DataDowload
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Carrello.Companion.IN_LISTA
+import it.paggiapp.familyshopping.data.Carrello.Companion.PRIORITA_MEDIA
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.suggestion_list_item.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -27,8 +36,7 @@ class AddListaitem : AppCompatActivity() {
     private var uploadMode = Comunication.UploadCarrelloItem.MODE_ADD_LIST
     private var isSuggestionVisible = false
     private var isNew = true
-    private var itemToEdit : Carrello? = null
-    private var itemToCreate : Carrello? = null
+    private var item : Carrello? = null
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,20 +56,20 @@ class AddListaitem : AppCompatActivity() {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
 
-        itemToEdit = intent.getSerializableExtra("item") as Carrello?
-        if(itemToEdit != null) {
+        item = intent.getSerializableExtra("item") as Carrello?
+        if(item != null) {
             isNew = false
             // fill the view
-            fillView(itemToEdit!!)
+            fillView(item!!)
             uploadMode = Comunication.UploadCarrelloItem.MODE_EDIT
         }
         else {
             // init the view
-            itemToCreate = Carrello(0,
+            item = Carrello(null,
                     "",
                     "",
                     null,
-                    0,
+                    PRIORITA_MEDIA,
                     IN_LISTA,
                     "",
                     "",
@@ -81,7 +89,7 @@ class AddListaitem : AppCompatActivity() {
                 override fun finish(result: Categoria) {
                     // when the user click the Category
                     tv_add_category_value.text = result.nome
-                    itemToCreate!!.categoria = result
+                    item!!.categoria = result
                 }
             }
             categoryModal.show(supportFragmentManager, CATEGORY_DIALOG_TAG)
@@ -94,8 +102,7 @@ class AddListaitem : AppCompatActivity() {
             priorityModal.mDialogResult = object : PriorityModal.DialogPriorityResult {
                 override fun finish(result: Int) {
                     tv_add_priority_value.text = getPrioritaText(result)
-                    itemToCreate?.priorita = result
-                    itemToEdit?.priorita = result
+                    item?.priorita = result
                 }
             }
             priorityModal.show(supportFragmentManager, PRIORITY_DIALOG_TAG)
@@ -111,7 +118,11 @@ class AddListaitem : AppCompatActivity() {
                 v.second_line_item.text = suggestionItems[i].categoria?.nome
 
                 v.setOnClickListener{
+                    // when the user click the suggestion
                     fillView(suggestionItems[i])
+                    item = suggestionItems[i]
+                    item?.inLista = IN_LISTA
+                    item?.utente = Util.getUser(applicationContext)
                     hideSuggestion()
                     uploadMode = Comunication.UploadCarrelloItem.MODE_SAVE
                 }
@@ -143,9 +154,6 @@ class AddListaitem : AppCompatActivity() {
             hideSuggestion()
         }
         else {
-            DataStore.execute {
-
-            }
             super.onBackPressed()
         }
     }
@@ -160,8 +168,8 @@ class AddListaitem : AppCompatActivity() {
                 return true
             }
             R.id.new_listaitem_save -> {
-                Log.d("AddItem", "save btn")
-
+                if(validateInput())
+                    saveItem()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -233,6 +241,9 @@ class AddListaitem : AppCompatActivity() {
      * Function that show the suggestion frame
      */
     private fun showSuggestion() {
+        if(isSuggestionVisible || suggestionItems.isEmpty())
+            return
+
         item_edit_container.visibility = View.INVISIBLE
         item_sugg_container.visibility = View.VISIBLE
         isSuggestionVisible = true
@@ -242,14 +253,108 @@ class AddListaitem : AppCompatActivity() {
      * Function that hide the suggestion frame
      */
     private fun hideSuggestion() {
+        if(!isSuggestionVisible)
+            return
+
         item_edit_container.visibility = View.VISIBLE
         item_sugg_container.visibility = View.INVISIBLE
         isSuggestionVisible = false
     }
 
+    /**
+     * Method for save/update the item in the databases
+     */
+    private fun saveItem() {
+        val serverHelper = DataDowload(applicationContext)
+
+        // list of an element
+        val list = ArrayList<ContentValues>()
+        list.add(DataStore.getDB().fromValues(item!!))
+
+        when(uploadMode) {
+            Comunication.UploadCarrelloItem.MODE_ADD_LIST -> {
+                DataStore.execute {
+                    // save in the local db
+                    val idInserted = DataStore.getDB().addItem(list)
+                    item!!.id = idInserted.toInt()
+
+                    Handler(Looper.getMainLooper()).post{
+                        // save in the server
+                        serverHelper.uploadItem(item!!, uploadMode)
+                    }
+                }
+            }
+            Comunication.UploadCarrelloItem.MODE_SAVE -> {
+                DataStore.execute {
+                    // save in the local db
+                    DataStore.getDB().updateItem(list)
+                }
+
+                Handler(Looper.getMainLooper()).post{
+                    serverHelper.uploadItem(item!!, uploadMode)
+                }
+            }
+            Comunication.UploadCarrelloItem.MODE_EDIT -> {
+                DataStore.execute {
+                    // save in the local db
+                    DataStore.getDB().updateItem(list)
+                }
+
+                Handler(Looper.getMainLooper()).post{
+                    // save in the server
+                    serverHelper.uploadItem(item!!, uploadMode)
+                }
+            }
+        }
+
+        // finish activity
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    /**
+     * Function that validates the input
+     */
+    private fun validateInput() : Boolean {
+        val articolo = et_itemname.text.toString()
+
+        // add the timestamp
+        val sTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val timestamp = sTimestamp.format(Calendar.getInstance(Locale.US).time)
+        item!!.timestamp = timestamp
+
+        // if the item is new, add the insert date
+        if(isNew) {
+            val sDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
+            val date = sDate.format(Date())
+            item!!.dataImmissione = date
+        }
+
+        if(articolo.isEmpty()) {
+            // show error
+            Snackbar.make(add_item_coordinator, R.string.error_no_item_name, Snackbar.LENGTH_SHORT).show()
+            return false
+        }
+        else {
+            item!!.nome = articolo
+        }
+
+        if(item!!.categoria == null) {
+            // show error
+            Snackbar.make(add_item_coordinator, R.string.error_no_item_category, Snackbar.LENGTH_SHORT).show()
+            return false
+        }
+
+        item!!.commento = et_add_comment.text.toString()
+
+        return true
+    }
+
+
     companion object {
         val CATEGORY_DIALOG_TAG = "Modal sheet category"
         val PRIORITY_DIALOG_TAG = "Modal sheet priorita"
-
+        val ADDLISTITEM_CODE = 666
     }
 }

@@ -83,5 +83,7 @@
     <string name="item_label">Articolo</string>
     <string name="item_add_comment">Aggiungi un commento</string>
     <string name="recents_label">Recenti</string>
+    <string name="error_no_item_name">Nessun articolo inserito</string>
+    <string name="error_no_item_category">Nessuna categoria selezionata</string>
 
 </resources>

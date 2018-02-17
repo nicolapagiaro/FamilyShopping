@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -33,12 +34,24 @@ class ListaFragment : Fragment() {
     var isOnline = false
 
     companion object {
+        val TAG_BOTTOM_SHEET ="BottomSheet Fragment"
 
         /**
          * Static method for new Instance
          */
         fun newInstance(): ListaFragment {
             return ListaFragment()
+        }
+    }
+
+    /**
+     * Function that reads the bundle and do stuff
+     */
+    private fun readBundle(bundle: Bundle?) {
+        if(bundle != null) {
+            if(bundle.getBoolean("refresh")) {
+                swipe.isRefreshing = true
+            }
         }
     }
 
@@ -52,6 +65,9 @@ class ListaFragment : Fragment() {
 
         swipe = view!!.findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_lista)
+
+        // read the bundle
+        readBundle(arguments)
 
         // lister for Refresh
         swipe.setOnRefreshListener {
@@ -69,7 +85,8 @@ class ListaFragment : Fragment() {
                 val adapter = recyclerView.adapter as ListaAdapter
                 adapter.removeAt(viewHolder!!.adapterPosition)
 
-                val removedItem= (viewHolder as ListaAdapter.ItemViewHolder).item!!
+                val removedItem = (viewHolder as ListaAdapter.ItemViewHolder).item!!
+
                 // remove the item from the databases
                 removeItem(removedItem)
             }
@@ -102,7 +119,7 @@ class ListaFragment : Fragment() {
             // filtra
             val orderBy = ModalOrderBy()
             orderBy.recyclerView = recyclerView
-            orderBy.show(activity.supportFragmentManager, "BottomSheet Fragment")
+            orderBy.show(activity.supportFragmentManager, TAG_BOTTOM_SHEET)
         }
 
         return super.onOptionsItemSelected(item)
@@ -116,7 +133,7 @@ class ListaFragment : Fragment() {
         swipe.isRefreshing = true
 
         // ask the server for changes
-        DataDowload(context,Runnable{
+        DataDowload(context, Runnable{
             swipe.isRefreshing = false
             (recyclerView.adapter as ListaAdapter).refresh()
         }).updateAll()
@@ -136,6 +153,14 @@ class ListaFragment : Fragment() {
      * Adapter for the recyclerview of shopping list
      */
     class ListaAdapter(val context: Context) : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
+
+        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int) {
+            val item = list[position]
+            holder?.bind(item)
+            holder?.attachOnClickListener()
+        }
+
+
         private var isRefreshing: Boolean = false
         var list : ArrayList<Carrello> = ArrayList()
 
@@ -147,7 +172,7 @@ class ListaFragment : Fragment() {
             return ItemViewHolder(parent!!.inflate(R.layout.lista_item, false), context)
         }
 
-        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int) {
+        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int, payloads: MutableList<Any>?) {
             val item = list[position]
             holder?.bind(item)
             holder?.attachOnClickListener()
@@ -162,8 +187,14 @@ class ListaFragment : Fragment() {
             DataStore.execute {
                 val list = DataStore.getDB().getCarello()
                 Handler(Looper.getMainLooper()).post {
+                    // calculate the differences between the two list
+                    val diffCallback = CarrelloDiffCallback(list, this@ListaAdapter.list)
+                    val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+                    this@ListaAdapter.list.clear()
                     this@ListaAdapter.list = list
-                    notifyDataSetChanged()
+                    diffResult.dispatchUpdatesTo(this@ListaAdapter)
+
                     isRefreshing = false
                 }
             }
@@ -196,18 +227,18 @@ class ListaFragment : Fragment() {
                 view.tv_categoria.text = item.categoria?.nome
                 view.tv_item_name.text = item.nome
                 val commento = item.commento
-                if(!commento.equals("null")){
-                   view.tv_commento.text = commento
-                }
-                else {
+                if(commento.equals("null") || commento.isEmpty()){
                     view.tv_commento.visibility = View.GONE
                 }
+                else {
+                    view.tv_commento.text = commento
+                }
                 var nomeUtente = item.utente?.nome
-                if(nomeUtente.equals("null")) {
+                if(nomeUtente.equals("null") || nomeUtente!!.isEmpty()) {
                     nomeUtente = item.utente?.email
                 }
                 else if(idUtente == item.utente?.id) {
-                    // scritta "TU"
+                    // scritta "IO"
                     nomeUtente = context.getString(R.string.tv_item_list_author_me)
                 }
                 val details = context.getString(R.string.tv_item_list_details, nomeUtente, Util.timeToText(item.dataImmissione, context))
@@ -227,6 +258,10 @@ class ListaFragment : Fragment() {
                     val detailItem = Intent(context, ShowListaItemDetails::class.java)
                     detailItem.putExtra("item", item)
                     context.startActivity(detailItem)
+                }
+
+                view.card_layout.setOnLongClickListener {
+                    return@setOnLongClickListener true
                 }
             }
         }

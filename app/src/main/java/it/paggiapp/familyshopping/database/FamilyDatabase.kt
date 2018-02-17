@@ -209,15 +209,17 @@ class FamilyDatabase(val context: Context) {
     /**
      * Function that insert a list of Carrello items
      */
-    fun addItem(lista: ArrayList<ContentValues>): Boolean {
-        if (lista.size == 0) return false
+    fun addItem(lista: ArrayList<ContentValues>) : Long {
+        if (lista.size == 0) return -1
         val db = helper.writableDatabase
+        var id : Long = -1
         db.transaction {
             lista.forEach {
-                db.insert(FamilyContract.Carrello._TABLE_NAME, null, it)
+                id = db.insert(FamilyContract.Carrello._TABLE_NAME, null, it)
             }
         }
-        return true
+
+        return id
     }
 
     /**

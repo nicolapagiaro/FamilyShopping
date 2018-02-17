@@ -34,10 +34,10 @@
             android:id="@+id/tv_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_categoria"
-            android:layout_marginBottom="@dimen/vertical_margin"
+            android:layout_alignStart="@+id/tv_categoria"
+            android:layout_below="@+id/tv_categoria"
+            android:layout_marginBottom="@dimen/list_margin_top"
             android:layout_marginEnd="@dimen/card_end_padding"
-            android:layout_marginStart="@dimen/horizontal_margin"
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/card_title" />
 

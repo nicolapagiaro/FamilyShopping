@@ -19,6 +19,7 @@ import it.paggiapp.familyshopping.listaspesa.AddListaitem
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
+    private lateinit var frag: ListaFragment
 
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
@@ -55,6 +56,11 @@ class MainActivity : AppCompatActivity() {
                 setUpMain()
             }
         }
+        else if(requestCode == AddListaitem.ADDLISTITEM_CODE){
+            if(resultCode == Activity.RESULT_OK) {
+                (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+            }
+        }
     }
 
     /**
@@ -73,12 +79,14 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.currentItem = 0
         bottom_navigation.accentColor = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
         bottom_navigation.manageFloatingActionButtonBehavior(fab_main)
-        bottom_navigation.isBehaviorTranslationEnabled = true // da ottimizzare
+        bottom_navigation.isBehaviorTranslationEnabled = false // da ottimizzare
 
         // listener for tab click
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             // if the tab was already selected
-            if(wasSelected) return@setOnTabSelectedListener false
+            if(wasSelected){
+                return@setOnTabSelectedListener false
+            }
 
             when(position) {
                 0 -> {
@@ -88,10 +96,12 @@ class MainActivity : AppCompatActivity() {
                             .replace(R.id.main_container, ListaFragment.newInstance())
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
+                    fab_main.show()
                 }
                 1 -> {
                     // load the fragment
                     currentFragment = ActiveFragment.LISTA_RICETTE
+                    fab_main.show()
                 }
                 2 -> {
                     // load the fragment
@@ -100,6 +110,7 @@ class MainActivity : AppCompatActivity() {
                             .replace(R.id.main_container, UtenteFragment.newInstance())
                             .commit()
                     currentFragment = ActiveFragment.PROFILO_UTENTE
+                    fab_main.hide()
                 }
                 else -> {
                     return@setOnTabSelectedListener false
@@ -115,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                 ActiveFragment.LISTA_SPESA -> {
                     // start AddListaItem activity
                     val newItem = Intent(applicationContext, AddListaitem::class.java)
-                    startActivity(newItem)
+                    startActivityForResult(newItem, AddListaitem.ADDLISTITEM_CODE)
                 }
 
                 ActiveFragment.LISTA_RICETTE -> {
@@ -136,7 +147,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // display the first fragment
-        val frag : ListaFragment = ListaFragment.newInstance()
+        frag = ListaFragment.newInstance()
+        val initRefresh = Bundle()
+        initRefresh.putBoolean("refresh", true)
+        frag.arguments = initRefresh
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_container, frag)
@@ -144,6 +158,7 @@ class MainActivity : AppCompatActivity() {
 
         // ask the server for changes
         DataDowload(applicationContext, Runnable{
+            frag.swipe.isRefreshing = false
             (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll()
     }
