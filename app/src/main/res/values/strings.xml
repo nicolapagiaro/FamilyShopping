@@ -80,6 +80,7 @@
 
     <!-- AddItemList strings -->
     <string name="save_item">SALVA</string>
+    <string name="close_suggestion">FINE</string>
     <string name="item_label">Articolo</string>
     <string name="item_add_comment">Aggiungi un commento</string>
     <string name="recents_label">Recenti</string>

@@ -9,7 +9,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import it.paggiapp.familyshopping.backend.DataDowload
+import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.intro.IntroActivity
 import it.paggiapp.familyshopping.listaspesa.ListaFragment
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
 
         // ask the server for changes
-        DataDowload(applicationContext, Runnable{
+        ServerHelper(applicationContext, Runnable{
             frag.swipe.isRefreshing = false
             (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll()

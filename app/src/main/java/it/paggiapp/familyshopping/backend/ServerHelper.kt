@@ -24,7 +24,7 @@ import java.util.ArrayList
  * Class to manage comunication with server
  * Created by nicola on 08/02/18.
  */
-class DataDowload(val context: Context) {
+class ServerHelper(val context: Context) {
     lateinit var callback : Runnable
 
     /**
@@ -163,7 +163,13 @@ class DataDowload(val context: Context) {
                     // salvo le modifiche nel db locale
                     DataStore.getDB().addItem(addList)
                     DataStore.getDB().updateItem(updateList)
+
                 }
+
+                // get last timestamp from the server
+                val lastTimestamp = responseString.getString(Comunication.UpdateCarrello.LAST_TIMESTAMP_LABEL)
+                val listItemTimestamp = DataStore.getDB().getNewCarrello(lastTimestamp)
+                pushUpdateToServer(listItemTimestamp)
 
                 callback.run()
             }
@@ -180,6 +186,15 @@ class DataDowload(val context: Context) {
                 callback.run()
             }
         })
+    }
+
+    /**
+     * Function to sync the local database with the online database
+     */
+    private fun pushUpdateToServer(lista : ArrayList<Carrello>) {
+        lista.forEach {
+            uploadItem(it, it.inputMode!!)
+        }
     }
 
     /**

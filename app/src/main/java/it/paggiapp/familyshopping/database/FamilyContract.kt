@@ -37,6 +37,7 @@ object FamilyContract {
         val DATA_IMMISSIONE = "dataImmissione"
         val UTENTE = "utente"
         val TIMESTAMP = "timestamp"
+        val INPUT_MODE = "input_mode"
     }
 
     val SQL_CREATE_CARRELLO = "CREATE TABLE ${Carrello._TABLE_NAME} (" +
@@ -48,7 +49,8 @@ object FamilyContract {
             "${Carrello.IN_LISTA} INTEGER, " +
             "${Carrello.DATA_IMMISSIONE} STRING," +
             "${Carrello.UTENTE} INTEGER," +
-            "${Carrello.TIMESTAMP} TEXT)".trimMargin()
+            "${Carrello.TIMESTAMP} TEXT, " +
+            "${Carrello.INPUT_MODE} INTEGER )".trimMargin()
 
     val SQL_DELETE_CARRELLO = "DROP TABLE IF EXISTS ${Carrello._TABLE_NAME}"
 

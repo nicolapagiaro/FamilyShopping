@@ -15,7 +15,8 @@ data class Carrello(
         var inLista : Int,
         var dataImmissione : String,
         var timestamp : String,
-        var utente: Utente?
+        var utente: Utente?,
+        var inputMode : Int?
 
 ) : Serializable {
     companion object {

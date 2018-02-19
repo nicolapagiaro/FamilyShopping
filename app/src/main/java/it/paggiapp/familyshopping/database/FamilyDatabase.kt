@@ -2,6 +2,7 @@ package it.paggiapp.familyshopping.database
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
@@ -40,60 +41,7 @@ class FamilyDatabase(val context: Context) {
                 null,
                 order)
 
-        val retval = ArrayList<Carrello>()
-        while (cursor.moveToNext()) {
-            // get the Category from the db
-            var categoria: Categoria? = null
-            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
-            val catQuery = helper.readableDatabase.query(
-                    FamilyContract.Categorie._TABLE_NAME,
-                    null,
-                    "${FamilyContract.Carrello._ID}=?",
-                    args1,
-                    null,
-                    null,
-                    null)
-            while (catQuery.moveToNext()) {
-                categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
-                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
-            }
-
-            // Get the user from the db
-            var utente: Utente? = null
-            val args2 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
-            val userQuery = helper.readableDatabase.query(
-                    FamilyContract.Utenti._TABLE_NAME,
-                    null,
-                    "${FamilyContract.Utenti._ID}=?",
-                    args2,
-                    null,
-                    null,
-                    null)
-
-            while (userQuery.moveToNext()) {
-                utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
-                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
-                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
-                        userQuery.getInt(0))
-            }
-
-            catQuery.close()
-            userQuery.close()
-
-            val c = Carrello(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)),
-                    categoria,
-                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
-                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
-                    utente)
-            retval.add(c)
-        }
-
-        cursor.close()
-        return retval
+        return getCarrelloFull(cursor)
     }
 
     /**
@@ -110,60 +58,7 @@ class FamilyDatabase(val context: Context) {
                 null,
                 null)
 
-        val retval = ArrayList<Carrello>()
-        while (cursor.moveToNext()) {
-            // get the Category from the db
-            var categoria: Categoria? = null
-            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
-            val catQuery = helper.readableDatabase.query(
-                    FamilyContract.Categorie._TABLE_NAME,
-                    null,
-                    "${FamilyContract.Carrello._ID}=?",
-                    args1,
-                    null,
-                    null,
-                    null)
-            while (catQuery.moveToNext()) {
-                categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
-                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
-            }
-
-            // Get the user from the db
-            var utente: Utente? = null
-            val args2 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
-            val userQuery = helper.readableDatabase.query(
-                    FamilyContract.Utenti._TABLE_NAME,
-                    null,
-                    "${FamilyContract.Utenti._ID}=?",
-                    args2,
-                    null,
-                    null,
-                    null)
-
-            while (userQuery.moveToNext()) {
-                utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
-                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
-                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
-                        userQuery.getInt(0))
-            }
-
-            catQuery.close()
-            userQuery.close()
-
-            val c = Carrello(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)),
-                    categoria,
-                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
-                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
-                    utente)
-            retval.add(c)
-        }
-
-        cursor.close()
-        return retval
+        return getCarrelloFull(cursor)
     }
 
     /**
@@ -267,6 +162,85 @@ class FamilyDatabase(val context: Context) {
                 db.insert(FamilyContract.Categorie._TABLE_NAME, null, values)
             }
         }
+    }
+
+    /**
+     * Function that returns a list of Carrello item not updated
+     * in the database online
+     */
+    fun getNewCarrello(timestamp : String) : ArrayList<Carrello> {
+        val args = arrayOf(timestamp)
+        val cursor = helper.readableDatabase.query(
+                FamilyContract.Carrello._TABLE_NAME,
+                null,
+                "${FamilyContract.Carrello.TIMESTAMP} > ?",
+                args,
+                null,
+                null,
+                "${FamilyContract.Carrello.TIMESTAMP} DESC")
+
+        return getCarrelloFull(cursor)
+    }
+
+    /**
+     * Function that makes the select carrello query
+     */
+    private fun getCarrelloFull(cursor : Cursor) : ArrayList<Carrello> {
+        val retval = ArrayList<Carrello>()
+        while (cursor.moveToNext()) {
+            // get the Category from the db
+            var categoria: Categoria? = null
+            val args1 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.CATEGORIA)).toString())
+            val catQuery = helper.readableDatabase.query(
+                    FamilyContract.Categorie._TABLE_NAME,
+                    null,
+                    "${FamilyContract.Carrello._ID}=?",
+                    args1,
+                    null,
+                    null,
+                    null)
+            while (catQuery.moveToNext()) {
+                categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
+                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
+            }
+
+            // Get the user from the db
+            var utente: Utente? = null
+            val args2 = arrayOf(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.UTENTE)).toString())
+            val userQuery = helper.readableDatabase.query(
+                    FamilyContract.Utenti._TABLE_NAME,
+                    null,
+                    "${FamilyContract.Utenti._ID}=?",
+                    args2,
+                    null,
+                    null,
+                    null)
+
+            while (userQuery.moveToNext()) {
+                utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
+                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
+                        userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
+                        userQuery.getInt(0))
+            }
+
+            catQuery.close()
+            userQuery.close()
+
+            val c = Carrello(cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello._ID)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.NOME)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.COMMENTO)),
+                    categoria,
+                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.PRIORITA)),
+                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.IN_LISTA)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
+                    utente,
+                    0)
+            retval.add(c)
+        }
+
+        cursor.close()
+        return retval
     }
 
     /**

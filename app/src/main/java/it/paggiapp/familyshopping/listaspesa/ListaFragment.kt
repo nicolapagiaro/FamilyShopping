@@ -16,7 +16,7 @@ import android.text.Html
 import android.view.*
 import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
-import it.paggiapp.familyshopping.backend.DataDowload
+import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.util.Util
@@ -133,7 +133,7 @@ class ListaFragment : Fragment() {
         swipe.isRefreshing = true
 
         // ask the server for changes
-        DataDowload(context, Runnable{
+        ServerHelper(context, Runnable{
             swipe.isRefreshing = false
             (recyclerView.adapter as ListaAdapter).refresh()
         }).updateAll()
@@ -145,7 +145,7 @@ class ListaFragment : Fragment() {
      */
     fun removeItem(removedItem : Carrello) {
         DataStore.getDB().removeItem(removedItem)
-        DataDowload(context).removeItem(removedItem)
+        ServerHelper(context).removeItem(removedItem)
     }
 
 
