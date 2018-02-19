@@ -2,6 +2,7 @@ package it.paggiapp.familyshopping.database
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria

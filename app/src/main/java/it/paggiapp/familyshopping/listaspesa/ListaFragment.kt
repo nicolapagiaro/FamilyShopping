@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
+import it.paggiapp.familyshopping.GeneralFragment
 import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.DataDowload
@@ -28,7 +29,8 @@ import java.util.*
  * Fragment for the shopping chart
  * Created by nicola on 02/02/18.
  */
-class ListaFragment : Fragment() {
+class ListaFragment : Fragment(), GeneralFragment {
+
     lateinit var swipe: SwipeRefreshLayout
     lateinit var recyclerView : RecyclerView
     var isOnline = false
@@ -49,7 +51,7 @@ class ListaFragment : Fragment() {
      */
     private fun readBundle(bundle: Bundle?) {
         if(bundle != null) {
-            if(bundle.getBoolean("refresh")) {
+            if(bundle.getBoolean("refresh") && Util.isOnline(context)) {
                 swipe.isRefreshing = true
             }
         }
@@ -265,5 +267,12 @@ class ListaFragment : Fragment() {
                 }
             }
         }
+    }
+
+    /**
+     * Function that scrolls the recyclerview to top
+     */
+    override fun scrollToTop() {
+        recyclerView.smoothScrollToPosition(0)
     }
 }

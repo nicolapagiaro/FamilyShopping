@@ -199,9 +199,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/horizontal_margin"
                     android:layout_marginStart="@dimen/twolist_marginStart"
+                    android:maxLength="255"
+                    android:maxLines="3"
                     android:background="@android:color/transparent"
                     android:hint="@string/item_add_comment"
-                    android:inputType="textCapSentences"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/twolines_firstText" />
 

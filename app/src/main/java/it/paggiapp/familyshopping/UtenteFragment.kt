@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 
 /**
+ * Class that implements the fragment to show user information
  * Created by nicola on 08/02/18.
  */
-class UtenteFragment : Fragment(){
-
+class UtenteFragment : Fragment(), GeneralFragment{
     companion object {
 
         /**
@@ -27,5 +27,12 @@ class UtenteFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_utente, container, false)
         return view
+    }
+
+    /**
+     * Function to scroll to the top
+     */
+    override fun scrollToTop() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

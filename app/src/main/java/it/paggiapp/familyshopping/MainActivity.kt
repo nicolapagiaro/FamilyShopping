@@ -19,7 +19,7 @@ import it.paggiapp.familyshopping.listaspesa.AddListaitem
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
-    private lateinit var frag: ListaFragment
+    private lateinit var frag: GeneralFragment
 
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
         else if(requestCode == AddListaitem.ADDLISTITEM_CODE){
             if(resultCode == Activity.RESULT_OK) {
-                (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+                ((frag as ListaFragment).recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
             }
         }
     }
@@ -85,31 +85,40 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             // if the tab was already selected
             if(wasSelected){
+                frag.scrollToTop()
                 return@setOnTabSelectedListener false
             }
 
             when(position) {
                 0 -> {
+                    frag = ListaFragment.newInstance()
                     // load the fragment
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, ListaFragment.newInstance())
+                            .replace(R.id.main_container, frag as ListaFragment)
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
+
+                    // show the fab
                     fab_main.show()
                 }
                 1 -> {
                     // load the fragment
                     currentFragment = ActiveFragment.LISTA_RICETTE
+
+                    // show the fab
                     fab_main.show()
                 }
                 2 -> {
                     // load the fragment
+                    frag = UtenteFragment.newInstance()
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, UtenteFragment.newInstance())
+                            .replace(R.id.main_container, frag as UtenteFragment)
                             .commit()
                     currentFragment = ActiveFragment.PROFILO_UTENTE
+
+                    // hide the fab
                     fab_main.hide()
                 }
                 else -> {
@@ -147,24 +156,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         // display the first fragment
-        frag = ListaFragment.newInstance()
+        val tempFrag = ListaFragment.newInstance()
         val initRefresh = Bundle()
         initRefresh.putBoolean("refresh", true)
-        frag.arguments = initRefresh
+        tempFrag.arguments = initRefresh
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, frag)
+                .replace(R.id.main_container, tempFrag)
                 .commit()
 
         // ask the server for changes
         DataDowload(applicationContext, Runnable{
-            frag.swipe.isRefreshing = false
-            (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+            tempFrag.swipe.isRefreshing = false
+            (tempFrag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll()
+
+        frag = tempFrag
     }
 
     /**
-     * To show a message of deleting
+     * To show a message of deleting a carrello item
      */
     fun showMessageItemDeleted() {
         val snack = Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT)
