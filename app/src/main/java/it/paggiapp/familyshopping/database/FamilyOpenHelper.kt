@@ -16,7 +16,7 @@ class FamilyOpenHelper(context: Context) : SQLiteOpenHelper(
     // static object
     companion object {
         val DATABASE_NAME = "family.db"
-        val DATABASE_VERSION  = 2
+        val DATABASE_VERSION  = 1
     }
 
     /**

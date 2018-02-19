@@ -1,11 +1,12 @@
 package it.paggiapp.familyshopping.listaspesa
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.util.DiffUtil
@@ -20,6 +21,7 @@ import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.database.DataStore
+import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
 import kotlinx.android.synthetic.main.lista_item.view.*
@@ -30,7 +32,6 @@ import java.util.*
  * Created by nicola on 02/02/18.
  */
 class ListaFragment : Fragment(), GeneralFragment {
-
     lateinit var swipe: SwipeRefreshLayout
     lateinit var recyclerView : RecyclerView
     var isOnline = false
@@ -99,7 +100,7 @@ class ListaFragment : Fragment(), GeneralFragment {
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = ListaAdapter(context)
+        recyclerView.adapter = ListaAdapter(activity)
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -131,7 +132,10 @@ class ListaFragment : Fragment(), GeneralFragment {
      * Function that ask the server for changes
      */
     fun loadFromServer() {
-        if(!isOnline) return
+        if(!isOnline) {
+            swipe.isRefreshing = false
+            return
+        }
         swipe.isRefreshing = true
 
         // ask the server for changes
@@ -146,6 +150,7 @@ class ListaFragment : Fragment(), GeneralFragment {
      * and the local database
      */
     fun removeItem(removedItem : Carrello) {
+        removedItem.timestamp = Util.getCurrentTimestamp(Locale.US)
         DataStore.getDB().removeItem(removedItem)
         ServerHelper(context).removeItem(removedItem)
     }
@@ -154,15 +159,7 @@ class ListaFragment : Fragment(), GeneralFragment {
     /**
      * Adapter for the recyclerview of shopping list
      */
-    class ListaAdapter(val context: Context) : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
-
-        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int) {
-            val item = list[position]
-            holder?.bind(item)
-            holder?.attachOnClickListener()
-        }
-
-
+    class ListaAdapter(val activity: Activity) : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
         private var isRefreshing: Boolean = false
         var list : ArrayList<Carrello> = ArrayList()
 
@@ -171,14 +168,27 @@ class ListaFragment : Fragment(), GeneralFragment {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ItemViewHolder {
-            return ItemViewHolder(parent!!.inflate(R.layout.lista_item, false), context)
+            return ItemViewHolder(parent!!.inflate(R.layout.lista_item, false), activity)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder?, position: Int, payloads: MutableList<Any>?) {
+            if(payloads== null || payloads!!.isEmpty())
+                return super.onBindViewHolder(holder, position, payloads)
+
+            val bundle = payloads.get(0) as Bundle
+            if(bundle.size() != 0) {
+                holder?.item?.nome = bundle.getString(FamilyContract.Carrello.NOME)
+                holder?.item?.commento = bundle.getString(FamilyContract.Carrello.COMMENTO)
+                holder?.item?.priorita = bundle.getInt(FamilyContract.Carrello.PRIORITA)
+            }
+        }
+
+        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int) {
             val item = list[position]
             holder?.bind(item)
             holder?.attachOnClickListener()
         }
+
 
         /**
          * Function that ask server for changes and updates the recycler
@@ -216,7 +226,7 @@ class ListaFragment : Fragment(), GeneralFragment {
         /**
          * Viewholder for the item of the list
          */
-        class ItemViewHolder(v : View, val context: Context) : RecyclerView.ViewHolder(v) {
+        class ItemViewHolder(v : View, val activity: Activity) : RecyclerView.ViewHolder(v) {
             var view: View = v
             var item: Carrello? = null
 
@@ -224,7 +234,7 @@ class ListaFragment : Fragment(), GeneralFragment {
              * Function that fill the layout with data
              */
             fun bind(item: Carrello) {
-                val idUtente = Util.getUser(context).id
+                val idUtente = Util.getUser(activity).id
                 this.item = item
                 view.tv_categoria.text = item.categoria?.nome
                 view.tv_item_name.text = item.nome
@@ -241,9 +251,9 @@ class ListaFragment : Fragment(), GeneralFragment {
                 }
                 else if(idUtente == item.utente?.id) {
                     // scritta "IO"
-                    nomeUtente = context.getString(R.string.tv_item_list_author_me)
+                    nomeUtente = activity.getString(R.string.tv_item_list_author_me)
                 }
-                val details = context.getString(R.string.tv_item_list_details, nomeUtente, Util.timeToText(item.dataImmissione, context))
+                val details = activity.getString(R.string.tv_item_list_details, nomeUtente, Util.timeToText(item.dataImmissione, activity))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.tv_info.text = Html.fromHtml(details, Html.FROM_HTML_MODE_LEGACY)
                 }
@@ -257,9 +267,9 @@ class ListaFragment : Fragment(), GeneralFragment {
              */
             fun attachOnClickListener() {
                 view.card_layout.setOnClickListener{
-                    val detailItem = Intent(context, ShowListaItemDetails::class.java)
+                    val detailItem = Intent(activity, ShowListaItemDetails::class.java)
                     detailItem.putExtra("item", item)
-                    context.startActivity(detailItem)
+                    activity.startActivityForResult(detailItem, ShowListaItemDetails.SHOWITEM_CODE)
                 }
 
                 view.card_layout.setOnLongClickListener {
@@ -275,4 +285,12 @@ class ListaFragment : Fragment(), GeneralFragment {
     override fun scrollToTop() {
         recyclerView.smoothScrollToPosition(0)
     }
+
+    /**
+     * Function that refresh the main list, called from the main activity
+     */
+    override fun refreshList() {
+        (recyclerView.adapter as ListaAdapter).refresh()
+    }
+
 }

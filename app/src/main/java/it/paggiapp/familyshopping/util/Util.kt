@@ -110,31 +110,37 @@ class Util {
                 val current = Calendar.getInstance(Locale.ITALY)
 
                 val period = Period(dateItem.timeInMillis, current.timeInMillis)
-                if(period.days == 0 && period.hours < 12) {
+                if (period.days == 0 && period.hours < 12) {
                     // oggi
-                    if(period.hours <= 2)
+                    if (period.hours <= 2)
                         return context.getString(R.string.tv_item_time_few_ago)
                     else
                         return context.getString(R.string.tv_item_time_today)
-                }
-                else if(period.days == 1 || period.hours > 12) {
+                } else if (period.days == 1 || period.hours > 12) {
                     // ieri
                     return context.getString(R.string.tv_item_time_yesterday)
-                }
-                else if(period.days < 8) {
+                } else if (period.days < 8) {
                     // n giorni fa
                     return context.getString(R.string.tv_item_time_days, period.days)
-                }
-                else {
+                } else {
                     // n settimane fa
-                    val weeks : Int = period.days / 7
+                    val weeks: Int = period.days / 7
                     return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, weeks)
                 }
 
-            } catch (ex: ParseException) {}
+            } catch (ex: ParseException) {
+            }
 
             return ""
         }
 
+        /**
+         * Function that returns the current timestamp in base of the Locale
+         * passed in the function (es: Locale.US, Locale.ITALY...)
+         */
+        fun getCurrentTimestamp(locale: Locale) : String {
+            val sTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+            return sTimestamp.format(Calendar.getInstance(locale).time)
+        }
     }
 }

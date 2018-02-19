@@ -1,5 +1,6 @@
 package it.paggiapp.familyshopping.listaspesa
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,7 @@ class ShowListaItemDetails : AppCompatActivity() {
 
         // take the Carrello item
         item = intent.getSerializableExtra("item") as Carrello
+
 
         // show in the layout the things
         collapse_toolbar.title = item.nome
@@ -52,8 +54,7 @@ class ShowListaItemDetails : AppCompatActivity() {
             // open the view to edit the item (the same used for create a new one)
             val editItem = Intent(applicationContext, AddListaitem::class.java)
             editItem.putExtra("item", item)
-            startActivity(editItem)
-            finish()
+            startActivityForResult(editItem, AddListaitem.ADDLISTITEM_CODE)
         }
     }
 
@@ -63,11 +64,28 @@ class ShowListaItemDetails : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             android.R.id.home -> {
-                onBackPressed()
-                finish()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * onActiviy result for result by the IntroActivity
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == AddListaitem.ADDLISTITEM_CODE){
+            if(resultCode == Activity.RESULT_OK) {
+                // finish activity
+                val intent = Intent()
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
+    }
+
+    companion object {
+        val SHOWITEM_CODE = 555
     }
 }

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -247,7 +248,7 @@
         app:fabSize="normal"
         android:clickable="true"
         android:focusable="true"
-        app:layout_anchor="@id/collapse_toolbar"
+        app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@drawable/ic_edit_white_24dp" />
 

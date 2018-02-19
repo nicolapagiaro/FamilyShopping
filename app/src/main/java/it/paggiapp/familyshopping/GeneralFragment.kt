@@ -5,4 +5,6 @@ package it.paggiapp.familyshopping
  */
 interface GeneralFragment {
     fun scrollToTop()
+
+    fun refreshList()
 }

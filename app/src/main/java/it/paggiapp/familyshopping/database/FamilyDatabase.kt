@@ -235,7 +235,7 @@ class FamilyDatabase(val context: Context) {
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.DATA_IMMISSIONE)),
                     cursor.getString(cursor.getColumnIndex(FamilyContract.Carrello.TIMESTAMP)),
                     utente,
-                    0)
+                    cursor.getInt(cursor.getColumnIndex(FamilyContract.Carrello.INPUT_MODE)))
             retval.add(c)
         }
 
@@ -277,6 +277,7 @@ class FamilyDatabase(val context: Context) {
             put(FamilyContract.Carrello.DATA_IMMISSIONE, carrello.dataImmissione)
             put(FamilyContract.Carrello.TIMESTAMP, carrello.timestamp)
             put(FamilyContract.Carrello.UTENTE, carrello.utente!!.id)
+            put(FamilyContract.Carrello.INPUT_MODE, carrello.inputMode)
         }
         return values
     }
@@ -403,6 +404,7 @@ class FamilyDatabase(val context: Context) {
     }
 
     companion object {
+
         /**
          * Gives an instance of a complete Carrello rows as ContentValues
          */

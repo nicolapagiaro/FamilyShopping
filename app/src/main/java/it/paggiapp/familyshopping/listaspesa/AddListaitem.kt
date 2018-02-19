@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.design.widget.Snackbar
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_add_listaitem.*
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -60,7 +61,7 @@ class AddListaitem : AppCompatActivity() {
             isNew = false
             // fill the view
             fillView(item!!)
-            item?.inputMode = Comunication.UploadCarrelloItem.MODE_EDIT
+            item!!.inputMode = Comunication.UploadCarrelloItem.MODE_EDIT
             uploadMode = Comunication.UploadCarrelloItem.MODE_EDIT
         } else {
             // init the view
@@ -121,9 +122,9 @@ class AddListaitem : AppCompatActivity() {
                     // when the user click the suggestion
                     fillView(suggestionItems[i])
                     item = suggestionItems[i]
-                    item?.inLista = IN_LISTA
-                    item?.utente = Util.getUser(applicationContext)
-                    item?.inputMode = Comunication.UploadCarrelloItem.MODE_SAVE
+                    item!!.inLista = IN_LISTA
+                    item!!.utente = Util.getUser(applicationContext)
+                    item!!.inputMode = Comunication.UploadCarrelloItem.MODE_SAVE
                     uploadMode = Comunication.UploadCarrelloItem.MODE_SAVE
                     hideSuggestion()
                 }
@@ -187,6 +188,16 @@ class AddListaitem : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        invalidateOptionsMenu()
+        if(isSuggestionVisible)
+            menu?.findItem(R.id.new_listaitem_save)?.setTitle(R.string.close_suggestion)
+        else
+            menu?.findItem(R.id.new_listaitem_save)?.setTitle(R.string.save_item)
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     /**
      * Method to fill the view from a Carrello item
      */
@@ -246,6 +257,7 @@ class AddListaitem : AppCompatActivity() {
         if (isSuggestionVisible || suggestionItems.isEmpty())
             return
 
+        invalidateOptionsMenu()
         item_edit_container.visibility = View.INVISIBLE
         item_sugg_container.visibility = View.VISIBLE
         isSuggestionVisible = true
@@ -258,6 +270,7 @@ class AddListaitem : AppCompatActivity() {
         if (!isSuggestionVisible)
             return
 
+        invalidateOptionsMenu()
         item_edit_container.visibility = View.VISIBLE
         item_sugg_container.visibility = View.INVISIBLE
         isSuggestionVisible = false
@@ -322,15 +335,11 @@ class AddListaitem : AppCompatActivity() {
         val articolo = et_itemname.text.toString()
 
         // add the timestamp
-        val sTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-        val timestamp = sTimestamp.format(Calendar.getInstance(Locale.US).time)
-        item!!.timestamp = timestamp
+        item!!.timestamp = Util.getCurrentTimestamp(Locale.US)
 
         // if the item is new, add the insert date
         if (isNew) {
-            val sDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
-            val date = sDate.format(Date())
-            item!!.dataImmissione = date
+            item!!.dataImmissione = Util.getCurrentTimestamp(Locale.ITALY)
         }
 
         if (articolo.isEmpty()) {

@@ -11,6 +11,7 @@ import android.view.ViewGroup
  * Created by nicola on 08/02/18.
  */
 class UtenteFragment : Fragment(), GeneralFragment{
+
     companion object {
 
         /**
@@ -32,7 +33,10 @@ class UtenteFragment : Fragment(), GeneralFragment{
     /**
      * Function to scroll to the top
      */
-    override fun scrollToTop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun scrollToTop() {}
+
+    /**
+     * Unused but has to implement due the interface
+     */
+    override fun refreshList() {}
 }

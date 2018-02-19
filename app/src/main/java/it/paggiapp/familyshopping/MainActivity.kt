@@ -1,12 +1,14 @@
 package it.paggiapp.familyshopping
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import it.paggiapp.familyshopping.backend.ServerHelper
@@ -16,10 +18,11 @@ import it.paggiapp.familyshopping.listaspesa.ListaFragment
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import it.paggiapp.familyshopping.listaspesa.AddListaitem
+import it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
-    private lateinit var frag: ListaFragment
+    private lateinit var frag: GeneralFragment
 
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
@@ -58,7 +61,12 @@ class MainActivity : AppCompatActivity() {
         }
         else if(requestCode == AddListaitem.ADDLISTITEM_CODE){
             if(resultCode == Activity.RESULT_OK) {
-                (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+                frag.refreshList()
+            }
+        }
+        else if(requestCode == ShowListaItemDetails.SHOWITEM_CODE){
+            if(resultCode == Activity.RESULT_OK) {
+                frag.refreshList()
             }
         }
     }
@@ -85,29 +93,38 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             // if the tab was already selected
             if(wasSelected){
+                frag.scrollToTop()
                 return@setOnTabSelectedListener false
             }
 
             when(position) {
                 0 -> {
+                    frag = ListaFragment.newInstance()
+
                     // load the fragment
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, ListaFragment.newInstance())
+                            .replace(R.id.main_container, frag as ListaFragment)
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
                     fab_main.show()
+
+
                 }
                 1 -> {
+                    //frag = RicetteFragment.newInstance()
+
                     // load the fragment
                     currentFragment = ActiveFragment.LISTA_RICETTE
                     fab_main.show()
                 }
                 2 -> {
+                    frag = UtenteFragment.newInstance()
+
                     // load the fragment
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, UtenteFragment.newInstance())
+                            .replace(R.id.main_container, frag as UtenteFragment)
                             .commit()
                     currentFragment = ActiveFragment.PROFILO_UTENTE
                     fab_main.hide()
@@ -148,18 +165,19 @@ class MainActivity : AppCompatActivity() {
 
         // display the first fragment
         frag = ListaFragment.newInstance()
+        val tempF = frag as ListaFragment
         val initRefresh = Bundle()
         initRefresh.putBoolean("refresh", true)
-        frag.arguments = initRefresh
+        tempF.arguments = initRefresh
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, frag)
+                .replace(R.id.main_container, tempF)
                 .commit()
 
         // ask the server for changes
         ServerHelper(applicationContext, Runnable{
-            frag.swipe.isRefreshing = false
-            (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+            tempF.swipe.isRefreshing = false
+            (tempF.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll()
     }
 

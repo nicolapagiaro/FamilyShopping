@@ -222,9 +222,6 @@ class ServerHelper(val context: Context) {
         val client = AsyncHttpClient()
         client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
 
-            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
-                Log.d("UploadItem", responseString.toString())
-            }
         })
     }
 }
