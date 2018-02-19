@@ -9,7 +9,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import it.paggiapp.familyshopping.backend.DataDowload
+import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.intro.IntroActivity
 import it.paggiapp.familyshopping.listaspesa.ListaFragment
@@ -19,7 +19,7 @@ import it.paggiapp.familyshopping.listaspesa.AddListaitem
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
-    private lateinit var frag: GeneralFragment
+    private lateinit var frag: ListaFragment
 
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
         else if(requestCode == AddListaitem.ADDLISTITEM_CODE){
             if(resultCode == Activity.RESULT_OK) {
-                ((frag as ListaFragment).recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+                (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
             }
         }
     }
@@ -85,40 +85,31 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             // if the tab was already selected
             if(wasSelected){
-                frag.scrollToTop()
                 return@setOnTabSelectedListener false
             }
 
             when(position) {
                 0 -> {
-                    frag = ListaFragment.newInstance()
                     // load the fragment
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, frag as ListaFragment)
+                            .replace(R.id.main_container, ListaFragment.newInstance())
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
-
-                    // show the fab
                     fab_main.show()
                 }
                 1 -> {
                     // load the fragment
                     currentFragment = ActiveFragment.LISTA_RICETTE
-
-                    // show the fab
                     fab_main.show()
                 }
                 2 -> {
                     // load the fragment
-                    frag = UtenteFragment.newInstance()
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_container, frag as UtenteFragment)
+                            .replace(R.id.main_container, UtenteFragment.newInstance())
                             .commit()
                     currentFragment = ActiveFragment.PROFILO_UTENTE
-
-                    // hide the fab
                     fab_main.hide()
                 }
                 else -> {
@@ -156,26 +147,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         // display the first fragment
-        val tempFrag = ListaFragment.newInstance()
+        frag = ListaFragment.newInstance()
         val initRefresh = Bundle()
         initRefresh.putBoolean("refresh", true)
-        tempFrag.arguments = initRefresh
+        frag.arguments = initRefresh
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, tempFrag)
+                .replace(R.id.main_container, frag)
                 .commit()
 
         // ask the server for changes
-        DataDowload(applicationContext, Runnable{
-            tempFrag.swipe.isRefreshing = false
-            (tempFrag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
+        ServerHelper(applicationContext, Runnable{
+            frag.swipe.isRefreshing = false
+            (frag.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll()
-
-        frag = tempFrag
     }
 
     /**
-     * To show a message of deleting a carrello item
+     * To show a message of deleting
      */
     fun showMessageItemDeleted() {
         val snack = Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT)
