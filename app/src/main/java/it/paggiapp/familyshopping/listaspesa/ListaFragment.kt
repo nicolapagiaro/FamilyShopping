@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.util.DiffUtil
@@ -52,7 +51,7 @@ class ListaFragment : Fragment(), GeneralFragment {
      */
     private fun readBundle(bundle: Bundle?) {
         if(bundle != null) {
-            if(bundle.getBoolean("refresh") && Util.isOnline(context)) {
+            if(bundle.getBoolean("refresh") && Util.isOnline(context!!)) {
                 swipe.isRefreshing = true
             }
         }
@@ -61,10 +60,10 @@ class ListaFragment : Fragment(), GeneralFragment {
     /**
      * Creates the view displayed
      */
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_lista, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_lista, container, false)
         setHasOptionsMenu(true)
-        isOnline = Util.isOnline(context)
+        isOnline = Util.isOnline(context!!)
 
         swipe = view!!.findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_lista)
@@ -79,7 +78,7 @@ class ListaFragment : Fragment(), GeneralFragment {
         }
 
         // the swipe to delete implementation
-        val swipeHandler = object : SwipeToDeleteCallback(context) {
+        val swipeHandler = object : SwipeToDeleteCallback(context!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
                 // show message
                 (activity as MainActivity).showMessageItemDeleted()
@@ -99,8 +98,8 @@ class ListaFragment : Fragment(), GeneralFragment {
             }
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = ListaAdapter(activity)
+        recyclerView.layoutManager = LinearLayoutManager(context!!)
+        recyclerView.adapter = ListaAdapter(activity!!)
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -122,7 +121,7 @@ class ListaFragment : Fragment(), GeneralFragment {
             // filtra
             val orderBy = ModalOrderBy()
             orderBy.recyclerView = recyclerView
-            orderBy.show(activity.supportFragmentManager, TAG_BOTTOM_SHEET)
+            orderBy.show(activity!!.supportFragmentManager, TAG_BOTTOM_SHEET)
         }
 
         return super.onOptionsItemSelected(item)
@@ -139,7 +138,7 @@ class ListaFragment : Fragment(), GeneralFragment {
         swipe.isRefreshing = true
 
         // ask the server for changes
-        ServerHelper(context, Runnable{
+        ServerHelper(context!!, Runnable{
             swipe.isRefreshing = false
             (recyclerView.adapter as ListaAdapter).refresh()
         }).updateAll()
@@ -152,7 +151,7 @@ class ListaFragment : Fragment(), GeneralFragment {
     fun removeItem(removedItem : Carrello) {
         removedItem.timestamp = Util.getCurrentTimestamp(Locale.US)
         DataStore.getDB().removeItem(removedItem)
-        ServerHelper(context).removeItem(removedItem)
+        ServerHelper(context!!).removeItem(removedItem)
     }
 
 

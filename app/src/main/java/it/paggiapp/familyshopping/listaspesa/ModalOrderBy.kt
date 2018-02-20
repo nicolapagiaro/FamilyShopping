@@ -30,7 +30,7 @@ class ModalOrderBy : BottomSheetDialogFragment() {
         val contentView = View.inflate(context, R.layout.orderby_stylesheet, null)
         dialog.setContentView(contentView)
 
-        currentChoice = Util.getCurrentOrder(context)
+        currentChoice = Util.getCurrentOrder(context!!)
         if(currentChoice == CHOICE_PRIORITY)
             contentView.img_choice_priority.visibility = View.VISIBLE
         else
@@ -42,7 +42,7 @@ class ModalOrderBy : BottomSheetDialogFragment() {
 
             contentView.img_choice_priority.visibility = View.VISIBLE
             contentView.img_choice_last.visibility = View.INVISIBLE
-            Util.setOrder(context, CHOICE_PRIORITY)
+            Util.setOrder(context!!, CHOICE_PRIORITY)
             DataStore.getDB().currentOrder = CHOICE_PRIORITY
             (recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
             dismiss()
@@ -54,7 +54,7 @@ class ModalOrderBy : BottomSheetDialogFragment() {
 
             contentView.img_choice_priority.visibility = View.INVISIBLE
             contentView.img_choice_last.visibility = View.VISIBLE
-            Util.setOrder(context, CHOICE_LAST)
+            Util.setOrder(context!!, CHOICE_LAST)
             DataStore.getDB().currentOrder = CHOICE_LAST
             (recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
             dismiss()

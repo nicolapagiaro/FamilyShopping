@@ -102,7 +102,8 @@ class ServerHelper(val context: Context) {
                 val catInfo: JSONArray = responseString!!.getJSONArray(Comunication.UpdateCategorie.ARRAY_CATEGORIE)
                 for (i in 0..(catInfo.length() - 1)) {
                     val c = Categoria(catInfo.getJSONObject(i).getInt("id"),
-                            catInfo.getJSONObject(i).getString(FamilyContract.Categorie.NOME))
+                            catInfo.getJSONObject(i).getString(FamilyContract.Categorie.NOME),
+                            catInfo.getJSONObject(i).getString(FamilyContract.Categorie.IMMAGINE))
                     list.add(c)
                 }
 
@@ -223,5 +224,12 @@ class ServerHelper(val context: Context) {
         client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
 
         })
+    }
+
+    /**
+     * static objects
+     */
+    companion object {
+        val ABSOLUTE_URL = "http://quizapp.000webhostapp.com/familyshopping/"
     }
 }

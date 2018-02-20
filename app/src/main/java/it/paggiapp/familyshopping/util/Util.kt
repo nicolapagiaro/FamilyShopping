@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
+import android.util.Log
 import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
@@ -110,7 +111,7 @@ class Util {
                 val current = Calendar.getInstance(Locale.ITALY)
 
                 val period = Period(dateItem.timeInMillis, current.timeInMillis)
-                if (period.days == 0 && period.hours < 12) {
+                if (period.days == 0 && period.hours <= 12) {
                     // oggi
                     if (period.hours <= 2)
                         return context.getString(R.string.tv_item_time_few_ago)
@@ -119,13 +120,12 @@ class Util {
                 } else if (period.days == 1 || period.hours > 12) {
                     // ieri
                     return context.getString(R.string.tv_item_time_yesterday)
-                } else if (period.days < 8) {
+                } else if (period.days >  1) {
                     // n giorni fa
                     return context.getString(R.string.tv_item_time_days, period.days)
                 } else {
                     // n settimane fa
-                    val weeks: Int = period.days / 7
-                    return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, weeks)
+                    return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, period.weeks, period.weeks)
                 }
 
             } catch (ex: ParseException) {

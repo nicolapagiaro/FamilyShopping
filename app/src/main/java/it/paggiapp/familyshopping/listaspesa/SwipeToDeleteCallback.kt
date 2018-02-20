@@ -13,8 +13,8 @@ import it.paggiapp.familyshopping.R
  */
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private val doneIcon = ContextCompat.getDrawable(context, R.drawable.ic_done_white_24dp)
-    private val intrinsicWidth = doneIcon.intrinsicWidth
-    private val intrinsicHeight = doneIcon.intrinsicHeight
+    private val intrinsicWidth = doneIcon!!.intrinsicWidth
+    private val intrinsicHeight = doneIcon!!.intrinsicHeight
     private val background = ColorDrawable()
     private val backgroundColor = ContextCompat.getColor(context, R.color.bg_item_done_drawable)
 
@@ -44,8 +44,8 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         val iconBottom = iconTop + intrinsicHeight
 
         // Draw the delete icon
-        doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        doneIcon.draw(c)
+        doneIcon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+        doneIcon!!.draw(c)
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }

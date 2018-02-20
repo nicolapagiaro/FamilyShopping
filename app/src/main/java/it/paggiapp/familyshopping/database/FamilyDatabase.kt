@@ -201,7 +201,8 @@ class FamilyDatabase(val context: Context) {
                     null)
             while (catQuery.moveToNext()) {
                 categoria = Categoria(catQuery.getInt(catQuery.getColumnIndex(FamilyContract.Categorie._ID)),
-                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)))
+                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.NOME)),
+                        catQuery.getString(catQuery.getColumnIndex(FamilyContract.Categorie.IMMAGINE)))
             }
 
             // Get the user from the db
@@ -262,6 +263,7 @@ class FamilyDatabase(val context: Context) {
         val values = ContentValues().apply {
             put(FamilyContract.Categorie._ID, categoria.id)
             put(FamilyContract.Categorie.NOME, categoria.nome)
+            put(FamilyContract.Categorie.IMMAGINE, categoria.immagine)
         }
         return values
     }
@@ -396,7 +398,8 @@ class FamilyDatabase(val context: Context) {
         val retval = ArrayList<Categoria>()
         while (cursor.moveToNext()) {
             val c = Categoria(cursor.getInt(cursor.getColumnIndex(FamilyContract.Categorie._ID)),
-                    cursor.getString(cursor.getColumnIndex(FamilyContract.Categorie.NOME)))
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Categorie.NOME)),
+                    cursor.getString(cursor.getColumnIndex(FamilyContract.Categorie.IMMAGINE)))
             retval.add(c)
         }
         cursor.close()

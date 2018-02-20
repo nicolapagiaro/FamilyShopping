@@ -1,6 +1,5 @@
 package it.paggiapp.familyshopping.intro
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,7 @@ import cz.msebera.android.httpclient.Header
 import it.paggiapp.familyshopping.util.EmailValidator
 import it.paggiapp.familyshopping.util.Util
 import org.json.JSONObject
-import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
-import android.text.Editable
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.Comunication.*
 import it.paggiapp.familyshopping.data.Utente
@@ -42,8 +39,8 @@ class LoginFragment : SlideFragment() {
     /**
      * onCreate function
      */
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_intro_login, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_intro_login, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,7 +51,7 @@ class LoginFragment : SlideFragment() {
 
 
             // check for internet connection
-            if(!Util.isOnline(context)) {
+            if(!Util.isOnline(context!!)) {
                 Snackbar.make(introActivity.contentView, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -72,7 +69,7 @@ class LoginFragment : SlideFragment() {
 
                 val client = AsyncHttpClient()
 
-                client.post(context, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
+                client.post(context!!, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
 
                     override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
 
@@ -81,13 +78,13 @@ class LoginFragment : SlideFragment() {
                             if(responseString.getInt(Login.MODE_FIELD) == 0) {
                                 // new user
                                 btn_login.text = getString(R.string.action_login_done)
-                                Util.setNewUser(context, true)
+                                Util.setNewUser(context!!, true)
 
 
                                 // memorizzo tutti i dati dell'utente nelle sharedPref
                                 val id = responseString.getInt(Login.NEWUSER_ID_FIELD)
                                 val user = Utente(id, nome, email, 0)
-                                Util.saveUser(context, user)
+                                Util.saveUser(context!!, user)
                             }
                             else {
                                 // old user
@@ -99,8 +96,8 @@ class LoginFragment : SlideFragment() {
                                         userArray.getString("nome"),
                                         userArray.getString("email"),
                                         userArray.getInt("codiceFamiglia"))
-                                Util.setNewUser(context, false)
-                                Util.saveUser(context, user)
+                                Util.setNewUser(context!!, false)
+                                Util.saveUser(context!!, user)
                                 if(et_nome.text.length != 0)
                                     et_nome.setText("")
                                 et_nome.append(user.nome)

@@ -9,6 +9,7 @@
     <color name="dividerColor">#E0E0E0</color>
 
     <color name="white">#FFF</color>
+    <color name="image_toolbar_mask">#24000000</color>
 
     <!-- Dark/colored theme -->
     <color name="primaryTextColorWhite">@color/white</color>

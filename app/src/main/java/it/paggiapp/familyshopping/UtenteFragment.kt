@@ -25,8 +25,8 @@ class UtenteFragment : Fragment(), GeneralFragment{
     /**
      * Creates the view displayed
      */
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_utente, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_utente, container, false)
         return view
     }
 

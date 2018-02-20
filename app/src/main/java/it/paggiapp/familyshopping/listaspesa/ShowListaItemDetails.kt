@@ -9,6 +9,16 @@ import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_show_lista_item_details.*
+import android.view.ViewAnimationUtils
+import android.animation.Animator
+import android.os.Build
+import android.os.Handler
+import android.view.View
+import com.squareup.picasso.Callback
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
+import it.paggiapp.familyshopping.backend.ServerHelper
 
 class ShowListaItemDetails : AppCompatActivity() {
     lateinit var item : Carrello
@@ -58,12 +68,31 @@ class ShowListaItemDetails : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // load the image if there is internet connection
+        Picasso.with(applicationContext)
+                .load(ServerHelper.ABSOLUTE_URL + item.categoria!!.immagine)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .into(show_item_header_img, object : Callback{
+                    override fun onSuccess() {
+                        showImage()
+                    }
+
+                    override fun onError() {}
+
+                })
+    }
+
     /**
      * onBack button pressed
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             android.R.id.home -> {
+                finish()
                 return true
             }
         }
@@ -85,7 +114,29 @@ class ShowListaItemDetails : AppCompatActivity() {
         }
     }
 
+    /**
+     *
+     */
+    private fun showImage() {
+        // get the center for the clipping circle
+        val x = app_bar.getRight() / 2
+        val y = app_bar.getBottom() / 2
+
+        val startRadius = 0F
+        val endRadius  = Math.hypot(app_bar.getWidth().toDouble(), app_bar.getHeight().toDouble()).toFloat()
+
+        val anim : Animator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ViewAnimationUtils.createCircularReveal(show_item_header_img, x, y, startRadius, endRadius)
+        } else {
+            null
+        }
+
+        show_item_header_img.visibility = View.VISIBLE
+        anim?.start()
+    }
+
     companion object {
         val SHOWITEM_CODE = 555
+        val WAIT_TIME = 500L
     }
 }

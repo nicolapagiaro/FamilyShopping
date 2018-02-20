@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FamilyShopping</string>
+    <string name="app_name">Family Shopping</string>
     <string name="no_internet">Nessuna connesione ad internet</string>
     <string name="image_content_descriptor">image</string>
     <string name="transition_home">list_item</string>

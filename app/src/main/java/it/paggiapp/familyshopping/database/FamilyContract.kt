@@ -62,11 +62,13 @@ object FamilyContract {
         val _ID = "_id"
         val _TABLE_NAME = "categorie"
         val NOME = "nome"
+        val IMMAGINE = "immagine"
     }
 
     val SQL_CREATE_CATEGORIE = "CREATE TABLE ${Categorie._TABLE_NAME} (" +
             "${Categorie._ID} INTEGER PRIMARY KEY, " +
-            "${Categorie.NOME} TEXT)".trimMargin()
+            "${Categorie.NOME} TEXT," +
+            "${Categorie.IMMAGINE} TEXT )".trimMargin()
 
     val SQL_DELETE_CATEGORIE = "DROP TABLE IF EXISTS ${Categorie._TABLE_NAME}"
 }

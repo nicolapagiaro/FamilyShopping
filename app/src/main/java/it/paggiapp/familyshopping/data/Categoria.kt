@@ -7,5 +7,6 @@ import java.io.Serializable
  */
 data class Categoria(
         val id : Int,
-        val nome : String
+        val nome : String,
+        val immagine: String
 ) : Serializable

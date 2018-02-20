@@ -36,8 +36,8 @@ class FinalFragment : SlideFragment() {
     /**
      * onCreate function
      */
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_intro_final, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_intro_final, container, false)
     }
 
     /**
@@ -45,7 +45,7 @@ class FinalFragment : SlideFragment() {
      */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && !Util.isNewUser(context)) {
+        if (isVisibleToUser && !Util.isNewUser(context!!)) {
             displayOldUser()
         }
     }
@@ -61,7 +61,7 @@ class FinalFragment : SlideFragment() {
 
             if (isCodeValid()) {
 
-                if (Util.isNewUser(context)) {
+                if (Util.isNewUser(context!!)) {
                     btn_save.text = getText(R.string.action_save_fetching)
                     btn_save.isClickable = false
                     val requestParams = RequestParams()
@@ -70,8 +70,8 @@ class FinalFragment : SlideFragment() {
                     val insertCode = et_familycode.text.toString()
                     if (insertCode.length != 5) { //CREATE A NEW CODE
                         requestParams.put(Login.LOGIN_STEP, Login.LOGIN_SECOND_STEP)
-                        requestParams.put(Login.NEWUSER_ID_FIELD, Util.getUser(context).id)
-                        client.post(context, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
+                        requestParams.put(Login.NEWUSER_ID_FIELD, Util.getUser(context!!).id)
+                        client.post(context!!, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
 
                             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
 
@@ -81,16 +81,16 @@ class FinalFragment : SlideFragment() {
 
                                     // prendo il codice e lo salvo nelle sharedPref
                                     val code: Int = responseString.getInt("code")
-                                    val u = Util.getUser(context)
+                                    val u = Util.getUser(context!!)
                                     u.codiceFamiglia = code
-                                    Util.saveUser(context, u)
+                                    Util.saveUser(context!!, u)
                                     savedFamilyCode = true
 
                                     // lo mostro all'utente
                                     et_familycode.append(code.toString())
 
                                     // user is logged
-                                    Util.loginUser(context)
+                                    Util.loginUser(context!!)
                                 } else {
                                     // CODE ERROR
                                     showLastGeneralError()
@@ -107,10 +107,10 @@ class FinalFragment : SlideFragment() {
                         })
                     } else { // UPDATE THE NEW USER OF NEW CODE
                         requestParams.put(Login.LOGIN_STEP, Login.LOGIN_SECOND_STEP2)
-                        requestParams.put(Login.NEWUSER_ID_FIELD, Util.getUser(context).id)
+                        requestParams.put(Login.NEWUSER_ID_FIELD, Util.getUser(context!!).id)
                         requestParams.put(Login.CODE_LABEL, et_familycode.text.toString())
 
-                        client.post(context, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
+                        client.post(context!!, Login.LOGIN_URL, requestParams, object : JsonHttpResponseHandler() {
 
                             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
 
@@ -118,13 +118,13 @@ class FinalFragment : SlideFragment() {
                                     // CODE OK
                                     btn_save.text = getText(R.string.action_save_done)
 
-                                    val u = Util.getUser(context)
+                                    val u = Util.getUser(context!!)
                                     u.codiceFamiglia = Integer.parseInt(insertCode)
-                                    Util.saveUser(context, u)
+                                    Util.saveUser(context!!, u)
                                     savedFamilyCode = true
 
                                     // user is logged
-                                    Util.loginUser(context)
+                                    Util.loginUser(context!!)
                                 } else {
                                     // CODE ERROR
                                     showLastGeneralError()
@@ -142,7 +142,7 @@ class FinalFragment : SlideFragment() {
                     }
 
                 } else {
-                    Util.loginUser(context)
+                    Util.loginUser(context!!)
                     btn_save.text = getText(R.string.action_save_done)
                     savedFamilyCode = true
                 }
@@ -155,7 +155,7 @@ class FinalFragment : SlideFragment() {
      */
     fun displayOldUser() {
         // retrieve old user info
-        val utente: Utente = Util.getUser(context)
+        val utente: Utente = Util.getUser(context!!)
 
         tv_loginfinal_title.text = getString(R.string.intro_title2_old)
         tv_loginfinal_subtitle.text = getString(R.string.intro_subtitle2_old)
