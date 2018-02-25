@@ -88,4 +88,8 @@
     <string name="error_no_item_name">Nessun articolo inserito</string>
     <string name="error_no_item_category">Nessuna categoria selezionata</string>
 
+
+    <!-- ProfiloUtente fragment-->
+    <string name="tv_info_label">Info utente</string>
+    <string name="tv_familyinfo_label">Famiglia</string>
 </resources>

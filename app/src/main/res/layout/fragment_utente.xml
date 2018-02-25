@@ -1,17 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/list_margin_top"
+            android:text="@string/tv_info_label"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="@dimen/twolines_secondText"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.CardView
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/card_margin_horizontal"
+            android:layout_marginRight="@dimen/card_margin_horizontal"
+            android:layout_marginTop="@dimen/list_margin_top">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_utente_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/horizontal_margin"
+                    android:drawableStart="@drawable/ic_person_grey_24dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin"
+                    android:text="Nicola"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/twolines_firstText" />
+
+                <TextView
+                    android:id="@+id/tv_utente_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/horizontal_margin"
+                    android:drawableStart="@drawable/ic_email_grey_24dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin"
+                    android:text="pagiaro@gmail.com"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/twolines_firstText" />
+
+                <TextView
+                    android:id="@+id/tv_utente_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/horizontal_margin"
+                    android:drawableStart="@drawable/ic_key_grey_24dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/horizontal_margin"
+                    android:paddingStart="@dimen/horizontal_margin"
+                    android:text="Cambia password"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/twolines_firstText" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:text="@string/tv_familyinfo_label"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="@dimen/twolines_secondText"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.CardView
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/card_margin_horizontal"
+            android:layout_marginRight="@dimen/card_margin_horizontal"
+            android:layout_marginTop="@dimen/list_margin_top">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="Family"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="@dimen/twolines_firstText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="Nome"
+                        android:textColor="@color/secondaryTextColor"
+                        android:textSize="@dimen/twolines_secondText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="45585"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="@dimen/twolines_firstText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="Codice di accesso"
+                        android:textColor="@color/secondaryTextColor"
+                        android:textSize="@dimen/twolines_secondText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twolist_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="4 persone"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="@dimen/twolines_firstText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/horizontal_margin"
+                        android:layout_marginStart="@dimen/horizontal_margin"
+                        android:text="Numero membri"
+                        android:textColor="@color/secondaryTextColor"
+                        android:textSize="@dimen/twolines_secondText" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

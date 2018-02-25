@@ -59,18 +59,6 @@ class ShowListaItemDetails : AppCompatActivity() {
         tv_itemdetails_priority_value.text = priorita
         tv_itemdetails_added_value.text = Util.timeToText(item.dataImmissione, applicationContext)
 
-        // listener for the FAB edit
-        item_details_fab_edit.setOnClickListener {
-            // open the view to edit the item (the same used for create a new one)
-            val editItem = Intent(applicationContext, AddListaitem::class.java)
-            editItem.putExtra("item", item)
-            startActivityForResult(editItem, AddListaitem.ADDLISTITEM_CODE)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         // load the image if there is internet connection
         Picasso.with(applicationContext)
                 .load(ServerHelper.ABSOLUTE_URL + item.categoria!!.immagine)
@@ -84,6 +72,14 @@ class ShowListaItemDetails : AppCompatActivity() {
                     override fun onError() {}
 
                 })
+
+        // listener for the FAB edit
+        item_details_fab_edit.setOnClickListener {
+            // open the view to edit the item (the same used for create a new one)
+            val editItem = Intent(applicationContext, AddListaitem::class.java)
+            editItem.putExtra("item", item)
+            startActivityForResult(editItem, AddListaitem.ADDLISTITEM_CODE)
+        }
     }
 
     /**
