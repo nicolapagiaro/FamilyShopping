@@ -1,14 +1,12 @@
 package it.paggiapp.familyshopping
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import it.paggiapp.familyshopping.backend.ServerHelper
@@ -19,6 +17,7 @@ import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import it.paggiapp.familyshopping.listaspesa.AddListaitem
 import it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails
+import android.support.v7.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA

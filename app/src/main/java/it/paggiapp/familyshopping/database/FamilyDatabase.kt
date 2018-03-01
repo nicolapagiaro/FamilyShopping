@@ -221,7 +221,8 @@ class FamilyDatabase(val context: Context) {
                 utente = Utente(userQuery.getInt(userQuery.getColumnIndex(FamilyContract.Utenti._ID)),
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.NOME)),
                         userQuery.getString(userQuery.getColumnIndex(FamilyContract.Utenti.EMAIL)),
-                        userQuery.getInt(0))
+                        userQuery.getInt(0),
+                        null)
             }
 
             catQuery.close()
@@ -303,7 +304,8 @@ class FamilyDatabase(val context: Context) {
             val u = Utente(cursor.getInt(col++),
                     cursor.getString(col++),
                     cursor.getString(col),
-                    0)
+                    0,
+                    "")
             retval.add(u)
         }
 

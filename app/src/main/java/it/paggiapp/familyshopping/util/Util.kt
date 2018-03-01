@@ -59,6 +59,7 @@ class Util {
             editor?.putString(Utente.NOME_LABEL, utente.nome)
             editor?.putString(Utente.EMAIL_LABEL, utente.email)
             editor?.putInt(Utente.CODFAM_LABEL, utente.codiceFamiglia)
+            editor?.putString(Utente.NOME_FAM_LABEL, utente.nomeFamiglia)
             editor?.apply()
         }
 
@@ -70,7 +71,8 @@ class Util {
             return Utente(pref!!.getInt(Utente.ID_LABEL, 0),
                     pref.getString(Utente.NOME_LABEL, null),
                     pref.getString(Utente.EMAIL_LABEL, null),
-                    pref.getInt(Utente.CODFAM_LABEL, 0))
+                    pref.getInt(Utente.CODFAM_LABEL, 0),
+                    pref.getString(Utente.NOME_FAM_LABEL, "Family"))
         }
 
         fun setNewUser(context: Context, new : Boolean) {

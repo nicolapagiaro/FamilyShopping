@@ -83,7 +83,7 @@ class LoginFragment : SlideFragment() {
 
                                 // memorizzo tutti i dati dell'utente nelle sharedPref
                                 val id = responseString.getInt(Login.NEWUSER_ID_FIELD)
-                                val user = Utente(id, nome, email, 0)
+                                val user = Utente(id, nome, email, 0, "Family")
                                 Util.saveUser(context!!, user)
                             }
                             else {
@@ -92,10 +92,12 @@ class LoginFragment : SlideFragment() {
 
                                 // memorizzo tutti i dati dell'utente nelle sharedPref
                                 val userArray = responseString.getJSONObject(Login.USERINFO_FIELD)
-                                val user = Utente(userArray.getInt("id"),
-                                        userArray.getString("nome"),
-                                        userArray.getString("email"),
-                                        userArray.getInt("codiceFamiglia"))
+                                val user = Utente(userArray.getInt(Utente.ID_LABEL),
+                                        userArray.getString(Utente.NOME_LABEL),
+                                        userArray.getString(Utente.EMAIL_LABEL),
+                                        userArray.getInt(Utente.CODFAM_LABEL),
+                                        userArray.getString(Utente.NOME_FAM_LABEL))
+
                                 Util.setNewUser(context!!, false)
                                 Util.saveUser(context!!, user)
                                 if(et_nome.text.length != 0)

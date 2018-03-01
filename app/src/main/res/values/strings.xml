@@ -92,4 +92,9 @@
     <!-- ProfiloUtente fragment-->
     <string name="tv_info_label">Info utente</string>
     <string name="tv_familyinfo_label">Famiglia</string>
+    <string name="tv_members_label">Membri</string>
+    <string name="tv_pssw_placeholder">Cambia password</string>
+    <string name="tv_family_name">Nome</string>
+    <string name="tv_family_code">Codice di accesso</string>
+    <string name="tv_family_number">Numero membri</string>
 </resources>

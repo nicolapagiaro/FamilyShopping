@@ -60,7 +60,8 @@ class ServerHelper(val context: Context) {
                     val u = Utente(userInfo.getJSONObject(i).getInt("id"),
                             userInfo.getJSONObject(i).getString(FamilyContract.Utenti.NOME),
                             userInfo.getJSONObject(i).getString(FamilyContract.Utenti.EMAIL),
-                            0)
+                            userInfo.getJSONObject(i).getInt(Utente.CODFAM_LABEL),
+                            "")
                     list.add(u)
                 }
 
