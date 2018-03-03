@@ -97,4 +97,8 @@
     <string name="tv_family_name">Nome</string>
     <string name="tv_family_code">Codice di accesso</string>
     <string name="tv_family_number">Numero membri</string>
+    <string name="dialogo_change_pssw_title">Cambio password</string>
+    <string name="et_change_pssw1">Vecchia password</string>
+    <string name="et_change_pssw2">Nuova password</string>
+    <string name="change_pssw_error">Dati immessi non validi</string>
 </resources>

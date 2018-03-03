@@ -34,10 +34,13 @@ class Comunication {
     class UpdateUtente {
         companion object {
             val URL = "http://quizapp.000webhostapp.com/familyshopping/updateUtenti.php"
+            val URL_CHANGE_PSSW = "http://quizapp.000webhostapp.com/familyshopping/changePassword.php"
             val ID_LABEL = "id"
             val CODE_LABEL = "code"
             val IDS_LABEL = "ids"
             val ARRAY_USER = "utenti"
+            val NEWPSSW_LABEL = "newPssw"
+            val OLDPSSW_LABEL = "oldPssw"
         }
     }
 

@@ -4,6 +4,9 @@
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="margin_bottom_fab">72dp</dimen>
     <dimen name="double_horizontal_margin">32dp</dimen>
+    <dimen name="dialog_marginStart">24dp</dimen>
+    <dimen name="dialog_content_marginTop">20dp</dimen>
+    <dimen name="dialog_content_marginBottom">24dp</dimen>
 
     <!-- card dimen -->
     <dimen name="card_padding_top">24dp</dimen>
@@ -24,6 +27,4 @@
     <dimen name="twolines_secondText">14sp</dimen>
     <dimen name="twolist_height">72dp</dimen>
     <dimen name="twolist_marginStart">32dp</dimen>
-
-    <!-- addList Item dimen -->
 </resources>

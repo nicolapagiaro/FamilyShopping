@@ -6,16 +6,17 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatDelegate
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
-import it.paggiapp.familyshopping.GeneralFragment
+import android.widget.Toast
+import it.paggiapp.familyshopping.GenericFragment
 import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.ServerHelper
@@ -31,7 +32,7 @@ import java.util.*
  * Fragment for the shopping chart
  * Created by nicola on 02/02/18.
  */
-class ListaFragment : Fragment(), GeneralFragment {
+class ListaFragment : Fragment(), GenericFragment {
     lateinit var swipe: SwipeRefreshLayout
     lateinit var recyclerView : RecyclerView
     var isOnline = false
@@ -82,7 +83,7 @@ class ListaFragment : Fragment(), GeneralFragment {
         val swipeHandler = object : SwipeToDeleteCallback(context!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
                 // show message
-                (activity as MainActivity).showMessageItemDeleted()
+                (activity as MainActivity).showMessage(R.string.prompt_item_deleted)
 
                 // notify the adapter of changes
                 val adapter = recyclerView.adapter as ListaAdapter

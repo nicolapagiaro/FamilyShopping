@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import it.paggiapp.familyshopping.R
@@ -14,7 +15,7 @@ import it.paggiapp.familyshopping.R
  * Created by nicola on 10/02/18.
  */
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-    private val doneIcon = ContextCompat.getDrawable(context.applicationContext, R.drawable.ic_done_white_24px)
+    private val doneIcon = AppCompatResources.getDrawable(context.applicationContext, R.drawable.ic_done_white_24px)
     private val intrinsicWidth = doneIcon!!.intrinsicWidth
     private val intrinsicHeight = doneIcon!!.intrinsicHeight
     private val background = ColorDrawable()

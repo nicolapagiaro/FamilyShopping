@@ -228,6 +228,21 @@ class ServerHelper(val context: Context) {
     }
 
     /**
+     * Call the server and updates the passoword
+     */
+    fun changeUserPassword(idUtente : Int, oldPssw : String, newPssw : String) {
+        val requestParams = RequestParams()
+        requestParams.put(Comunication.UpdateUtente.ID_LABEL, idUtente)
+        requestParams.put(Comunication.UpdateUtente.OLDPSSW_LABEL, oldPssw)
+        requestParams.put(Comunication.UpdateUtente.NEWPSSW_LABEL, newPssw)
+
+        val client = AsyncHttpClient()
+        client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
+            
+        })
+    }
+
+    /**
      * static objects
      */
     companion object {

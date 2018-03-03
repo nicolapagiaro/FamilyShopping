@@ -2,11 +2,15 @@ package it.paggiapp.familyshopping
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.annotation.RequiresApi
+import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import it.paggiapp.familyshopping.backend.ServerHelper
@@ -17,11 +21,10 @@ import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import it.paggiapp.familyshopping.listaspesa.AddListaitem
 import it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails
-import android.support.v7.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
-    private lateinit var frag: GeneralFragment
+    private lateinit var frag: GenericFragment
 
     companion object {
         val REQUEST_CODE_INTRO: Int = 300
@@ -91,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         // listener for tab click
         bottom_navigation.setOnTabSelectedListener { position, wasSelected ->
             // if the tab was already selected
-            if(wasSelected){
+            if(wasSelected) {
                 frag.scrollToTop()
                 return@setOnTabSelectedListener false
             }
@@ -107,7 +110,6 @@ class MainActivity : AppCompatActivity() {
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
                     fab_main.show()
-
 
                 }
                 1 -> {
@@ -158,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         // check for connection
         if (!Util.isOnline(applicationContext)) {
             Handler().postDelayed(Runnable{
-                Snackbar.make(bottom_navigation, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
+                showMessage(R.string.no_internet)
             }, DELAY_SNACKBAR)
         }
 
@@ -181,10 +183,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * To show a message of deleting
+     * To show a message
      */
-    fun showMessageItemDeleted() {
-        val snack = Snackbar.make(bottom_navigation, R.string.prompt_item_deleted, Snackbar.LENGTH_SHORT)
-        snack.show()
+    fun showMessage(@StringRes message : Int) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Snackbar.make(bottom_navigation, message, Snackbar.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        }
     }
 }
