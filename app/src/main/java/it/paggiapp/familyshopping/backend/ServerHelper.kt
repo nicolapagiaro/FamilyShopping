@@ -9,6 +9,8 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
+import it.paggiapp.familyshopping.MainActivity
+import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
 import it.paggiapp.familyshopping.data.Utente
@@ -230,15 +232,21 @@ class ServerHelper(val context: Context) {
     /**
      * Call the server and updates the passoword
      */
-    fun changeUserPassword(idUtente : Int, oldPssw : String, newPssw : String) {
+    fun changeUserPassword(idUtente : Int, oldPssw : String, newPssw : String, act : MainActivity) {
         val requestParams = RequestParams()
         requestParams.put(Comunication.UpdateUtente.ID_LABEL, idUtente)
         requestParams.put(Comunication.UpdateUtente.OLDPSSW_LABEL, oldPssw)
         requestParams.put(Comunication.UpdateUtente.NEWPSSW_LABEL, newPssw)
 
         val client = AsyncHttpClient()
-        client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
-            
+        client.post(context, Comunication.UpdateUtente.URL_CHANGE_PSSW, requestParams, object : JsonHttpResponseHandler(){
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
+               if(responseString!!.getInt(Comunication.Login.SUCCESS_FIELD) == 1) {
+                   act.showMessage(R.string.change_pssw_done)
+               }else {
+                   act.showMessage(R.string.change_pssw_failed)
+               }
+            }
         })
     }
 

@@ -2,11 +2,9 @@ package it.paggiapp.familyshopping
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
+import it.paggiapp.familyshopping.backend.ServerHelper
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +94,11 @@ class UtenteFragment : Fragment(), GenericFragment {
                 button.setOnClickListener {
                     if (validatePassword(pssw1.text.toString(), pssw2.text.toString())) {
                         // change pssw
-
+                        ServerHelper(this@UtenteFragment.context!!)
+                                .changeUserPassword(utente.id,
+                                        pssw1.text.toString(),
+                                        pssw2.text.toString(),
+                                        activity as MainActivity)
                         // close dialog
                         dialog.dismiss()
 

@@ -101,4 +101,6 @@
     <string name="et_change_pssw1">Vecchia password</string>
     <string name="et_change_pssw2">Nuova password</string>
     <string name="change_pssw_error">Dati immessi non validi</string>
+    <string name="change_pssw_done">Password cambiata</string>
+    <string name="change_pssw_failed">Errore, password non cambiata</string>
 </resources>

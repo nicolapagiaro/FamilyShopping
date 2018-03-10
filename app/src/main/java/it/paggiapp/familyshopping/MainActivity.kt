@@ -193,4 +193,16 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    /**
+     * To show a message
+     */
+    fun showMessage(message : String) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Snackbar.make(bottom_navigation, message, Snackbar.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 }
