@@ -10,7 +10,7 @@
     <dimen name="card_margin_horizontal">0dp</dimen>
     <dimen name="card_end_padding">16dp</dimen>
     <dimen name="card_subtitle_content">14sp</dimen>
-    <dimen name="card_title">24sp</dimen>
+    <dimen name="card_title">18sp</dimen>
 
     <!-- bottom sylesheet dimen -->
     <dimen name="list_margin_top">8dp</dimen>

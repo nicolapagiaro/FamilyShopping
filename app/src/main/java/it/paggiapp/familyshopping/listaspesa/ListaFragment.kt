@@ -2,6 +2,8 @@ package it.paggiapp.familyshopping.listaspesa
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +11,7 @@ import android.os.Looper
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.graphics.Palette
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,6 +19,8 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
 import android.widget.Toast
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import it.paggiapp.familyshopping.GenericFragment
 import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
@@ -26,6 +31,7 @@ import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
 import kotlinx.android.synthetic.main.lista_item.view.*
+import java.lang.Exception
 import java.util.*
 
 /**

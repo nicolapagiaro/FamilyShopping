@@ -1,9 +1,7 @@
 package it.paggiapp.familyshopping.backend
 
-import android.app.Notification
 import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -27,13 +25,13 @@ import java.util.ArrayList
  * Created by nicola on 08/02/18.
  */
 class ServerHelper(val context: Context) {
-    lateinit var callback : Runnable
+    var callback : Runnable? = null
 
     /**
      * Secondary contructor
      * @param callback set of instruction called after download all things
      */
-    constructor(context : Context, callback: Runnable) : this(context) {
+    constructor(context : Context, callback: Runnable?) : this(context) {
         this.callback = callback
     }
 
@@ -75,15 +73,15 @@ class ServerHelper(val context: Context) {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONArray?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
-                callback.run()
+                callback?.run()
             }
         })
     }
@@ -118,19 +116,22 @@ class ServerHelper(val context: Context) {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONArray?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
-                callback.run()
+                callback?.run()
             }
         })
     }
 
+    /**
+     * Function that updates the chart item
+     */
     private fun updateCarrello(){
         val utente = Util.getUser(context)
 
@@ -175,19 +176,19 @@ class ServerHelper(val context: Context) {
                 val listItemTimestamp = DataStore.getDB().getNewCarrello(lastTimestamp)
                 pushUpdateToServer(listItemTimestamp)
 
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONArray?) {
-                callback.run()
+                callback?.run()
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
-                callback.run()
+                callback?.run()
             }
         })
     }
