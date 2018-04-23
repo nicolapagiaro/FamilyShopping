@@ -161,33 +161,34 @@ class ListaFragment : Fragment(), GenericFragment {
      * Adapter for the recyclerview of shopping list
      */
     class ListaAdapter(val activity: Activity) : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
+
         private var isRefreshing: Boolean = false
         var list : ArrayList<Carrello> = ArrayList()
 
-        override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
             refresh()
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ItemViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             return ItemViewHolder(parent!!.inflate(R.layout.lista_item, false), activity)
         }
 
-        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int, payloads: MutableList<Any>?) {
-            if(payloads== null || payloads!!.isEmpty())
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: MutableList<Any>) {
+            if(payloads.isEmpty())
                 return super.onBindViewHolder(holder, position, payloads)
 
             val bundle = payloads.get(0) as Bundle
             if(bundle.size() != 0) {
-                holder?.item?.nome = bundle.getString(FamilyContract.Carrello.NOME)
-                holder?.item?.commento = bundle.getString(FamilyContract.Carrello.COMMENTO)
-                holder?.item?.priorita = bundle.getInt(FamilyContract.Carrello.PRIORITA)
+                holder.item?.nome = bundle.getString(FamilyContract.Carrello.NOME)
+                holder.item?.commento = bundle.getString(FamilyContract.Carrello.COMMENTO)
+                holder.item?.priorita = bundle.getInt(FamilyContract.Carrello.PRIORITA)
             }
         }
 
-        override fun onBindViewHolder(holder: ItemViewHolder?, position: Int) {
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val item = list[position]
-            holder?.bind(item)
-            holder?.attachOnClickListener()
+            holder.bind(item)
+            holder.attachOnClickListener()
         }
 
 

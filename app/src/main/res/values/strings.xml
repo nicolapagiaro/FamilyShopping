@@ -42,7 +42,7 @@
     <string name="action_save_done">Salvato</string>
 
     <!-- Stringhe per Bottom Navigation Bar -->
-    <string name="bn_item1">Lista</string>
+    <string name="bn_item1">Spesa</string>
     <string name="bn_item2">Ricette</string>
     <string name="bn_item3">Profilo</string>
 

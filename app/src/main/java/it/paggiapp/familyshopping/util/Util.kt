@@ -104,6 +104,7 @@ class Util {
          */
         fun timeToText(dateString : String, context: Context) : String {
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
+            var res = ""
             try {
                 // insert date of the item
                 val dateItem = Calendar.getInstance()
@@ -112,28 +113,28 @@ class Util {
                 // current date
                 val current = Calendar.getInstance(Locale.ITALY)
 
-                val period = Period(dateItem.timeInMillis, current.timeInMillis)
+                val period = Period(current.timeInMillis, dateItem.timeInMillis)
                 if (period.days == 0 && period.hours <= 12) {
                     // oggi
                     if (period.hours <= 2)
-                        return context.getString(R.string.tv_item_time_few_ago)
+                        res = context.getString(R.string.tv_item_time_few_ago)
                     else
-                        return context.getString(R.string.tv_item_time_today)
+                        res = context.getString(R.string.tv_item_time_today)
                 } else if (period.days == 1 || period.hours > 12) {
                     // ieri
-                    return context.getString(R.string.tv_item_time_yesterday)
+                    res = context.getString(R.string.tv_item_time_yesterday)
                 } else if (period.days >  1) {
                     // n giorni fa
-                    return context.getString(R.string.tv_item_time_days, period.days)
+                    res = context.getString(R.string.tv_item_time_days, period.days)
                 } else {
                     // n settimane fa
-                    return context.resources.getQuantityString(R.plurals.tv_item_time_weeks, period.weeks, period.weeks)
+                    res = context.resources.getQuantityString(R.plurals.tv_item_time_weeks, period.weeks, period.weeks)
                 }
 
             } catch (ex: ParseException) {
             }
 
-            return ""
+            return res.replace("-", "")
         }
 
         /**

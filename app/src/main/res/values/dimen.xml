@@ -2,6 +2,7 @@
 <resources>
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="vertical_margin_half">8dp</dimen>
     <dimen name="margin_bottom_fab">72dp</dimen>
     <dimen name="double_horizontal_margin">32dp</dimen>
     <dimen name="dialog_marginStart">24dp</dimen>

@@ -19,6 +19,7 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import it.paggiapp.familyshopping.backend.ServerHelper
+import java.lang.Exception
 
 class ShowListaItemDetails : AppCompatActivity() {
     lateinit var item : Carrello
@@ -60,16 +61,16 @@ class ShowListaItemDetails : AppCompatActivity() {
         tv_itemdetails_added_value.text = Util.timeToText(item.dataImmissione, applicationContext)
 
         // load the image if there is internet connection
-        Picasso.with(applicationContext)
+        Picasso.get()
                 .load(ServerHelper.ABSOLUTE_URL + item.categoria!!.immagine)
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .into(show_item_header_img, object : Callback{
+                    override fun onError(e: Exception?) {}
+
                     override fun onSuccess() {
                         showImage()
                     }
-
-                    override fun onError() {}
 
                 })
 
@@ -111,7 +112,7 @@ class ShowListaItemDetails : AppCompatActivity() {
     }
 
     /**
-     *
+     * Funzione per fare l'effetto di circle reveal dell'immagine dell'header
      */
     private fun showImage() {
         // get the center for the clipping circle
@@ -131,6 +132,9 @@ class ShowListaItemDetails : AppCompatActivity() {
         anim?.start()
     }
 
+    /**
+     * Oggetti statici
+     */
     companion object {
         val SHOWITEM_CODE = 555
         val WAIT_TIME = 500L
