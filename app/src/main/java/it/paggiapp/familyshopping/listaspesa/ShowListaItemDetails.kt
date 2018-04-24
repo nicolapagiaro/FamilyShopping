@@ -63,15 +63,12 @@ class ShowListaItemDetails : AppCompatActivity() {
         // load the image if there is internet connection
         Picasso.get()
                 .load(ServerHelper.ABSOLUTE_URL + item.categoria!!.immagine)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .into(show_item_header_img, object : Callback{
                     override fun onError(e: Exception?) {}
 
                     override fun onSuccess() {
                         showImage()
                     }
-
                 })
 
         // listener for the FAB edit

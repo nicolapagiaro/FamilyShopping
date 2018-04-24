@@ -176,7 +176,7 @@ class ListaFragment : Fragment(), GenericFragment {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-            return ItemViewHolder(parent!!.inflate(R.layout.lista_item, false), activity)
+            return ItemViewHolder(parent.inflate(R.layout.lista_item, false), activity)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: MutableList<Any>) {

@@ -104,7 +104,7 @@ class Util {
          */
         fun timeToText(dateString : String, context: Context) : String {
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
-            var res = ""
+            var res: String
             try {
                 // insert date of the item
                 val dateItem = Calendar.getInstance()
@@ -113,14 +113,14 @@ class Util {
                 // current date
                 val current = Calendar.getInstance(Locale.ITALY)
 
-                val period = Period(current.timeInMillis, dateItem.timeInMillis)
-                if (period.days == 0 && period.hours <= 12) {
+                val period = Period(dateItem.timeInMillis, current.timeInMillis)
+                if (period.days == 0) {
                     // oggi
                     if (period.hours <= 2)
                         res = context.getString(R.string.tv_item_time_few_ago)
                     else
                         res = context.getString(R.string.tv_item_time_today)
-                } else if (period.days == 1 || period.hours > 12) {
+                } else if (period.days == 1) {
                     // ieri
                     res = context.getString(R.string.tv_item_time_yesterday)
                 } else if (period.days >  1) {
@@ -132,9 +132,15 @@ class Util {
                 }
 
             } catch (ex: ParseException) {
+                ex.printStackTrace()
+                res = "error"
+            }
+            catch (ex: IllegalArgumentException) {
+                ex.printStackTrace()
+                res = "error"
             }
 
-            return res.replace("-", "")
+            return res
         }
 
         /**
