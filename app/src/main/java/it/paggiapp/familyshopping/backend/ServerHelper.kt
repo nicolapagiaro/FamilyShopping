@@ -2,6 +2,8 @@ package it.paggiapp.familyshopping.backend
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
+import android.widget.TextView
 import com.google.gson.Gson
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -65,6 +67,10 @@ class ServerHelper(val context: Context) {
                     list.add(u)
                 }
 
+                // salvo il nome della famiglia aggiornato da qualcun altro
+                Util.changeNomeFam(context, responseString.getString(Utente.NOME_FAM_LABEL))
+
+                // salvo gli utenti nel db locale
                 DataStore.execute {
                     DataStore.getDB().salvaUtenti(list)
                 }
@@ -247,6 +253,41 @@ class ServerHelper(val context: Context) {
                }else {
                    act.showMessage(R.string.change_pssw_failed)
                }
+            }
+        })
+    }
+
+    /**
+     * Call the server and change the family name
+     */
+    fun changeFamilyName(nomeFamiglia : String, codiceFamiglia : Int, act : MainActivity, tvNomeFam : TextView) {
+        val requestParams = RequestParams()
+        requestParams.put(Comunication.UpdateUtente.NOME_FAM, nomeFamiglia)
+        requestParams.put(Comunication.UpdateUtente.CODE_LABEL, codiceFamiglia)
+
+        val client = AsyncHttpClient()
+        client.post(context, Comunication.UpdateUtente.URL_CHANGE_NOME_FAM, requestParams, object : JsonHttpResponseHandler(){
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
+
+                if(responseString!!.getInt(Comunication.Login.SUCCESS_FIELD) == 0) {
+                    act.showMessage(R.string.change_nome_fam_done)
+                    Util.changeNomeFam(context, nomeFamiglia)
+                    tvNomeFam.text = nomeFamiglia
+                }else {
+                    act.showMessage(R.string.change_nome_fam_fail)
+                }
+            }
+
+            override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
+
+            }
+
+            override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONArray?) {
+
+            }
+
+            override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
+
             }
         })
     }

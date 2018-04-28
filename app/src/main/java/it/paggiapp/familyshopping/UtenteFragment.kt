@@ -15,6 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.util.Util
+import kotlinx.android.synthetic.main.famiglia_change_dialog.view.*
+import kotlinx.android.synthetic.main.fragment_utente.*
 import kotlinx.android.synthetic.main.members_list.view.*
 import kotlinx.android.synthetic.main.password_change_dialog.view.*
 
@@ -52,6 +54,7 @@ class UtenteFragment : Fragment(), GenericFragment {
         val familyName = view.findViewById<TextView>(R.id.tv_family_nome)
         val familyCode = view.findViewById<TextView>(R.id.tv_family_code)
         val membersContainer = view.findViewById<LinearLayout>(R.id.ll_members)
+        val nomeFamContainer = view.findViewById<LinearLayout>(R.id.nome_fam_container)
 
         // riempio e view
         username.text = utente.nome
@@ -114,11 +117,51 @@ class UtenteFragment : Fragment(), GenericFragment {
             }
 
             dialog.show()
-
-            // force to show the keyboard
-            val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
+
+        // click sul nome della famiglia per cambiarlo
+        nomeFamContainer.setOnClickListener({
+            val v = LayoutInflater.from(context)
+                    .inflate(R.layout.famiglia_change_dialog, null, false)
+            val nomeFamiglia = v.et_nome_fam
+
+            val dialog = AlertDialog.Builder(activity)
+                    .setTitle(R.string.dialog_change_fam)
+                    .setView(v)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create()
+
+            // listener for the dialog
+            dialog.setOnShowListener {
+                val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                val buttonCanc = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+
+                // button "OK" listener
+                button.setOnClickListener {
+                    val n = nomeFamiglia.text.trim().toString()
+                    if (n.length > 4) {
+                        // change nome family
+                        ServerHelper(this@UtenteFragment.context!!)
+                                .changeFamilyName(n,
+                                        Util.getUser(context!!).codiceFamiglia,
+                                        activity as MainActivity,
+                                        familyName)
+                        // close dialog
+                        dialog.dismiss()
+
+                    }
+                }
+
+                // button "Cancella" listener
+                buttonCanc.setOnClickListener {
+                    // close dialog
+                    dialog.dismiss()
+                }
+            }
+
+            dialog.show()
+        })
 
         return view
     }

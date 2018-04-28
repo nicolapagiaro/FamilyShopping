@@ -99,6 +99,13 @@ class Util {
             editor?.apply()
         }
 
+        fun changeNomeFam(context: Context, nome : String) {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor : SharedPreferences.Editor? = pref?.edit()
+            editor?.putString(Utente.NOME_FAM_LABEL, nome)
+            editor?.apply()
+        }
+
         /**
          * Function that convert the time in a string to display
          */
