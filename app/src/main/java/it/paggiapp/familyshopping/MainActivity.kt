@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         ServerHelper(applicationContext, Runnable{
             tempF.swipe.isRefreshing = false
             (tempF.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
-        }).updateAll()
+        }).updateAll(supportActionBar)
     }
 
     /**

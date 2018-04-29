@@ -2,6 +2,7 @@ package it.paggiapp.familyshopping.backend
 
 import android.content.ContentValues
 import android.content.Context
+import android.support.v7.app.ActionBar
 import android.util.Log
 import android.widget.TextView
 import com.google.gson.Gson
@@ -39,8 +40,9 @@ class ServerHelper(val context: Context) {
 
     /**
      * Function that Utenti Table, for new user
+     * @param actionBar per cambiare il nome dell'app col nome della famiglia
      */
-    fun updateAll() {
+    fun updateAll(actionBar: ActionBar?) {
         val utente = Util.getUser(context)
 
         val requestParams = RequestParams()
@@ -69,6 +71,7 @@ class ServerHelper(val context: Context) {
 
                 // salvo il nome della famiglia aggiornato da qualcun altro
                 Util.changeNomeFam(context, responseString.getString(Utente.NOME_FAM_LABEL))
+                actionBar?.title = responseString.getString(Utente.NOME_FAM_LABEL)
 
                 // salvo gli utenti nel db locale
                 DataStore.execute {
@@ -269,26 +272,23 @@ class ServerHelper(val context: Context) {
         client.post(context, Comunication.UpdateUtente.URL_CHANGE_NOME_FAM, requestParams, object : JsonHttpResponseHandler(){
             override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
 
-                if(responseString!!.getInt(Comunication.Login.SUCCESS_FIELD) == 0) {
+                if(responseString!!.getInt(Comunication.Login.SUCCESS_FIELD) == 1) {
                     act.showMessage(R.string.change_nome_fam_done)
                     Util.changeNomeFam(context, nomeFamiglia)
                     tvNomeFam.text = nomeFamiglia
+                    act.supportActionBar?.title = nomeFamiglia
                 }else {
                     act.showMessage(R.string.change_nome_fam_fail)
                 }
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, responseString: String?, throwable: Throwable?) {
-
             }
 
             override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONArray?) {
-
             }
 
-            override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {
-
-            }
+            override fun onFailure(statusCode: Int, headers: Array<out Header>?, throwable: Throwable?, errorResponse: JSONObject?) {         }
         })
     }
 

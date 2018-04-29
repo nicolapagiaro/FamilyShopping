@@ -11,6 +11,7 @@ import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_show_lista_item_details.*
 import android.view.ViewAnimationUtils
 import android.animation.Animator
+import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.view.View
@@ -63,6 +64,8 @@ class ShowListaItemDetails : AppCompatActivity() {
         // load the image if there is internet connection
         Picasso.get()
                 .load(ServerHelper.ABSOLUTE_URL + item.categoria!!.immagine)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(show_item_header_img, object : Callback{
                     override fun onError(e: Exception?) {}
 

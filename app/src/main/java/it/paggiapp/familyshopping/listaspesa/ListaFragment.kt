@@ -31,6 +31,7 @@ import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
 import kotlinx.android.synthetic.main.lista_item.view.*
+import org.jetbrains.anko.support.v4.act
 import java.lang.Exception
 import java.util.*
 
@@ -149,7 +150,7 @@ class ListaFragment : Fragment(), GenericFragment {
         ServerHelper(context!!, Runnable{
             swipe.isRefreshing = false
             (recyclerView.adapter as ListaAdapter).refresh()
-        }).updateAll()
+        }).updateAll((act as MainActivity).supportActionBar)
     }
 
     /**
