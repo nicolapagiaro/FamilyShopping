@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.graphics.Palette
 import android.support.v7.util.DiffUtil
@@ -18,6 +19,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -30,6 +33,7 @@ import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
+import kotlinx.android.synthetic.main.fragment_lista.*
 import kotlinx.android.synthetic.main.lista_item.view.*
 import org.jetbrains.anko.support.v4.act
 import java.lang.Exception
@@ -74,8 +78,9 @@ class ListaFragment : Fragment(), GenericFragment {
         setHasOptionsMenu(true)
         isOnline = Util.isOnline(context!!)
 
-        swipe = view!!.findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_lista)
+        swipe = view!!.findViewById(R.id.swiperefresh)
+        recyclerView = view.findViewById(R.id.recycler_lista)
+        val imageNoItem = view.findViewById<ImageView>(R.id.iv_no_item)
 
         // read the bundle
         readBundle(arguments)
@@ -108,7 +113,22 @@ class ListaFragment : Fragment(), GenericFragment {
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context!!)
-        recyclerView.adapter = ListaAdapter(activity!!)
+        val adapter = ListaAdapter(activity!!)
+        adapter.placeholder = object : ListaAdapter.PlaceholderCallback {
+            override fun showPlaceholder() {
+                activity?.runOnUiThread {
+                    imageNoItem.visibility = View.VISIBLE
+                }
+            }
+
+            override fun hidePlaceholder() {
+                activity?.runOnUiThread {
+                    imageNoItem.visibility = View.GONE
+                }
+            }
+
+        }
+        recyclerView.adapter = adapter
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -168,9 +188,17 @@ class ListaFragment : Fragment(), GenericFragment {
      * Adapter for the recyclerview of shopping list
      */
     class ListaAdapter(val activity: Activity) : RecyclerView.Adapter<ListaAdapter.ItemViewHolder>() {
-
         private var isRefreshing: Boolean = false
         var list : ArrayList<Carrello> = ArrayList()
+        var placeholder : PlaceholderCallback? = null
+
+        /**
+         * Interface for the placeholder show/hide from the main thread
+         */
+        interface PlaceholderCallback {
+            fun showPlaceholder()
+            fun hidePlaceholder()
+        }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
             refresh()
@@ -207,6 +235,12 @@ class ListaFragment : Fragment(), GenericFragment {
             isRefreshing = true
             DataStore.execute {
                 val list = DataStore.getDB().getCarello()
+                if(list.size == 0) {
+                    placeholder?.showPlaceholder()
+                }
+                else {
+                    placeholder?.hidePlaceholder()
+                }
                 Handler(Looper.getMainLooper()).post {
                     // calculate the differences between the two list
                     val diffCallback = CarrelloDiffCallback(list, this@ListaAdapter.list)
@@ -228,6 +262,12 @@ class ListaFragment : Fragment(), GenericFragment {
         fun removeAt(position: Int) {
             list.removeAt(position)
             notifyItemRemoved(position)
+            if(list.size == 0) {
+                placeholder?.showPlaceholder()
+            }
+            else {
+                placeholder?.hidePlaceholder()
+            }
         }
 
         override fun getItemCount(): Int = list.size
@@ -286,6 +326,7 @@ class ListaFragment : Fragment(), GenericFragment {
                 }
             }
         }
+
     }
 
     /**
@@ -301,5 +342,4 @@ class ListaFragment : Fragment(), GenericFragment {
     override fun refreshList() {
         (recyclerView.adapter as ListaAdapter).refresh()
     }
-
 }

@@ -124,6 +124,7 @@ class UtenteFragment : Fragment(), GenericFragment {
             val v = LayoutInflater.from(context)
                     .inflate(R.layout.famiglia_change_dialog, null, false)
             val nomeFamiglia = v.et_nome_fam
+            nomeFamiglia.append(utente.nomeFamiglia)
 
             val dialog = AlertDialog.Builder(activity)
                     .setTitle(R.string.dialog_change_fam)
@@ -140,16 +141,17 @@ class UtenteFragment : Fragment(), GenericFragment {
                 // button "OK" listener
                 button.setOnClickListener {
                     val n = nomeFamiglia.text.trim().toString()
-                    if (n.length > 4) {
+                    if(n.equals(utente.nomeFamiglia)) {
+                        // close dialog
+                        dialog.dismiss()
+                    }
+                    else if (n.length > 4) {
                         // change nome family
                         ServerHelper(this@UtenteFragment.context!!)
                                 .changeFamilyName(n,
                                         Util.getUser(context!!).codiceFamiglia,
                                         activity as MainActivity,
                                         familyName)
-                        // close dialog
-                        dialog.dismiss()
-
                     }
                 }
 
