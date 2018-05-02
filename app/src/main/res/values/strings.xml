@@ -48,11 +48,17 @@
 
     <!-- Stringhe per i menu -->
     <string name="menu_home">Ordina per</string>
+    <string name="menu_view_mode">Vista</string>
 
-    <!-- Stringhe per il bottom stylesheet -->
+    <!-- Stringhe per il bottom stylesheet orderby -->
     <string name="bottom_title">Ordina per</string>
     <string name="bottom_choice_last">Ultimi modificati</string>
     <string name="bottom_choice_priority">Priorità</string>
+
+    <!-- Stringhe per il bottom stylesheet view mode -->
+    <string name="bottom_title_viewmode">Visualizza come</string>
+    <string name="bottom_choice_list">Lista</string>
+    <string name="bottom_choice_grid">Griglia</string>
 
     <!-- Stringhe per il Fragment della lista della spesa -->
     <string name="tv_item_list_details">&lt;b>%1$s&lt;/b> · %2$s</string>

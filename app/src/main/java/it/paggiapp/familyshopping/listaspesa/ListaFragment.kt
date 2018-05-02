@@ -2,28 +2,20 @@ package it.paggiapp.familyshopping.listaspesa
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.graphics.Palette
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.view.*
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import it.paggiapp.familyshopping.GenericFragment
 import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
@@ -33,10 +25,8 @@ import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
 import it.paggiapp.familyshopping.util.inflate
-import kotlinx.android.synthetic.main.fragment_lista.*
 import kotlinx.android.synthetic.main.lista_item.view.*
 import org.jetbrains.anko.support.v4.act
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -46,10 +36,12 @@ import java.util.*
 class ListaFragment : Fragment(), GenericFragment {
     lateinit var swipe: SwipeRefreshLayout
     lateinit var recyclerView : RecyclerView
+    lateinit var itemdecoration: StagrerredItemdecoration
     var isOnline = false
 
     companion object {
-        val TAG_BOTTOM_SHEET ="BottomSheet Fragment"
+        val TAG_MODAL_ORDERBY ="ORDERBY_FRAG"
+        val TAG_MODAL_SHOWMODE ="SHOWMODE_FRAG"
 
         /**
          * Static method for new Instance
@@ -112,7 +104,16 @@ class ListaFragment : Fragment(), GenericFragment {
             }
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(context!!)
+        // metto il layout manager
+        itemdecoration = StagrerredItemdecoration(16)
+        if(Util.getCurrentViewMode(context!!) == ModalViewMode.CHOICE_LIST) {
+            setLinearLayoutManager()
+        }
+        else {
+            setGridLayoutManager()
+        }
+
+        // metto l'adapter
         val adapter = ListaAdapter(activity!!)
         adapter.placeholder = object : ListaAdapter.PlaceholderCallback {
             override fun showPlaceholder() {
@@ -150,7 +151,11 @@ class ListaFragment : Fragment(), GenericFragment {
             // filtra
             val orderBy = ModalOrderBy()
             orderBy.recyclerView = recyclerView
-            orderBy.show(activity!!.supportFragmentManager, TAG_BOTTOM_SHEET)
+            orderBy.show(activity!!.supportFragmentManager, TAG_MODAL_ORDERBY)
+        }
+        else if(id == R.id.viewmode_lista) {
+            // modo di vedere le cose cambia
+            ModalViewMode(this@ListaFragment).show(activity!!.supportFragmentManager, TAG_MODAL_SHOWMODE)
         }
 
         return super.onOptionsItemSelected(item)
@@ -341,5 +346,21 @@ class ListaFragment : Fragment(), GenericFragment {
      */
     override fun refreshList() {
         (recyclerView.adapter as ListaAdapter).refresh()
+    }
+
+    /**
+     * Mette il linear layout
+     */
+    fun setLinearLayoutManager() {
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.removeItemDecoration(itemdecoration)
+    }
+
+    /**
+     * Metto lo stagrerred layout
+     */
+    fun setGridLayoutManager() {
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.addItemDecoration(itemdecoration)
     }
 }

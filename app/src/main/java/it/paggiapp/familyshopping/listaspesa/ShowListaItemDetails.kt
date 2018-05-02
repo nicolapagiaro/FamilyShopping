@@ -11,9 +11,8 @@ import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_show_lista_item_details.*
 import android.view.ViewAnimationUtils
 import android.animation.Animator
-import android.content.Context
 import android.os.Build
-import android.os.Handler
+import android.support.v4.view.ViewCompat
 import android.view.View
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
@@ -70,7 +69,9 @@ class ShowListaItemDetails : AppCompatActivity() {
                     override fun onError(e: Exception?) {}
 
                     override fun onSuccess() {
-                        showImage()
+                        if(ViewCompat.isAttachedToWindow(show_item_header_img)) {
+                            showImage()
+                        }
                     }
                 })
 

@@ -41,7 +41,6 @@
             android:layout_marginBottom="@dimen/vertical_margin"
             android:layout_marginTop="@dimen/vertical_margin"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-
             app:elevation="4dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -263,26 +262,32 @@
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/sugg_list"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_sugg_label"
+            <LinearLayout
+                android:id="@+id/sugg_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/horizontal_margin"
-                android:layout_marginStart="@dimen/horizontal_margin"
-                android:layout_marginTop="@dimen/vertical_margin"
-                android:layout_marginBottom="@dimen/list_margin_top"
-                android:text="@string/recents_label"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/twolines_secondText"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_sugg_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/horizontal_margin"
+                    android:layout_marginStart="@dimen/horizontal_margin"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:layout_marginBottom="@dimen/list_margin_top"
+                    android:text="@string/recents_label"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/twolines_secondText"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </ScrollView>
+
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

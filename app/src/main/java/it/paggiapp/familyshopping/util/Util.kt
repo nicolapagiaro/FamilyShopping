@@ -8,6 +8,7 @@ import android.util.Log
 import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.data.Utente
+import it.paggiapp.familyshopping.listaspesa.ModalViewMode
 import org.joda.time.Period
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -97,6 +98,18 @@ class Util {
             val editor : SharedPreferences.Editor? = pref?.edit()
             editor?.putInt(ModalOrderBy.CHOICE_LABEL, order)
             editor?.apply()
+        }
+
+        fun setViewMode(context: Context, order : Int) {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor : SharedPreferences.Editor? = pref?.edit()
+            editor?.putInt(ModalViewMode.CHOICE_LABEL, order)
+            editor?.apply()
+        }
+
+        fun getCurrentViewMode(context: Context) : Int {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            return pref!!.getInt(ModalViewMode.CHOICE_LABEL, ModalViewMode.CHOICE_LIST)
         }
 
         fun changeNomeFam(context: Context, nome : String) {
