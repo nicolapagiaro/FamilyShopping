@@ -183,7 +183,8 @@ class ListaFragment : Fragment(), GenericFragment {
      * and the local database
      */
     fun removeItem(removedItem : Carrello) {
-        removedItem.timestamp = Util.getCurrentTimestamp(Locale.US)
+        removedItem.timestamp = Util.getCurrentTimestamp(Locale.ITALY)
+        removedItem.inLista = 1;
         DataStore.getDB().removeItem(removedItem)
         ServerHelper(context!!).removeItem(removedItem)
     }

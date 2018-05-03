@@ -168,7 +168,7 @@ class Util {
          * passed in the function (es: Locale.US, Locale.ITALY...)
          */
         fun getCurrentTimestamp(locale: Locale) : String {
-            val sTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+            val sTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY)
             return sTimestamp.format(Calendar.getInstance(locale).time)
         }
     }

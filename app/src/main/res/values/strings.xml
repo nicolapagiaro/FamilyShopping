@@ -99,6 +99,9 @@
     <string name="tv_info_label">Info utente</string>
     <string name="tv_familyinfo_label">Famiglia</string>
     <string name="tv_members_label">Membri</string>
+    <string name="tv_other_label">Altro</string>
+    <string name="tv_other_info_label">Informazioni</string>
+    <string name="tv_exit_from_app">Esci</string>
     <string name="tv_pssw_placeholder">Cambia password</string>
     <string name="tv_family_name">Nome</string>
     <string name="tv_family_code">Codice di accesso</string>

@@ -335,12 +335,10 @@ class AddListaitem : AppCompatActivity() {
         val articolo = et_itemname.text.toString()
 
         // add the timestamp
-        item!!.timestamp = Util.getCurrentTimestamp(Locale.US)
+        item!!.timestamp = Util.getCurrentTimestamp(Locale.ITALY)
 
         // if the item is new, add the insert date
-        if (isNew) {
-            item!!.dataImmissione = Util.getCurrentTimestamp(Locale.ITALY)
-        }
+        item!!.dataImmissione = Util.getCurrentTimestamp(Locale.ITALY)
 
         if (articolo.isEmpty()) {
             // show error

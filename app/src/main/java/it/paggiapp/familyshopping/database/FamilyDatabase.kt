@@ -3,6 +3,7 @@ package it.paggiapp.familyshopping.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import it.paggiapp.familyshopping.listaspesa.ModalOrderBy
 import it.paggiapp.familyshopping.data.Carrello
 import it.paggiapp.familyshopping.data.Categoria
@@ -173,7 +174,7 @@ class FamilyDatabase(val context: Context) {
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
                 null,
-                "${FamilyContract.Carrello.TIMESTAMP} > ?",
+                "${FamilyContract.Carrello.TIMESTAMP} >= ?",
                 args,
                 null,
                 null,
@@ -343,7 +344,7 @@ class FamilyDatabase(val context: Context) {
      * to sync with the online database
      */
     fun getCarrelloLastTimestamp(): String {
-        val columns = arrayOf<String>(FamilyContract.Carrello.TIMESTAMP)
+        val columns = arrayOf(FamilyContract.Carrello.TIMESTAMP)
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
                 columns,
@@ -438,6 +439,8 @@ class FamilyDatabase(val context: Context) {
                 put(FamilyContract.Carrello.PRIORITA, temp.getInt(FamilyContract.Carrello.PRIORITA))
                 put(FamilyContract.Carrello.IN_LISTA, temp.getInt(FamilyContract.Carrello.IN_LISTA))
                 put(FamilyContract.Carrello.TIMESTAMP, temp.getString(FamilyContract.Carrello.TIMESTAMP))
+                put(FamilyContract.Carrello.DATA_IMMISSIONE, temp.getString(FamilyContract.Carrello.DATA_IMMISSIONE))
+                put(FamilyContract.Carrello.UTENTE, temp.getString(FamilyContract.Carrello.UTENTE))
             }
             return values
         }

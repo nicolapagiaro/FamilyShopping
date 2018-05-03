@@ -21,7 +21,7 @@ import it.paggiapp.familyshopping.database.FamilyDatabase
 import it.paggiapp.familyshopping.util.Util
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Class to manage comunication with server
@@ -167,6 +167,7 @@ class ServerHelper(val context: Context) {
                 // updates Carrello records in the local database
                 val updateList = ArrayList<ContentValues>()
                 val updateItem : JSONArray = responseString.getJSONArray(Comunication.UpdateCarrello.ROWS_TO_UPDATE)
+                Log.d("res", responseString.getJSONArray(Comunication.UpdateCarrello.ROWS_TO_UPDATE).toString())
                 for (i in 0..(updateItem.length() - 1)) {
                     val temp = updateItem.getJSONObject(i)
                     val values = FamilyDatabase.carrelloToContentValuesUpdate(temp)
@@ -177,7 +178,6 @@ class ServerHelper(val context: Context) {
                     // salvo le modifiche nel db locale
                     DataStore.getDB().addItem(addList)
                     DataStore.getDB().updateItem(updateList)
-
                 }
 
                 // get last timestamp from the server
@@ -217,11 +217,13 @@ class ServerHelper(val context: Context) {
     fun removeItem(carrello: Carrello) {
         val requestParams = RequestParams()
         requestParams.put(Comunication.UpdateCarrello.ID, carrello.id)
+        requestParams.put(Comunication.UpdateCarrello.LAST_TIMESTAMP_LABEL, Util.getCurrentTimestamp(Locale.ITALY))
 
         val client = AsyncHttpClient()
         client.post(context, Comunication.UpdateCarrello.REMOVEITEM_URL, requestParams, object : JsonHttpResponseHandler() {
 
-            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {}
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>?, responseString: JSONObject?) {
+            }
         })
     }
 
@@ -235,7 +237,6 @@ class ServerHelper(val context: Context) {
 
         val client = AsyncHttpClient()
         client.post(context, Comunication.UploadCarrelloItem.URL, requestParams, object : JsonHttpResponseHandler(){
-
         })
     }
 
