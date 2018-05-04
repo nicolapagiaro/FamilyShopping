@@ -116,4 +116,10 @@
     <string name="change_pssw_failed">Errore, password non cambiata</string>
     <string name="change_nome_fam_done">Nome famiglia cambiato</string>
     <string name="change_nome_fam_fail">Errore, nessuna modifica apportata</string>
+    <string name="dialog_exit_title">Conferma</string>
+    <string name="dialog_exit_content">Vuoi veramente uscire dall\'applicazione?</string>
+
+
+    <!-- INFO Activity -->
+    <string name="info_act_title">Informazioni</string>
 </resources>

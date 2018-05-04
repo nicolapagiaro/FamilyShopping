@@ -2,6 +2,8 @@ package it.paggiapp.familyshopping
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import it.paggiapp.familyshopping.backend.ServerHelper
 import android.support.v4.app.Fragment
@@ -17,6 +19,7 @@ import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.famiglia_change_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_utente.*
+import kotlinx.android.synthetic.main.fragment_utente.view.*
 import kotlinx.android.synthetic.main.members_list.view.*
 import kotlinx.android.synthetic.main.password_change_dialog.view.*
 
@@ -164,6 +167,27 @@ class UtenteFragment : Fragment(), GenericFragment {
 
             dialog.show()
         })
+
+        // info activity
+        view.info_container.setOnClickListener {
+            startActivity(Intent(activity, InfoActivity::class.java))
+        }
+
+        // logout
+        view.logout_container.setOnClickListener {
+            AlertDialog.Builder(context)
+                    .setTitle(R.string.dialog_exit_title)
+                    .setMessage(R.string.dialog_exit_content)
+                    .setPositiveButton(android.R.string.yes) { dialog, which ->
+                        Util.logoutUser(context!!)
+                        startActivity(Intent(activity, MainActivity::class.java))
+                    }
+                    .setNegativeButton(android.R.string.no, {dialog, which ->
+                        dialog.dismiss()
+                    })
+                    .create()
+                    .show()
+        }
 
         return view
     }

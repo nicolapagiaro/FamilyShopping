@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +25,23 @@
         </activity>
         <activity
             android:name=".intro.IntroActivity"
-            android:theme="@style/AppTheme.Intro"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Intro" />
+
         <activity
             android:name=".listaspesa.ShowListaItemDetails"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".listaspesa.AddListaitem"
-            android:theme="@style/AppTheme.AddItem"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.AddItem" />
+
+        <activity android:name=".InfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Info"
+            android:label="@string/info_act_title"/>
     </application>
 
 </manifest>

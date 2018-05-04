@@ -51,6 +51,16 @@ class Util {
         }
 
         /**
+         * Function used to set the user loggedIn Flag
+         */
+        fun logoutUser(context: Context) {
+            val pref : SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor : SharedPreferences.Editor? = pref?.edit()
+            editor?.putBoolean(context.getString(R.string.user_logged), false)
+            editor?.apply()
+        }
+
+        /**
          * Function that saves the user in SharedPreferences
          */
         fun saveUser(context: Context, utente: Utente) {

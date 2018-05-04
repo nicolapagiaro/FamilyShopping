@@ -21,4 +21,7 @@
 
     <color name="bg_default">#f5f5f5</color>
     <color name="bg_item_done_drawable">#4CAF50</color>
+
+    <!-- colori per la info activity -->
+    <color name="whiteDark">#eeeeee</color>
 </resources>
