@@ -122,4 +122,9 @@
 
     <!-- INFO Activity -->
     <string name="info_act_title">Informazioni</string>
+    <string name="tv_autore_label">Autore</string>
+    <string name="tv_autore_nome">Nicola Pagiaro</string>
+    <string name="tv_autore_mail">pagiaro@gmail.com</string>
+    <string name="tv_autore_site">www.sitoancoradafare.com</string>
+    <string name="tv_info_app_label">Librerie usate</string>
 </resources>

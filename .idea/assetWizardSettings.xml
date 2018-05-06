@@ -43,12 +43,27 @@
                             <entry key="launcherLegacy">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="20" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="cropped" value="true" />
-                                      <entry key="iconShape" value="CIRCLE" />
-                                      <entry key="imageAsset" value="C:\Users\Nicola\Desktop\iconpng.png" />
+                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="imageAsset" value="C:\Users\Nicola\Desktop\iconpng1.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -94,9 +109,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_exit_to_app_red_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Nicola" />
+                            <entry key="outputName" value="ic_icon" />
+                            <entry key="sourceFile" value="C:\Users\Nicola\Desktop\icon mia\icon.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -174,11 +174,11 @@ class FamilyDatabase(val context: Context) {
         val cursor = helper.readableDatabase.query(
                 FamilyContract.Carrello._TABLE_NAME,
                 null,
-                "${FamilyContract.Carrello.TIMESTAMP} >= ?",
+                "${FamilyContract.Carrello.TIMESTAMP} > ?",
                 args,
                 null,
                 null,
-                "${FamilyContract.Carrello.TIMESTAMP} DESC")
+                null)
 
         return getCarrelloFull(cursor)
     }

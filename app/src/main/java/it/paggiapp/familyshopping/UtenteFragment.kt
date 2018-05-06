@@ -127,7 +127,7 @@ class UtenteFragment : Fragment(), GenericFragment {
             val v = LayoutInflater.from(context)
                     .inflate(R.layout.famiglia_change_dialog, null, false)
             val nomeFamiglia = v.et_nome_fam
-            nomeFamiglia.append(utente.nomeFamiglia)
+            nomeFamiglia.append(familyName.text.toString())
 
             val dialog = AlertDialog.Builder(activity)
                     .setTitle(R.string.dialog_change_fam)
@@ -155,6 +155,7 @@ class UtenteFragment : Fragment(), GenericFragment {
                                         Util.getUser(context!!).codiceFamiglia,
                                         activity as MainActivity,
                                         familyName)
+                        dialog.dismiss()
                     }
                 }
 

@@ -167,7 +167,6 @@ class ServerHelper(val context: Context) {
                 // updates Carrello records in the local database
                 val updateList = ArrayList<ContentValues>()
                 val updateItem : JSONArray = responseString.getJSONArray(Comunication.UpdateCarrello.ROWS_TO_UPDATE)
-                Log.d("res", responseString.getJSONArray(Comunication.UpdateCarrello.ROWS_TO_UPDATE).toString())
                 for (i in 0..(updateItem.length() - 1)) {
                     val temp = updateItem.getJSONObject(i)
                     val values = FamilyDatabase.carrelloToContentValuesUpdate(temp)

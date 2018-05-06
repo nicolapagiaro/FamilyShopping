@@ -21,6 +21,7 @@ import it.paggiapp.familyshopping.MainActivity
 import it.paggiapp.familyshopping.R
 import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.data.Carrello
+import it.paggiapp.familyshopping.data.Carrello.Companion.NO_IN_LISTA
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.database.FamilyContract
 import it.paggiapp.familyshopping.util.Util
@@ -184,11 +185,10 @@ class ListaFragment : Fragment(), GenericFragment {
      */
     fun removeItem(removedItem : Carrello) {
         removedItem.timestamp = Util.getCurrentTimestamp(Locale.ITALY)
-        removedItem.inLista = 1;
+        removedItem.inLista = NO_IN_LISTA
         DataStore.getDB().removeItem(removedItem)
         ServerHelper(context!!).removeItem(removedItem)
     }
-
 
     /**
      * Adapter for the recyclerview of shopping list
