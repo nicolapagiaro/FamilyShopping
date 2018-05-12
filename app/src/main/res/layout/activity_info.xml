@@ -35,15 +35,14 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/ivIco"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:contentDescription="@string/image_content_descriptor"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_icon" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -54,7 +53,7 @@
                     android:text="@string/tv_autore_nome"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/ivIco"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -66,7 +65,7 @@
                     android:text="@string/tv_autore_mail"
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/ivIco"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <TextView
@@ -80,7 +79,7 @@
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/ivIco"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>

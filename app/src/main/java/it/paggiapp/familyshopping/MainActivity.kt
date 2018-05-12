@@ -11,10 +11,13 @@ import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
+import example.nicola.giallozafferanoparser.GialloZafferanoParser
+import example.nicola.giallozafferanoparser.Ricetta
 import it.paggiapp.familyshopping.backend.ServerHelper
 import it.paggiapp.familyshopping.database.DataStore
 import it.paggiapp.familyshopping.intro.IntroActivity
@@ -23,6 +26,7 @@ import it.paggiapp.familyshopping.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import it.paggiapp.familyshopping.listaspesa.AddListaitem
 import it.paggiapp.familyshopping.listaspesa.ShowListaItemDetails
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
     var currentFragment : ActiveFragment = ActiveFragment.LISTA_SPESA
@@ -112,10 +116,12 @@ class MainActivity : AppCompatActivity() {
                             .commit()
                     currentFragment = ActiveFragment.LISTA_SPESA
                     fab_main.show()
-
                 }
                 1 -> {
                     //frag = RicetteFragment.newInstance()
+                    GialloZafferanoParser.getRicette("pasta") {
+                        Log.d("Response", it.toString())
+                    }
 
                     // load the fragment
                     currentFragment = ActiveFragment.LISTA_RICETTE
@@ -182,6 +188,25 @@ class MainActivity : AppCompatActivity() {
             tempF.swipe.isRefreshing = false
             (tempF.recyclerView.adapter as ListaFragment.ListaAdapter).refresh()
         }).updateAll(supportActionBar)
+    }
+
+    override fun onBackPressed() {
+        if(currentFragment != ActiveFragment.LISTA_SPESA) {
+            // metto la lista della spesa come frag activo
+            bottom_navigation.currentItem = 0
+            frag = ListaFragment.newInstance()
+
+            // load the fragment
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_container, frag as ListaFragment)
+                    .commit()
+            currentFragment = ActiveFragment.LISTA_SPESA
+            fab_main.show()
+        }
+        else {
+            super.onBackPressed()
+        }
     }
 
     /**

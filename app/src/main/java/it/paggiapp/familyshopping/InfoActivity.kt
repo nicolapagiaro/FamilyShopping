@@ -3,6 +3,7 @@ package it.paggiapp.familyshopping
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_info.*
 
 class InfoActivity : AppCompatActivity() {
@@ -13,6 +14,11 @@ class InfoActivity : AppCompatActivity() {
 
         // metto il button back
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // carico l'immagine
+        Picasso.get()
+                .load("http://quizapp.000webhostapp.com/familyshopping/images/ico.png")
+                .into(ivIco)
     }
 
     /**
